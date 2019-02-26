@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class AnimationModelImpl implements AnimationModel {
       throw new IllegalArgumentException("Every shape must have a unique name. The shape " + name
               + " already exists.");
     }
-    shapes.put(name, new ShapeImpl(name, type));
+    shapes.put(name, new Shape(name, type));
   }
 
   @Override
@@ -52,6 +53,10 @@ public class AnimationModelImpl implements AnimationModel {
   @Override
   public void addMotion(String shapeName, int time, int x, int y, int width, int height,
                         int red, int green, int blue) {
+    if (! shapes.containsKey(shapeName)) {
+      throw new IllegalArgumentException("No shape with the name " + shapeName + " exists.");
+    }
+    // may throw an IAE if the time is incorrect
     shapes.get(shapeName).addMotion(time, x, y, width, height, red, green, blue);
   }
 
@@ -63,5 +68,14 @@ public class AnimationModelImpl implements AnimationModel {
   @Override
   public List<String> getShapes() {
     return new ArrayList<>(shapes.keySet());
+  }
+
+  @Override
+  public String displayAnimation() {
+    List<String> shapeDisplays = new LinkedList<>();
+    for (Shape s : shapes.values()) {
+      shapeDisplays.add(s.display());
+    }
+    return String.join("/n/n", shapeDisplays);
   }
 }

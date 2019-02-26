@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * A class representing the status of a shape at a moment in time.
@@ -25,8 +26,16 @@ class Motion {
    * @param red
    * @param green
    * @param blue
+   * @throws IllegalArgumentException
    */
   public Motion(int time, int x, int y, int width, int height, int red, int green, int blue) {
+    if (width <= 0 || height <= 0) {
+      throw new IllegalArgumentException("Width and height must be positive nonzero integers, "
+              + "given " + width + " & " + height);
+    }
+    red = regularizeColor(red);
+    green = regularizeColor(green);
+    blue = regularizeColor(blue);
     this.time = time;
     this.x = x;
     this.y = y;
@@ -38,16 +47,43 @@ class Motion {
   }
 
   /**
-   * Create a human-readable String that displays all the information it contains
-   * @return
+   * If a given integer is not usable as a color (greater than 255 or less than 0), then return
+   * the closest possible int that is a legal color.
+   * @param color the uncorrected color
+   * @return the corrected color
    */
-  public String display(String shapeName) {
+  private int regularizeColor(int color) {
+    return Math.max(0, Math.min(255, color));
+  }
+
+  /**
+   * Create a human-readable String that displays all the information the motion contains.
+   * The resulting string will be in the format:
+   * "[time] [x] [y] [width] [height] [red] [green] [blue]".
+   * @return the display string
+   */
+  public String display() {
     ArrayList<Integer> values
             = new ArrayList<>(Arrays.asList(time, x, y, width, height, red, green, blue));
-    values.stream().
+    return values.stream().map(i -> Integer.toString(i)).collect(Collectors.joining(" "));
+  }
 
+  /**
+   * Return the time at which the motion occurs.
+   * @return time
+   */
+  public int getTime() {
+    return time;
+  }
 
-
-    return "";
+  /**
+   * Create a new Motion identical to this one except that it occurs at a later time.
+   * This method is meant to create a Motion after this one but is capable of creating Motions
+   * that have an earlier or identical time.
+   * @param time the time for the new Motion
+   * @return the new Motion created
+   */
+  public Motion extend(int time) {
+    return new Motion(time, x, y, width, height, red, green, blue);
   }
 }

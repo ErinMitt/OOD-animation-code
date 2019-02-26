@@ -1,9 +1,93 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-public interface Shape {
-  List<Motion> getMotions();
-  void addMotion(int time, int x, int y, int width, int height,
-                 int red, int green, int blue);
-  void deleteLastMotion();
-  boolean sameShape(String name);
+public class Shape {
+  private List<Motion> motions;
+  private ShapeType type;
+  private String name;
+
+  public Shape(String name, ShapeType type) {
+    this.name = name;
+    this.type = type;
+    this.motions = new ArrayList<>();
+    // INVARIANT: Motions are sorted in order of increasing time
+  }
+
+  // TODO: delete this if I don't need it for anything
+  public List<Motion> getMotions() {
+    return new ArrayList<>(motions);
+  }
+
+  /**
+   * Add a new Motion with the given parameters to the end of the list.
+   * The time must be after the time of the last existing motion already assigned to this shape.
+   * RGB values must be between 0 and 255 and are corrected if they are outside those bounds.
+   * Width and height must be positive nonzero integers.
+   * @param time the time at which the motion occurs
+   * @param x the x coordinate of the shape
+   * @param y the y coordinate of the shape
+   * @param width the shape's width
+   * @param height the shape's height
+   * @param red the R component of the shape's color
+   * @param green the G component of the shape's color
+   * @param blue the B component of the shape's color
+   * @throws IllegalArgumentException if the given time is less than or equal to the time of the
+   * last existing motion, or if the width/height are less than or equal to 0
+   */
+  public void addMotion(int time, int x, int y, int width, int height,
+                        int red, int green, int blue) {
+    addMotion(new Motion(time, x, y, width, height, red, green, blue));
+  }
+
+  /**
+   * Add the given motion to the sequence of motions.
+   * @param m the motion to be added
+   * @throws IllegalArgumentException if the new Motion's time is less than or equal to the
+   * last existing motion's time
+   */
+  public void addMotion(Motion m) {
+    if (m.getTime() <= motions.get(motions.size() - 1).getTime()) {
+      throw new IllegalArgumentException("Cannot add a new motion into the middle of a sequence. "
+              + "New motions must occur after this shape's last existing motion.");
+    }
+  }
+
+  /**
+   * Remove the last motion in the sequence.
+   * @throws IllegalStateException if this shape has no motions
+   */
+  public void deleteLastMotion() {
+    if (motions.isEmpty()) {
+      throw new IllegalStateException("There are no motions to remove.");
+    }
+    motions.remove(motions.size() - 1);
+  }
+
+  public boolean sameShape(String name) {
+    return name.equals(this.name);
+  }
+
+  /**
+   * Display every motion in order in the format:
+   * shape C ellipse
+   * #                  start                           end
+   * #        --------------------------    ----------------------------
+   * #        t  x   y   w  h   r   g  b    t   x   y   w  h   r   g  b
+   * motion C 6  440 70 120 60 0 0 255      20  440 70  120 60 0 0 255
+   * motion C 20 440 70 120 60 0 0 255      50  440 250 120 60 0 0 255
+   * motion C 50 440 250 120 60 0 0 255     70  440 370 120 60 0 170 85
+   * motion C 70 440 370 120 60 0 170 85    80  440 370 120 60 0 255  0
+   * motion C 80 440 370 120 60 0 255  0    100 440 370 120 60 0 255  0
+   * Lines beginning with # are informative and are not included in the final string.
+   * @return the display string
+   */
+  public String display() {
+    List<String> lines = new LinkedList<String>();
+    lines.add("shape " + name + " " + type.getType());
+    for (int i = 0; i < motions.size() - 1; i++) {
+      lines.add(motions.get(i).display() + " " + motions.get(i + 1).display());
+    }
+    return String.join("/n", lines);
+  }
 }
