@@ -2,12 +2,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Shape {
+class Shape {
   private List<Motion> motions;
   private ShapeType type;
   private String name;
 
   public Shape(String name, ShapeType type) {
+    if (name == null || type == null) {
+      throw new IllegalArgumentException("Name and shape type must not be null.");
+    }
     this.name = name;
     this.type = type;
     this.motions = new ArrayList<>();
@@ -41,12 +44,30 @@ public class Shape {
   }
 
   /**
+   * Adds a new Motion identical to this shape's last existing motion that is identical but
+   * occurs at a later time. Functionally, this leaves the shape unchanging until the given time.
+   * @param time
+   * @throws IllegalArgumentException if the given time is equal to or before the last motion's time
+   * @throws IllegalStateException if there is no motion to extend
+   */
+  public void extend(int time) {
+    if (motions.isEmpty()) {
+      throw new IllegalStateException("A shape with no motions "
+              + "cannot have its last motion extended.");
+    }
+    addMotion(motions.get(motions.size() - 1).extend(time));
+  }
+
+  /**
    * Add the given motion to the sequence of motions.
    * @param m the motion to be added
    * @throws IllegalArgumentException if the new Motion's time is less than or equal to the
    * last existing motion's time
    */
   public void addMotion(Motion m) {
+    if (m == null) {
+      throw new IllegalArgumentException("The motion cannot be null.");
+    }
     if (m.getTime() <= motions.get(motions.size() - 1).getTime()) {
       throw new IllegalArgumentException("Cannot add a new motion into the middle of a sequence. "
               + "New motions must occur after this shape's last existing motion.");
@@ -64,6 +85,7 @@ public class Shape {
     motions.remove(motions.size() - 1);
   }
 
+  // TODO: delete if not using
   public boolean sameShape(String name) {
     return name.equals(this.name);
   }
@@ -83,7 +105,7 @@ public class Shape {
    * @return the display string
    */
   public String display() {
-    List<String> lines = new LinkedList<String>();
+    List<String> lines = new ArrayList<>(motions.size());
     lines.add("shape " + name + " " + type.getType());
     for (int i = 0; i < motions.size() - 1; i++) {
       lines.add(motions.get(i).display() + " " + motions.get(i + 1).display());

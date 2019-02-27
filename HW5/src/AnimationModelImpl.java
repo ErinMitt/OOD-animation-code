@@ -44,24 +44,27 @@ public class AnimationModelImpl implements AnimationModel {
 
   @Override
   public void deleteShape(String shapeName) {
-    if (! shapes.containsKey(shapeName)) {
-      throw new IllegalArgumentException("Shape " + shapeName + " cannot be found.");
-    }
+    checkShapeExists(shapeName);
     shapes.remove(shapeName);
   }
 
   @Override
   public void addMotion(String shapeName, int time, int x, int y, int width, int height,
                         int red, int green, int blue) {
-    if (! shapes.containsKey(shapeName)) {
-      throw new IllegalArgumentException("No shape with the name " + shapeName + " exists.");
-    }
+    checkShapeExists(shapeName);
     // may throw an IAE if the time is incorrect
     shapes.get(shapeName).addMotion(time, x, y, width, height, red, green, blue);
   }
 
   @Override
+  public void extend(String shapeName, int time) {
+    checkShapeExists(shapeName);
+    shapes.get(shapeName).extend(time);
+  }
+
+  @Override
   public void deleteLastMotion(String shapeName) {
+    checkShapeExists(shapeName);
     shapes.get(shapeName).deleteLastMotion();
   }
 
@@ -72,10 +75,21 @@ public class AnimationModelImpl implements AnimationModel {
 
   @Override
   public String displayAnimation() {
-    List<String> shapeDisplays = new LinkedList<>();
+    List<String> shapeDisplays = new ArrayList<>(shapes.size());
     for (Shape s : shapes.values()) {
       shapeDisplays.add(s.display());
     }
     return String.join("/n/n", shapeDisplays);
+  }
+
+  /**
+   * Check whether the shape with the given name exists. If not, throw an IAE.
+   * @param shapeName the shape whose existence is to be confirmed
+   * @throws IllegalArgumentException if the shape does not exist
+   */
+  private void checkShapeExists(String shapeName) {
+    if (! shapes.containsKey(shapeName)) {
+      throw new IllegalArgumentException("No shape with the name " + shapeName + " exists.");
+    }
   }
 }

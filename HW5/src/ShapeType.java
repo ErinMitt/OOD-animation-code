@@ -1,4 +1,4 @@
-public enum ShapeType {
+enum ShapeType {
   ELLIPSE("ellipse"), RECTANGLE("rectangle");
 
   private String type;

@@ -43,8 +43,19 @@ public interface AnimationModel {
                  int height, int red, int green, int blue);
 
   /**
-   *
-   * @param shapeName
+   * Tell the given shape to remain motionless until the given time.
+   * @param time the time until when the shape should stay still
+   * @throws IllegalArgumentException if there is no such shape or if the time occurs before the
+   * shape's last motion
+   * @throws IllegalStateException if the given shape has no motions
+   */
+  void extend(String shape, int time);
+
+  /**
+   * Remove the last motion of the given shape.
+   * @param shapeName the shape from which the last motion will be deleted
+   * @throws IllegalArgumentException if the shape does not exist
+   * @throws IllegalStateException if the shape has no motions
    */
   void deleteLastMotion(String shapeName);
 
