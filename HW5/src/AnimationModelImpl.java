@@ -79,7 +79,7 @@ public class AnimationModelImpl implements AnimationModel {
     for (Shape s : shapes.values()) {
       shapeDisplays.add(s.display());
     }
-    return String.join("/n/n", shapeDisplays);
+    return String.join("\n\n", shapeDisplays);
   }
 
   /**

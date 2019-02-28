@@ -68,10 +68,11 @@ class Shape {
     if (m == null) {
       throw new IllegalArgumentException("The motion cannot be null.");
     }
-    if (m.getTime() <= motions.get(motions.size() - 1).getTime()) {
+    if (!motions.isEmpty() &&  m.getTime() <= motions.get(motions.size() - 1).getTime()) {
       throw new IllegalArgumentException("Cannot add a new motion into the middle of a sequence. "
               + "New motions must occur after this shape's last existing motion.");
     }
+    motions.add(m);
   }
 
   /**
@@ -108,8 +109,9 @@ class Shape {
     List<String> lines = new ArrayList<>(motions.size());
     lines.add("shape " + name + " " + type.getType());
     for (int i = 0; i < motions.size() - 1; i++) {
-      lines.add(motions.get(i).display() + " " + motions.get(i + 1).display());
+      lines.add("motion " + name + " " +motions.get(i).display()
+              + "    " + motions.get(i + 1).display());
     }
-    return String.join("/n", lines);
+    return String.join("\n", lines);
   }
 }
