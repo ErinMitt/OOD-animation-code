@@ -108,9 +108,15 @@ class Shape {
   public String display() {
     List<String> lines = new ArrayList<>(motions.size());
     lines.add("shape " + name + " " + type.getType());
-    for (int i = 0; i < motions.size() - 1; i++) {
-      lines.add("motion " + name + " " +motions.get(i).display()
-              + "    " + motions.get(i + 1).display());
+    if (motions.size() == 1) {
+      lines.add("motion " + name + " " + motions.get(0).display()
+              + "    " + motions.get(0).display());
+    }
+    else {
+      for (int i = 0; i < motions.size() - 1; i++) {
+        lines.add("motion " + name + " " + motions.get(i).display()
+                + "    " + motions.get(i + 1).display());
+      }
     }
     return String.join("\n", lines);
   }

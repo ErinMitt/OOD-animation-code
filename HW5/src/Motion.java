@@ -33,6 +33,9 @@ class Motion {
       throw new IllegalArgumentException("Width and height must be positive nonzero integers, "
               + "given " + width + " & " + height);
     }
+    if (time < 1) {
+      throw new IllegalArgumentException("Time must be a positive integer, given " + time);
+    }
     red = regularizeColor(red);
     green = regularizeColor(green);
     blue = regularizeColor(blue);

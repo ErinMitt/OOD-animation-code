@@ -36,8 +36,8 @@ public interface AnimationModel {
    * @param red
    * @param green
    * @param blue
-   * @throws IllegalArgumentException if there is no shape with the given name, or if the time is
-   * before that shape's last movement ends.
+   * @throws IllegalArgumentException if there is no shape with the given name,
+   * if the time is less than 1, or if the time is before that shape's last movement ends.
    */
   void addMotion(String shapeName, int time, int x, int y, int width,
                  int height, int red, int green, int blue);
