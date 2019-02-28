@@ -90,5 +90,5 @@ public class AnimationModelImplTest {
     original.addEllipse("E");
     Assert.assertEquals(new ArrayList<String>(Arrays.asList("R", "E")), original.getShapes());
   }
-  
+
 }
