@@ -34,16 +34,48 @@ public class AnimationModelImplTest {
   }
 
   @Test
-  public void addMotion() {
+  public void addMotionAndChangeTwoThings() {
+    original.addRectangle("R");
+    assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
+    original.addMotion("R", 4,100,100,40,
+            50,0,0,255);
+    original.addMotion("R", 7,100,200,40,
+            50,0,255,0);
+    assertEquals("shape R rectangle\n" +
+            "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 255 0",
+            original.displayAnimation());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void addIllegalMotion() {
     original.addRectangle("R");
     assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
     original.addMotion("R", 4,100,100,40,
             50,0,0,255);
     original.addMotion("R", 7,100,200,40,
             50,0,0,255);
+    original.addMotion("R", 5,200,200,40,
+            50,0,0,255);
     assertEquals("shape R rectangle\n" +
-            "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255",
+                    "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255",
             original.displayAnimation());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void deleteShapeThatDoesntExist() {
+    original.addRectangle("R");
+    assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
+    original.deleteShape("Z");
+    assertEquals(new ArrayList<String>(Arrays.asList()), original.getShapes());
+  }
+
+
+  @Test(expected = IllegalStateException.class)
+  public void deleteMotionThatDoesntExist() {
+    original.addRectangle("R");
+    assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
+    original.deleteLastMotion("R");
+
   }
 
   @Test
