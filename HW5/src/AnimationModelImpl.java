@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * A class representing an animation. It contains information about the various shapes
+ * that can move, and the possible movements that the shapes make.
  */
 public class AnimationModelImpl implements AnimationModel {
   /**
@@ -14,6 +14,9 @@ public class AnimationModelImpl implements AnimationModel {
    */
   private Map<String, Shape> shapes;
 
+  /**
+   * Build an AnimationModel.
+   */
   public AnimationModelImpl() {
     this.shapes = new HashMap<>();
   }

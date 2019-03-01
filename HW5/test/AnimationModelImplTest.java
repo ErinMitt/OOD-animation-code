@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class AnimationModelImplTest {
   AnimationModelImpl original;
@@ -20,9 +21,33 @@ public class AnimationModelImplTest {
   }
 
   @Test
+  public void testAddEllipseForbidsRepeats() {
+    original.addRectangle("Hi");
+    try {
+      original.addEllipse("Hi");
+      fail("added an ellipse with a non-unique name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Every shape must have a unique name. The shape Hi already exists.",
+              e.getMessage());
+    }
+  }
+
+  @Test
   public void addRectangle() {
     original.addRectangle("R");
     assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
+  }
+
+  @Test
+  public void testAddRectangleForbidsRepeats() {
+    original.addRectangle("Yo");
+    try {
+      original.addRectangle("Yo");
+      fail("added an ellipse with a non-unique name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Every shape must have a unique name. The shape Yo already exists.",
+              e.getMessage());
+    }
   }
 
   @Test
@@ -76,6 +101,28 @@ public class AnimationModelImplTest {
     assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
     original.deleteLastMotion("R");
 
+  }
+
+  @Test
+  public void testAddMotionAtNonpositiveTime() {
+    original.addRectangle("test");
+    try {
+      original.addMotion("test", -5, 20, 20, 20, 20, 20, 20, 20);
+      fail("added a motion at a negative time");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Time must be a positive integer, given -5",
+              e.getMessage());
+    }
+    // test no motion was added
+    assertEquals("shape test rectangle", original.displayAnimation());
+    try {
+      original.addMotion("test", 0, 20, 20, 20, 20, 20, 20, 20);
+      fail("added a motion at time 0");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Time must be a positive integer, given 0",
+              e.getMessage());
+    }
+    assertEquals("shape test rectangle", original.displayAnimation());
   }
 
   @Test

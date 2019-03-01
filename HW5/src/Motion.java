@@ -3,7 +3,9 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
- * A class representing the status of a shape at a moment in time. Motions are immutable.
+ * A class representing the status of a shape at a moment in time.
+ * Each Motion describes the shape's location, size, and color.
+ * Motions are immutable.
  */
 class Motion {
   private final int time;
@@ -17,8 +19,17 @@ class Motion {
 
   /**
    * Build a moment.
+   *
+   * @param time the moment's time
+   * @param x the moment's x coordinate
+   * @param y the moment's y coordinate
+   * @param width the moment's width
+   * @param height the moment's height
+   * @param red the R component of the moment's color
+   * @param green the G component of the moment's color
+   * @param blue the B component of the moment's color
    */
-  public Motion(int time, int x, int y, int width, int height, int red, int green, int blue) {
+  Motion(int time, int x, int y, int width, int height, int red, int green, int blue) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Width and height must be positive nonzero integers, "
               + "given " + width + " & " + height);
@@ -26,17 +37,14 @@ class Motion {
     if (time < 1) {
       throw new IllegalArgumentException("Time must be a positive integer, given " + time);
     }
-    red = regularizeColor(red);
-    green = regularizeColor(green);
-    blue = regularizeColor(blue);
     this.time = time;
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
+    this.red = regularizeColor(red);
+    this.green = regularizeColor(green);
+    this.blue = regularizeColor(blue);
   }
 
   /**
@@ -57,7 +65,7 @@ class Motion {
    *
    * @return the display string
    */
-  public String display() {
+  String display() {
     ArrayList<Integer> values
             = new ArrayList<>(Arrays.asList(time, x, y, width, height, red, green, blue));
     return values.stream().map(i -> Integer.toString(i)).collect(Collectors.joining(" "));
@@ -68,7 +76,7 @@ class Motion {
    *
    * @return time
    */
-  public int getTime() {
+  int getTime() {
     return time;
   }
 
@@ -80,7 +88,7 @@ class Motion {
    * @param time the time for the new Motion
    * @return the new Motion created
    */
-  public Motion extend(int time) {
+  Motion extend(int time) {
     return new Motion(time, x, y, width, height, red, green, blue);
   }
 }
