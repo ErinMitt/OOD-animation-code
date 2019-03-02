@@ -1,11 +1,15 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a single shape in an animation. The shape contains a list of keyframes
+ * (called Motions) that contain location, size, time, and position information about the shape.
+ */
 class Shape {
-  private List<Motion> motions;
+  private final List<Motion> motions;
   // INVARIANT: Motions are sorted in order of increasing time
-  private ShapeType type;
-  private String name;
+  private final ShapeType type;
+  private final String name;
 
   /**
    * Build a shape with no motions. The name and type must not be null.

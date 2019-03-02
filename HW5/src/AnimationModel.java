@@ -30,6 +30,7 @@ public interface AnimationModel {
 
   /**
    * Add a new motion to the given shape.
+   *
    * @param shapeName the name of the shape to which a new motion will be added
    * @param time the time of the new motion
    * @param x the new motion's x coordinate
@@ -48,6 +49,7 @@ public interface AnimationModel {
 
   /**
    * Tell the given shape to remain motionless until the given time.
+   *
    * @param shape the name of the shape to have its last movement extended
    * @param time the time until when the shape should stay still
    * @throws IllegalArgumentException if there is no such shape or if the time occurs before the

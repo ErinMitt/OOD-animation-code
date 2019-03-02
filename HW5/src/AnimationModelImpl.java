@@ -12,7 +12,8 @@ public class AnimationModelImpl implements AnimationModel {
    * A list representing every shape that can appear in the animation.
    * Shapes can be accessed through their unique names.
    */
-  private Map<String, Shape> shapes;
+  private final Map<String, Shape> shapes;
+  // INVARIANT: Shape's key is the same String as its name.
 
   /**
    * Build an AnimationModel.
@@ -32,7 +33,8 @@ public class AnimationModelImpl implements AnimationModel {
   }
 
   /**
-   * Adds a new Shape that can be animated
+   * Add a new Shape that can be animated.
+   *
    * @param name the shape's name
    * @param type an enum describing the shape's shape (rectangle, ellipse)
    * @throws IllegalArgumentException if the shape name is not unique
