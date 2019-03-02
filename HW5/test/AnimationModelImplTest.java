@@ -59,6 +59,32 @@ public class AnimationModelImplTest {
   }
 
   @Test
+  public void addMotionAndChangeColor() {
+    original.addRectangle("R");
+    assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
+    original.addMotion("R", 4,100,100,40,
+            50,0,0,255);
+    original.addMotion("R", 7,100,100,40,
+            50,0,255,0);
+    assertEquals("shape R rectangle\n" +
+                    "motion R 4 100 100 40 50 0 0 255    7 100 100 40 50 0 255 0",
+            original.displayAnimation());
+  }
+
+  @Test
+  public void addMotionAndChangeSize() {
+    original.addRectangle("R");
+    assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
+    original.addMotion("R", 4,100,100,40,
+            50,0,0,255);
+    original.addMotion("R", 7,100,200,40,
+            50,0,0,255);
+    assertEquals("shape R rectangle\n" +
+                    "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255",
+            original.displayAnimation());
+  }
+
+  @Test
   public void addMotionAndChangeTwoThings() {
     original.addRectangle("R");
     assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
@@ -68,6 +94,19 @@ public class AnimationModelImplTest {
             50,0,255,0);
     assertEquals("shape R rectangle\n" +
             "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 255 0",
+            original.displayAnimation());
+  }
+
+  @Test
+  public void addMotionAndChangeAllThings() {
+    original.addRectangle("R");
+    assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
+    original.addMotion("R", 4,100,100,40,
+            50,0,0,255);
+    original.addMotion("R", 7,100,200,40,
+            100,0,255,0);
+    assertEquals("shape R rectangle\n" +
+                    "motion R 4 100 100 40 50 0 0 255    7 100 200 40 100 0 255 0",
             original.displayAnimation());
   }
 
@@ -91,6 +130,16 @@ public class AnimationModelImplTest {
     original.addRectangle("R");
     assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
     original.deleteShape("Z");
+    assertEquals(new ArrayList<String>(Arrays.asList()), original.getShapes());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void deleteShapeThatWasAlreadyDeleted() {
+    original.addRectangle("R");
+    assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
+    original.deleteShape("R");
+    assertEquals(new ArrayList<String>(Arrays.asList()), original.getShapes());
+    original.deleteShape("R");
     assertEquals(new ArrayList<String>(Arrays.asList()), original.getShapes());
   }
 
@@ -136,6 +185,30 @@ public class AnimationModelImplTest {
             original.displayAnimation());
   }
 
+  @Test
+  public void deleteLastMotionUntilLessThanNoneExist() {
+    original.addRectangle("R");
+    assertEquals(new ArrayList<String>(Arrays.asList("R")), original.getShapes());
+    original.addMotion("R", 4,100,100,40,
+            50,0,0,255);
+    original.addMotion("R", 7,100,200,40,
+            50,0,0,255);
+    original.addMotion("R", 10,100,200,40,
+            50,0,0,255);
+    assertEquals("shape R rectangle\n" +
+                    "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255\n" +
+                    "motion R 7 100 200 40 50 0 0 255    10 100 200 40 50 0 0 255",
+            original.displayAnimation());
+    original.deleteLastMotion("R");
+    assertEquals("shape R rectangle\n" +
+                    "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255",
+            original.displayAnimation());
+    original.deleteLastMotion("R");
+    assertEquals("shape R rectangle\n" +
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255",
+            original.displayAnimation());
+
+  }
   @Test
   public void deleteLastMotion() {
     original.addRectangle("R");
