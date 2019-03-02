@@ -9,6 +9,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
+/**
+ * Tests for the class AnimationModelImpl.
+ */
 public class AnimationModelImplTest {
   AnimationModelImpl original;
 
@@ -16,6 +19,7 @@ public class AnimationModelImplTest {
   public void init() {
     original = new AnimationModelImpl();
   }
+
   @Test
   public void addEllipse() {
     assertEquals(new ArrayList<>(), original.getShapes());
@@ -316,6 +320,7 @@ public class AnimationModelImplTest {
             original.displayAnimation());
 
   }
+
   @Test
   public void deleteLastMotion() {
     original.addRectangle("R");

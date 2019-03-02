@@ -17,7 +17,7 @@ class Shape {
    * @param name the shape's name
    * @param type the shape's type
    */
-   Shape(String name, ShapeType type) {
+  Shape(String name, ShapeType type) {
     if (name == null || type == null) {
       throw new IllegalArgumentException("Name and shape type must not be null.");
     }
@@ -41,27 +41,11 @@ class Shape {
    * @param green the G component of the shape's color
    * @param blue the B component of the shape's color
    * @throws IllegalArgumentException if the given time is less than or equal to the time of the
-   * last existing motion, or if the width/height are less than or equal to 0
+   *     last existing motion, or if the width/height are less than or equal to 0
    */
-   void addMotion(int time, int x, int y, int width, int height,
-                        int red, int green, int blue) {
+  void addMotion(int time, int x, int y, int width, int height,
+                 int red, int green, int blue) {
     addMotion(new Motion(time, x, y, width, height, red, green, blue));
-  }
-
-  /**
-   * Adds a new Motion identical to this shape's last existing motion that is identical but
-   * occurs at a later time. Functionally, this leaves the shape unchanging until the given time.
-   *
-   * @param time the time to which the last motion should be extended
-   * @throws IllegalArgumentException if the given time is equal to or before the last motion's time
-   * @throws IllegalStateException if there is no motion to extend
-   */
-   void extend(int time) {
-    if (motions.isEmpty()) {
-      throw new IllegalStateException("A shape with no motions "
-              + "cannot have its last motion extended.");
-    }
-    addMotion(motions.get(motions.size() - 1).extend(time));
   }
 
   /**
@@ -69,7 +53,7 @@ class Shape {
    *
    * @param m the motion to be added
    * @throws IllegalArgumentException if the new Motion's time is less than or equal to the
-   * last existing motion's time
+   *     last existing motion's time
    */
   private void addMotion(Motion m) {
     if (m == null) {
@@ -83,11 +67,27 @@ class Shape {
   }
 
   /**
+   * Adds a new Motion identical to this shape's last existing motion that is identical but
+   * occurs at a later time. Functionally, this leaves the shape unchanging until the given time.
+   *
+   * @param time the time to which the last motion should be extended
+   * @throws IllegalArgumentException if the given time is equal to or before the last motion's time
+   * @throws IllegalStateException if there is no motion to extend
+   */
+  void extend(int time) {
+    if (motions.isEmpty()) {
+      throw new IllegalStateException("A shape with no motions "
+              + "cannot have its last motion extended.");
+    }
+    addMotion(motions.get(motions.size() - 1).extend(time));
+  }
+
+  /**
    * Remove the last motion in the sequence.
    *
    * @throws IllegalStateException if this shape has no motions
    */
-   void deleteLastMotion() {
+  void deleteLastMotion() {
     if (motions.isEmpty()) {
       throw new IllegalStateException("There are no motions to remove.");
     }
@@ -109,7 +109,7 @@ class Shape {
    *
    * @return the display string
    */
-   String display() {
+  String display() {
     List<String> lines = new ArrayList<>(motions.size());
     lines.add("shape " + name + " " + type.getType());
     if (motions.size() == 1) {
