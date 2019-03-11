@@ -1,7 +1,11 @@
+package cs3500.animator.model;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import cs3500.animator.util.AnimationBuilder;
 
 /**
  * A class representing an animation. It contains information about the various shapes
@@ -19,7 +23,7 @@ public class AnimationModelImpl implements AnimationModel {
    * Build an AnimationModel.
    */
   public AnimationModelImpl() {
-    this.shapes = new HashMap<>();
+    this.shapes = new LinkedHashMap<>();
   }
 
   @Override
@@ -95,6 +99,34 @@ public class AnimationModelImpl implements AnimationModel {
   private void checkShapeExists(String shapeName) {
     if (! shapes.containsKey(shapeName)) {
       throw new IllegalArgumentException("No shape with the name " + shapeName + " exists.");
+    }
+  }
+
+  // TODO: fill these in!
+  public static final class Builder implements AnimationBuilder<AnimationModel> {
+    @Override
+    public AnimationModel build() {
+      return null;
+    }
+
+    @Override
+    public AnimationBuilder<AnimationModel> setBounds(int x, int y, int width, int height) {
+      return null;
+    }
+
+    @Override
+    public AnimationBuilder<AnimationModel> declareShape(String name, String type) {
+      return null;
+    }
+
+    @Override
+    public AnimationBuilder<AnimationModel> addMotion(String name, int t1, int x1, int y1, int w1, int h1, int r1, int g1, int b1, int t2, int x2, int y2, int w2, int h2, int r2, int g2, int b2) {
+      return null;
+    }
+
+    @Override
+    public AnimationBuilder<AnimationModel> addKeyframe(String name, int t, int x, int y, int w, int h, int r, int g, int b) {
+      return null;
     }
   }
 }

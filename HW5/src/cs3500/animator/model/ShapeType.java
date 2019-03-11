@@ -1,3 +1,5 @@
+package cs3500.animator.model;
+
 /**
  * The class ShapeType represents which types of shapes can be represented in an animation.
  * This class is an enum so that new shape types (such as triangles) can be added.
