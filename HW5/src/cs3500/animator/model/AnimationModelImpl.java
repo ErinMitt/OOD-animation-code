@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import cs3500.animator.util.AnimationBuilder;
+import cs3500.animator.util.AnimationReader;
 
 /**
  * A class representing an animation. It contains information about the various shapes
@@ -18,12 +19,34 @@ public class AnimationModelImpl implements AnimationModel {
    */
   private final Map<String, Shape> shapes;
   // INVARIANT: Shape's key is the same String as its name.
+  private int x;
+  private int y;
+  private int width;
+  private int height;
 
   /**
    * Build an AnimationModel.
    */
   public AnimationModelImpl() {
     this.shapes = new LinkedHashMap<>();
+    // top left defaults to (0, 0)
+    // width and height default to zero
+    this.x = 0;
+    this.y = 0;
+    this.width = 0;
+    this.height = 0;
+  }
+
+  // TODO: test this!
+  @Override
+  public void setBounds(int x, int y, int width, int height) {
+    if (width <= 0 || height <= 0) {
+      throw new IllegalArgumentException("Width and height must be positive integers.");
+    }
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
   }
 
   @Override
@@ -102,31 +125,61 @@ public class AnimationModelImpl implements AnimationModel {
     }
   }
 
-  // TODO: fill these in!
+  // TODO: test these
+  // TODO: is it ok to have builders that can't be reused?
+  //  AKA not resetting the model every time build is called?
   public static final class Builder implements AnimationBuilder<AnimationModel> {
+    private final Readable input;
+    private final AnimationModel model;
+
+    public Builder(Readable input) {
+      this.input = input;
+      this.model = new AnimationModelImpl();
+    }
+
     @Override
     public AnimationModel build() {
-      return null;
+      return AnimationReader.parseFile(input, this);
     }
 
     @Override
     public AnimationBuilder<AnimationModel> setBounds(int x, int y, int width, int height) {
-      return null;
+      model.setBounds(x, y, width, height);
+      return this;
     }
 
     @Override
     public AnimationBuilder<AnimationModel> declareShape(String name, String type) {
-      return null;
+      switch (type) {
+        case "rectangle":
+          model.addRectangle(name);
+          break;
+        case "ellipse":
+          model.addEllipse(name);
+          break;
+        default:
+          throw new IllegalArgumentException("Invalid shape type " + type);
+      }
+      return this;
     }
 
+    /**
+     * Because AnimationModelImpl uses keyframes instead of motions, only the end position of each
+     * motion should be added as a keyframe to avoid repeats.
+     * In the given examples the first movement of every shape consists of two keyframes
+     * at the same time point with the same location, size, and color information.
+     * This ensures that the first position is added correctly to the animation
+     * even if only the end position of each motion is added.
+     */
     @Override
     public AnimationBuilder<AnimationModel> addMotion(String name, int t1, int x1, int y1, int w1, int h1, int r1, int g1, int b1, int t2, int x2, int y2, int w2, int h2, int r2, int g2, int b2) {
-      return null;
+      return addKeyframe(name, t2, x2, y2, w2, h2, r2, g2, b2);
     }
 
     @Override
     public AnimationBuilder<AnimationModel> addKeyframe(String name, int t, int x, int y, int w, int h, int r, int g, int b) {
-      return null;
+      model.addMotion(name, t, x, y, w, h, r, g, b);
+      return this;
     }
   }
 }

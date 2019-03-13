@@ -9,6 +9,16 @@ import java.util.List;
  */
 public interface AnimationModel {
   /**
+   * Set the top left corner and size of the canvas on which the animation is to be displayed.
+   * @param x the leftmost x value
+   * @param y the topmost y value
+   * @param width the canvas width
+   * @param height the canvas height
+   * @throws IllegalArgumentException if the width or height is invalid
+   */
+  void setBounds(int x, int y, int width, int height);
+
+  /**
    * Add a new ellipse that can be animated.
    *
    * @param name the shape's name
