@@ -182,4 +182,24 @@ public class AnimationModelImpl implements AnimationModel {
       return this;
     }
   }
+
+  @Override
+  public int getX() {
+    return x;
+  }
+
+  @Override
+  public int getY() {
+    return y;
+  }
+
+  @Override
+  public int getWidth() {
+    return width;
+  }
+
+  @Override
+  public int getHeight() {
+    return height;
+  }
 }
