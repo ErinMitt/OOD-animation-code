@@ -64,4 +64,22 @@ public interface ReadOnlyModel {
    * @return the canvas height
    */
   int getHeight();
+
+  /**
+   * Find the motion immediately preceding the current tick number.
+   * If the tick corresponds to a Motion, return the Motion.
+   * @param shapeName
+   * @param tick
+   * @return
+   */
+  Motion getMotionBefore(String shapeName, int tick);
+
+  /**
+   * Find the motion immediately after the current tick number.
+   * If the tick corresponds to a Motion, return the Motion.
+   * @param shapeName
+   * @param tick
+   * @return
+   */
+  Motion getMotionAfter(String shapeName, int tick);
 }
