@@ -1,15 +1,16 @@
 package cs3500.animator.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * This class represents a single shape in an animation. The shape contains a list of keyframes
  * (called Motions) that contain location, size, time, and position information about the shape.
  */
 class Shape {
-  private final List<Motion> motions;
-  // INVARIANT: Motions are sorted in order of increasing time
+  private final TreeSet<Motion> motions; // sorted in order of increasing time
   private final ShapeType type;
   private final String name;
 
@@ -25,7 +26,7 @@ class Shape {
     }
     this.name = name;
     this.type = type;
-    this.motions = new ArrayList<>();
+    this.motions = new TreeSet<>(Comparator.comparingInt(Motion::getTime));
   }
 
   /**
@@ -61,7 +62,7 @@ class Shape {
     if (m == null) {
       throw new IllegalArgumentException("The motion cannot be null.");
     }
-    if (!motions.isEmpty() &&  m.getTime() <= motions.get(motions.size() - 1).getTime()) {
+    if (!motions.isEmpty() &&  m.getTime() <= motions.last().getTime()) {
       throw new IllegalArgumentException("Cannot add a new motion into the middle of a sequence. "
               + "New motions must occur after this shape's last existing motion.");
     }
@@ -81,7 +82,7 @@ class Shape {
       throw new IllegalStateException("A shape with no motions "
               + "cannot have its last motion extended.");
     }
-    addMotion(motions.get(motions.size() - 1).extend(time));
+    addMotion(motions.last().extend(time));
   }
 
   /**
@@ -93,7 +94,7 @@ class Shape {
     if (motions.isEmpty()) {
       throw new IllegalStateException("There are no motions to remove.");
     }
-    motions.remove(motions.size() - 1);
+    motions.remove(motions.last());
   }
 
   /**
@@ -108,22 +109,51 @@ class Shape {
    * motion C 70 440 370 120 60 0 170 85    80  440 370 120 60 0 255  0
    * motion C 80 440 370 120 60 0 255  0    100 440 370 120 60 0 255  0
    * Lines beginning with # are informative and are not included in the final string.
+   * If there is only one motions, display it as both the start and end.
    *
    * @return the display string
    */
   String display() {
     List<String> lines = new ArrayList<>(motions.size());
+    List<Motion> allMotions = new ArrayList<>(motions);
     lines.add("shape " + name + " " + type.getType());
     if (motions.size() == 1) {
-      lines.add("motion " + name + " " + motions.get(0).display()
-              + "    " + motions.get(0).display());
+      lines.add("motion " + name + " " + allMotions.get(0).display()
+              + "    " + allMotions.get(0).display());
     }
     else {
-      for (int i = 0; i < motions.size() - 1; i++) {
-        lines.add("motion " + name + " " + motions.get(i).display()
-                + "    " + motions.get(i + 1).display());
+      for (int i = 0; i < allMotions.size() - 1; i++) {
+        lines.add("motion " + name + " " + allMotions.get(i).display()
+                + "    " + allMotions.get(i + 1).display());
       }
     }
     return String.join("\n", lines);
+  }
+
+  /**
+   *
+   * @param tick
+   * @return
+   * @throws IllegalStateException
+   * @throws IllegalArgumentException
+   */
+  public Transformation getTransformationAt(int tick) {
+    if (motions.isEmpty()) {
+      throw new IllegalStateException("The shape " + name + " has no motions.");
+    }
+    if (motions.first().getTime() > tick || motions.last().getTime() < tick) {
+      throw new IllegalArgumentException("The shape " + name + " has no motions at time " + tick);
+    }
+    Motion tickMotion = new Motion(tick, 0, 0, 0, 0, 0, 0, 0);
+    return new Transformation(motions.floor(tickMotion), motions.ceiling(tickMotion));
+  }
+
+  /**
+   * Return a copy of the list of Motions.
+   * (Motions are immutable)
+   * @return all of this shape's motions
+   */
+  public List<Motion> getMotions() {
+    return new ArrayList<>(motions);
   }
 }

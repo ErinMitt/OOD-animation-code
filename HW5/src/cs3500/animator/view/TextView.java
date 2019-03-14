@@ -42,6 +42,7 @@ public class TextView implements AnimationView {
    * @throws IllegalStateException if the output cannot be written to the appendable
    */
   @Override
+  // TODO: don't rely on this method
   public void animate() {
     try {
       output.append(String.join("", new String[]{"canvas",

@@ -55,7 +55,7 @@ public interface ReadOnlyModel {
 
   /**
    * Get the canvas width.
-   * @return thw canvas width
+   * @return the canvas width
    */
   int getWidth();
 
@@ -66,20 +66,20 @@ public interface ReadOnlyModel {
   int getHeight();
 
   /**
-   * Find the motion immediately preceding the current tick number.
-   * If the tick corresponds to a Motion, return the Motion.
+   * Find the transformation of the shape in progress at the given tick.
    * @param shapeName
    * @param tick
-   * @return
+   * @return the transformation
+   * @throws IllegalArgumentException if there is no such shape name ir if the shape is not
+   *    present on the screen during the given tick
    */
-  Motion getMotionBefore(String shapeName, int tick);
+  Transformation getTransformationAt(String shapeName, int tick);
 
   /**
-   * Find the motion immediately after the current tick number.
-   * If the tick corresponds to a Motion, return the Motion.
-   * @param shapeName
-   * @param tick
-   * @return
+   * Return a list of all of the given shape's motions.
+   * @param shapeName the shape's name
+   * @return a list of all keyframes of the shape
+   * @throws IllegalArgumentException if there is no such shape
    */
-  Motion getMotionAfter(String shapeName, int tick);
+  List<Motion> getMotions(String shapeName);
 }

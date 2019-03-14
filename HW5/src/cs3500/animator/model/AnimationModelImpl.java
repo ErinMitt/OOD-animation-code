@@ -106,6 +106,38 @@ public class AnimationModelImpl implements AnimationModel {
   }
 
   @Override
+  public int getX() {
+    return x;
+  }
+
+  @Override
+  public int getY() {
+    return y;
+  }
+
+  @Override
+  public int getWidth() {
+    return width;
+  }
+
+  @Override
+  public int getHeight() {
+    return height;
+  }
+
+  @Override
+  public Transformation getTransformationAt(String shapeName, int tick) {
+    checkShapeExists(shapeName);
+    return shapes.get(shapeName).getTransformationAt(tick);
+  }
+
+  @Override
+  public List<Motion> getMotions(String shapeName) {
+    checkShapeExists(shapeName);
+    return shapes.get(shapeName).getMotions();
+  }
+
+  @Override
   public String displayAnimation() {
     List<String> shapeDisplays = new ArrayList<>(shapes.size());
     for (Shape s : shapes.values()) {
@@ -181,25 +213,5 @@ public class AnimationModelImpl implements AnimationModel {
       model.addMotion(name, t, x, y, w, h, r, g, b);
       return this;
     }
-  }
-
-  @Override
-  public int getX() {
-    return x;
-  }
-
-  @Override
-  public int getY() {
-    return y;
-  }
-
-  @Override
-  public int getWidth() {
-    return width;
-  }
-
-  @Override
-  public int getHeight() {
-    return height;
   }
 }
