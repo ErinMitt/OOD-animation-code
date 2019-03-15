@@ -82,4 +82,11 @@ public interface ReadOnlyModel {
    * @throws IllegalArgumentException if there is no such shape
    */
   List<Motion> getMotions(String shapeName);
+
+  /**
+   * Return a string (either ellipse or rectangle) representing the shape type.
+   * @param shapeName the name of the shape
+   * @return the shape type
+   */
+  String getShapeType(String shapeName);
 }

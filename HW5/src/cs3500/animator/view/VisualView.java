@@ -5,14 +5,18 @@ import javax.swing.JFrame;
 import cs3500.animator.model.ReadOnlyModel;
 
 public class VisualView  extends JFrame implements AnimationView {
-  private final AnimationPanel animationPanel;
+  private AnimationPanel animationPanel;
 
-  public VisualView(ReadOnlyModel model) {
+  @Override
+  public void setModel(ReadOnlyModel model) {
     this.animationPanel = new AnimationPanel(model);
   }
 
   @Override
   public void animate() {
+    if (animationPanel == null) {
+      throw new IllegalStateException("There is no model to animate");
+    }
 
   }
 

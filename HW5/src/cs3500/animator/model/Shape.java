@@ -131,11 +131,11 @@ class Shape {
   }
 
   /**
-   *
-   * @param tick
-   * @return
-   * @throws IllegalStateException
-   * @throws IllegalArgumentException
+   * Find and return the transformation occurring at the given time.
+   * @param tick the time
+   * @return the transformation at time = tick (the two motions surrounding tick)
+   * @throws IllegalStateException if there are no motions
+   * @throws IllegalArgumentException if there are no motions happening at time = tick
    */
   public Transformation getTransformationAt(int tick) {
     if (motions.isEmpty()) {
@@ -155,5 +155,13 @@ class Shape {
    */
   public List<Motion> getMotions() {
     return new ArrayList<>(motions);
+  }
+
+  /**
+   * Return the name of the type of shape: either ellipse or rectangle.
+   * @return the shape type
+   */
+  public String getShapeType() {
+    return type.getType();
   }
 }

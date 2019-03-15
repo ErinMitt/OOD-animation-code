@@ -1,5 +1,9 @@
 package cs3500.animator.model;
 
+/**
+ * A class representing a shape's smooth transition
+ * from it's state at the start to its state at the end.
+ */
 public class Transformation {
   private final Motion start;
   private final Motion end;
@@ -11,6 +15,23 @@ public class Transformation {
     }
     this.start = start;
     this.end = end;
+  }
+
+  /**
+   * Calculate the shape's state at the given time and return that information
+   * packaged as a Motion.
+   * @param tick the time to be tested
+   * @return the state at time = tick
+   */
+  public Motion getStateAt(int tick) {
+    return new Motion (tick,
+            stateAtTime(tick, start.getX(), end.getX()),
+            stateAtTime(tick, start.getY(), end.getY()),
+            stateAtTime(tick, start.getWidth(), end.getWidth()),
+            stateAtTime(tick, start.getHeight(), end.getHeight()),
+            stateAtTime(tick, start.getRed(), end.getRed()),
+            stateAtTime(tick, start.getGreen(), end.getGreen()),
+            stateAtTime(tick, start.getBlue(), end.getBlue()));
   }
 
   /**
@@ -31,7 +52,10 @@ public class Transformation {
     if (start.getTime() == end.getTime()) {
       return initial;
     }
-    return (initial * ((end.getTime() - tick) / (end.getTime() - start.getTime())))
-            + (last * ((tick - start.getTime()) / (end.getTime() - start.getTime())));
+    return (int) Math.round(
+            (double) (initial * ((end.getTime() - tick)
+                    / (double) (end.getTime() - start.getTime())))
+            + ((double) last * ((tick - start.getTime())
+                    / (double) (end.getTime() - start.getTime()))));
   }
 }

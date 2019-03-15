@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * Each Motion describes the shape's location, size, and color.
  * Motions are immutable.
  */
-class Motion {
+public class Motion {
   private final int time;
   private final int x;
   private final int y;
@@ -67,19 +67,10 @@ class Motion {
    *
    * @return the display string
    */
-  String display() {
+  public String display() {
     ArrayList<Integer> values
             = new ArrayList<>(Arrays.asList(time, x, y, width, height, red, green, blue));
     return values.stream().map(i -> Integer.toString(i)).collect(Collectors.joining(" "));
-  }
-
-  /**
-   * Return the time at which the motion occurs.
-   *
-   * @return time
-   */
-  int getTime() {
-    return time;
   }
 
   /**
@@ -92,5 +83,70 @@ class Motion {
    */
   Motion extend(int time) {
     return new Motion(time, x, y, width, height, red, green, blue);
+  }
+
+  /**
+   * Return the time at which the motion occurs.
+   *
+   * @return time
+   */
+  int getTime() {
+    return time;
+  }
+
+  /**
+   * Getter for x.
+   * @return x
+   */
+  public int getX() {
+    return x;
+  }
+
+  /**
+   * Getter for y.
+   * @return y
+   */
+  public int getY() {
+    return y;
+  }
+
+  /**
+   * Getter for width.
+   * @return width
+   */
+  public int getWidth() {
+    return width;
+  }
+
+  /**
+   * Getter for height.
+   * @return height
+   */
+  public int getHeight() {
+    return height;
+  }
+
+  /**
+   * Getter for red.
+   * @return red
+   */
+  public int getRed() {
+    return red;
+  }
+
+  /**
+   * Getter for green.
+   * @return green
+   */
+  public int getGreen() {
+    return green;
+  }
+
+  /**
+   * Getter for blue.
+   * @return blue
+   */
+  public int getBlue() {
+    return blue;
   }
 }

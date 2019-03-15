@@ -1,8 +1,11 @@
 package cs3500.animator.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
 /**
@@ -10,16 +13,18 @@ import cs3500.animator.model.ReadOnlyModel;
  */
 public class TextView implements AnimationView {
   private final Appendable output;
-  private final ReadOnlyModel model;
+  private ReadOnlyModel model;
 
   /**
    * Create a TextView animation generator
-   * @param model
    * @param output
    */
-  TextView(ReadOnlyModel model, Appendable output) {
-    this.model = model;
+  TextView(Appendable output) {
     this.output = output;
+  }
+
+  public void setModel(ReadOnlyModel model) {
+    this.model = model;
   }
 
   /**
@@ -31,7 +36,6 @@ public class TextView implements AnimationView {
    * motion R 50 300 300 50 100 255 0 0 51 300 300 50 100 255 0 0
    * motion R 51 300 300 50 100 255 0 0 70 300 300 25 100 255 0 0
    * motion R 70 300 300 25 100 255 0 0 100 200 200 25 100 255 0 0
-   * [empty space]
    * shape C ellipse
    * motion C 6 440 70 120 60 0 0 255 20 440 70 120 60 0 0 255
    * motion C 20 440 70 120 60 0 0 255 50 440 250 120 60 0 0 255
@@ -45,14 +49,46 @@ public class TextView implements AnimationView {
   // TODO: don't rely on this method
   public void animate() {
     try {
-      output.append(String.join("", new String[]{"canvas",
-              Integer.toString(model.getX()),
-              Integer.toString(model.getY()),
-              Integer.toString(model.getWidth()),
-              Integer.toString(model.getHeight()),})
-      + "\n" + model.displayAnimation());
+      output.append(createTextDisplay());
     } catch (IOException e) {
       throw new IllegalStateException("Could not write to the output.");
     }
+  }
+
+  /**
+   * Format the output of the animation in the format described in animate().
+   * @return the text animation
+   */
+  private String createTextDisplay() {
+    List<String> shapesText = new ArrayList<String>(model.getShapes().size() + 1);
+    shapesText.add(joinWithSpaces("canvas",
+            Integer.toString(model.getX()),
+            Integer.toString(model.getY()),
+            Integer.toString(model.getWidth()),
+            Integer.toString(model.getHeight())));
+    for (String shape : model.getShapes()) {
+      List<Motion> motions = model.getMotions(shape);
+      List<String> motionLines = new ArrayList<>(motions.size());
+      motionLines.add(joinWithSpaces("shape" + shape + model.getShapeType(shape)));
+      if (motions.size() == 1) {
+        motionLines.add(joinWithSpaces("motion", shape,
+                motions.get(0).display(), motions.get(0).display()));
+      }
+      for (int i = 0; i < motions.size() - 1; i++) {
+        motionLines.add(joinWithSpaces("motion", shape,
+                motions.get(i).display(), motions.get(i + 1).display()));
+      }
+      shapesText.add(String.join("\n", motionLines));
+    }
+    return String.join("\n", shapesText);
+  }
+
+  /**
+   * Join the given words with spaces in between them and return the result as a String.
+   * @param words the words to join
+   * @return a single string made up of the words separated by a single space each
+   */
+  private String joinWithSpaces(String... words) {
+    return String.join(" ", words);
   }
 }

@@ -8,8 +8,8 @@ package cs3500.animator.model;
 public interface AnimationModel extends ReadOnlyModel {
   /**
    * Set the top left corner and size of the canvas on which the animation is to be displayed.
-   * @param x the leftmost x value
-   * @param y the topmost y value
+   * @param x the left padding
+   * @param y the top padding
    * @param width the canvas width
    * @param height the canvas height
    * @throws IllegalArgumentException if the width or height is invalid
