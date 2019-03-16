@@ -144,7 +144,7 @@ class Shape {
     if (motions.first().getTime() > tick || motions.last().getTime() < tick) {
       throw new IllegalArgumentException("The shape " + name + " has no motions at time " + tick);
     }
-    Motion tickMotion = new Motion(tick, 0, 0, 0, 0, 0, 0, 0);
+    Motion tickMotion = new Motion(tick, 0, 0, 1, 1, 0, 0, 0);
     return new Transformation(motions.floor(tickMotion), motions.ceiling(tickMotion));
   }
 

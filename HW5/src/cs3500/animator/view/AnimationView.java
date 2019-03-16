@@ -9,6 +9,7 @@ public interface AnimationView {
   /**
    * Assign the animation model that contains information about the animation to be played.
    * @param model the model to be played
+   * @throws IllegalStateException if the model has already been set
    */
   void setModel(ReadOnlyModel model);
 

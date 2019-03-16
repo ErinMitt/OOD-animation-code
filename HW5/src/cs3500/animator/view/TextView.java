@@ -20,10 +20,19 @@ public class TextView implements AnimationView {
    * @param output
    */
   TextView(Appendable output) {
+    if (output == null) {
+      throw new IllegalArgumentException("Output Appendable mnust not be null");
+    }
     this.output = output;
   }
 
   public void setModel(ReadOnlyModel model) {
+    if (model == null) {
+      throw new IllegalArgumentException("Model must not be null");
+    }
+    if (this.model != null) {
+      throw new IllegalStateException("This view already has a model");
+    }
     this.model = model;
   }
 
@@ -46,7 +55,6 @@ public class TextView implements AnimationView {
    * @throws IllegalStateException if the output cannot be written to the appendable
    */
   @Override
-  // TODO: don't rely on this method
   public void animate() {
     try {
       output.append(createTextDisplay());

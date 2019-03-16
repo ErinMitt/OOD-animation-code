@@ -17,9 +17,13 @@ public class AnimationPanel extends JPanel {
    * @param model the model that is drawn
    */
   public AnimationPanel(ReadOnlyModel model) {
+    if (model == null) {
+      throw new IllegalArgumentException("Model must not be null");
+    }
     this.model = model;
-    this.tick = 0;
-    setPreferredSize(new Dimension(model.getWidth(), model.getHeight()));
+    this.tick = 1;
+    setPreferredSize(new Dimension(model.getWidth() + model.getX(),
+            model.getHeight() + model.getY()));
   }
 
   /**
@@ -28,6 +32,7 @@ public class AnimationPanel extends JPanel {
   public void incrementTick() {
     tick += 1;
   }
+  // can be modified to mod tick if we want to loop the animation
 
   @Override
   protected void paintComponent(Graphics g) {
