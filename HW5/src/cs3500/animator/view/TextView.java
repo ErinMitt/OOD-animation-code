@@ -2,7 +2,6 @@ package cs3500.animator.view;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import cs3500.animator.model.Motion;
@@ -12,20 +11,24 @@ import cs3500.animator.model.ReadOnlyModel;
  * The class TextView represents
  */
 public class TextView implements AnimationView {
-  private final Appendable output;
+  private Appendable output;
   private ReadOnlyModel model;
 
   /**
-   * Create a TextView animation generator
+   * Set the
    * @param output
    */
-  TextView(Appendable output) {
+  public void setOutput(Appendable output) {
     if (output == null) {
-      throw new IllegalArgumentException("Output Appendable mnust not be null");
+      throw new IllegalArgumentException("Output Appendable must not be null");
     }
     this.output = output;
   }
 
+  /**
+   *
+   * @param model the model to be played
+   */
   public void setModel(ReadOnlyModel model) {
     if (model == null) {
       throw new IllegalArgumentException("Model must not be null");
@@ -55,11 +58,15 @@ public class TextView implements AnimationView {
    * @throws IllegalStateException if the output cannot be written to the appendable
    */
   @Override
+  // TODO: pass animate an appendable?
   public void animate() {
+    if (output == null) {
+      throw new IllegalStateException("The output Appendable has not been set");
+    }
     try {
       output.append(createTextDisplay());
     } catch (IOException e) {
-      throw new IllegalStateException("Could not write to the output.");
+      throw new IllegalStateException("Could not write to the output");
     }
   }
 

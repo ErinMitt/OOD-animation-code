@@ -90,7 +90,7 @@ public class Motion {
    *
    * @return time
    */
-  int getTime() {
+  public int getTime() {
     return time;
   }
 
