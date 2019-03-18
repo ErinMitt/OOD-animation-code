@@ -411,6 +411,42 @@ public class AnimationModelImplTest {
     list1.add("3");
     assertNotEquals(list1, original.getShapes());
   }
+  @Test
+  public void declareShapeTest() {
+    original.addEllipse("a");
+    original.setBounds(50,50,50,50);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFails() {
+    original.addEllipse("a");
+    original.setBounds(50,50,-50,50);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFailsHeight() {
+    original.addEllipse("a");
+    original.setBounds(50,50,50,-50);
+  }
+
+  @Test
+  public void declareShapeTestRect() {
+    original.addRectangle("b");
+    original.setBounds(50,50,50,50);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFailsRect() {
+    original.addRectangle("a");
+    original.setBounds(50,50,-50,50);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFailsHeightRect() {
+    original.addRectangle("a");
+    original.setBounds(50,50,50,-50);
+  }
+
 
   @Test
   public void testDisplayAnimation() {
