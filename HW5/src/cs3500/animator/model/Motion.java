@@ -31,7 +31,7 @@ public class Motion {
    * @param green the G component of the moment's color
    * @param blue the B component of the moment's color
    */
-  Motion(int time, int x, int y, int width, int height, int red, int green, int blue) {
+  public Motion(int time, int x, int y, int width, int height, int red, int green, int blue) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Width and height must be positive nonzero integers, "
               + "given " + width + " & " + height);

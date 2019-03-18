@@ -49,6 +49,9 @@ public class SVGView implements AnimationView {
     if (output == null) {
       throw new IllegalStateException("The output Appendable has not been set");
     }
+    if (model == null) {
+      throw new IllegalStateException("The model has not been set");
+    }
     try {
       output.append(formatAnimation());
     } catch (IOException e) {

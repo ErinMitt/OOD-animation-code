@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
-public class AnimationPanel extends JPanel {
+class AnimationPanel extends JPanel {
   private final ReadOnlyModel model;
   private int tick;
 

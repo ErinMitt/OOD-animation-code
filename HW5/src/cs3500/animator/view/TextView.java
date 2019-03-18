@@ -66,6 +66,9 @@ public class TextView implements AnimationView {
     if (output == null) {
       throw new IllegalStateException("The output Appendable has not been set");
     }
+    if (model == null) {
+      throw new IllegalStateException("The model has not been set");
+    }
     try {
       output.append(createTextDisplay());
     } catch (IOException e) {
@@ -87,7 +90,7 @@ public class TextView implements AnimationView {
     for (String shape : model.getShapes()) {
       List<Motion> motions = model.getMotions(shape);
       List<String> motionLines = new ArrayList<>(motions.size());
-      motionLines.add(joinWithSpaces("shape" + shape + model.getShapeType(shape)));
+      motionLines.add(joinWithSpaces("shape", shape, model.getShapeType(shape)));
       if (motions.size() == 1) {
         motionLines.add(joinWithSpaces("motion", shape,
                 motions.get(0).display(), motions.get(0).display()));
