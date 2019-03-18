@@ -29,11 +29,11 @@ public class AnimationModelImpl implements AnimationModel {
   public AnimationModelImpl() {
     this.shapes = new LinkedHashMap<>();
     // top left defaults to (0, 0)
-    // width and height default to zero
+    // width and height default to 1
     this.x = 0;
     this.y = 0;
-    this.width = 0;
-    this.height = 0;
+    this.width = 1;
+    this.height = 1;
   }
 
   @Override

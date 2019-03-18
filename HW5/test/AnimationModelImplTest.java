@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.AnimationModelImpl;
+import cs3500.animator.model.Motion;
+import cs3500.animator.model.Transformation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -453,10 +457,19 @@ public class AnimationModelImplTest {
                     "motion E 4 30 20 20 30 255 34 19    10 30 20 20 30 255 34 19",
             original.displayAnimation());
   }
+
   @Test
-  public void declareShapeTest() {
+  public void setCanvasTest() {
     original.addEllipse("a");
+    assertEquals(0, original.getX());
+    assertEquals(0, original.getY());
+    assertEquals(1, original.getWidth());
+    assertEquals(1, original.getHeight());
     original.setBounds(50,50,50,50);
+    assertEquals(50, original.getX());
+    assertEquals(50, original.getY());
+    assertEquals(50, original.getWidth());
+    assertEquals(50, original.getHeight());
   }
 
   @Test (expected = IllegalArgumentException.class)
@@ -492,9 +505,16 @@ public class AnimationModelImplTest {
   @Test
   public void testGetTransformationAt() {
     original.addRectangle("a");
-    original.addMotion("a", 1, 100, 100,
-            40, 50, 0, 0, 0);
-    original.getTransformationAt("a",1);
+    original.addMotion("a", 1, 100, 100, 40, 50, 0, 0, 0);
+    original.addMotion("a", 3, 0, 0, 40, 50, 0, 0, 0);
+
+    Transformation t = original.getTransformationAt("a",1);
+    Motion m = t.getStateAt(1);
+    assertEquals(100, m.getX());
+
+    Transformation t2 = original.getTransformationAt("a", 2);
+    Motion m2 = t2.getStateAt(2);
+    assertEquals(50, m2.getX());
   }
   @Test(expected = IllegalArgumentException.class)
   public void testGetTransformationAtFails() {
@@ -504,39 +524,106 @@ public class AnimationModelImplTest {
     original.getTransformationAt("a",1);
   }
 
-
   @Test
   public void testGetMotions() {
     original.addRectangle("R");
+    original.addRectangle("S");
     original.addMotion("R", 4,100,100,40,
             50,0,0,255);
     original.addMotion("R", 7,100,200,40,
             50,0,0,255);
     original.addMotion("R", 10,100,200,40,
             50,0,0,255);
-            original.getMotions("R");
+    assertEquals(3, original.getMotions("R").size());
+    assertEquals(0, original.getMotions("S").size());
   }
 
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetMotionsFail() {
+    original.addEllipse("E");
     original.getMotions("R");
   }
 
   @Test
   public void testGetShapeType() {
     original.addRectangle("R");
-    original.getShapeType("R");
+    assertEquals("rectangle", original.getShapeType("R"));
   }
 
   @Test
   public void testGetShapeTypeEclipse() {
     original.addEllipse("E");
-    original.getShapeType("E");
+    assertEquals("ellipse", original.getShapeType("E"));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetShapeTypeFail() {
     original.getShapeType("I");
+  }
+
+  @Test
+  public void testBuilder() {
+    AnimationModelImpl.Builder builder = new AnimationModelImpl.Builder();
+    AnimationModel testModel = builder.build();
+    assertTrue(testModel == builder.build());
+
+    assertEquals("",
+            testModel.displayAnimation());
+    assertEquals(0, testModel.getX());
+    assertEquals(0, testModel.getY());
+    assertEquals(1, testModel.getWidth());
+    assertEquals(1, testModel.getHeight());
+
+    builder.setBounds(1, 1000, 100, 10);
+    assertEquals(1, testModel.getX());
+    assertEquals(1000, testModel.getY());
+    assertEquals(100, testModel.getWidth());
+    assertEquals(10, testModel.getHeight());
+
+    builder.declareShape("A", "ellipse");
+    assertEquals(new ArrayList<String>(Arrays.asList("A")), testModel.getShapes());
+
+    builder.declareShape("B", "rectangle");
+    assertEquals(new ArrayList<String>(Arrays.asList("A", "B")), testModel.getShapes());
+
+    try {
+      builder.declareShape("C", "triangle");
+      fail("Added an invalid shape type");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Invalid shape type triangle", e.getMessage());
+    }
+
+    builder.addMotion("A", 1, 2, 3, 4, 5, 6, 7, 8,
+            2, 3, 4, 5, 6, 7, 8, 9);
+    assertEquals("shape A ellipse\n" +
+                    "motion A 2 3 4 5 6 7 8 9    2 3 4 5 6 7 8 9\n" +
+                    "\n" +
+                    "shape B rectangle",
+            testModel.displayAnimation());
+
+    builder.addMotion("A", 2, 3, 4, 5, 6, 7, 8, 9,
+            4, 4, 4, 4, 4, 4, 4, 4);
+    assertEquals("shape A ellipse\n" +
+                    "motion A 2 3 4 5 6 7 8 9    4 4 4 4 4 4 4 4\n" +
+                    "\n" +
+                    "shape B rectangle",
+            testModel.displayAnimation());
+
+    builder.addKeyframe("B", 2, 2, 2, 2, 2, 2, 2, 2);
+    assertEquals("shape A ellipse\n" +
+                    "motion A 2 3 4 5 6 7 8 9    4 4 4 4 4 4 4 4\n" +
+                    "\n" +
+                    "shape B rectangle\n" +
+                    "motion B 2 2 2 2 2 2 2 2    2 2 2 2 2 2 2 2",
+            testModel.displayAnimation());
+
+    builder.addKeyframe("B", 3, 4, 5, 6, 6, 5, 4, 3);
+    assertEquals("shape A ellipse\n" +
+                    "motion A 2 3 4 5 6 7 8 9    4 4 4 4 4 4 4 4\n" +
+                    "\n" +
+                    "shape B rectangle\n" +
+                    "motion B 2 2 2 2 2 2 2 2    3 4 5 6 6 5 4 3",
+            testModel.displayAnimation());
   }
 }
