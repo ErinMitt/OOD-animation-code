@@ -429,6 +429,24 @@ public class AnimationModelImplTest {
     original.setBounds(50,50,50,-50);
   }
 
+  @Test
+  public void declareShapeTestRect() {
+    original.addRectangle("b");
+    original.setBounds(50,50,50,50);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFailsRect() {
+    original.addRectangle("a");
+    original.setBounds(50,50,-50,50);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFailsHeightRect() {
+    original.addRectangle("a");
+    original.setBounds(50,50,50,-50);
+  }
+
 
   @Test
   public void testDisplayAnimation() {
