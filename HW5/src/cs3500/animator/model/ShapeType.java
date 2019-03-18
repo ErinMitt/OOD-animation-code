@@ -9,10 +9,18 @@ enum ShapeType {
 
   private String type;
 
+  /**
+   * Build an enum representing a shape type.
+   * @param type the type of shape
+   */
   ShapeType(String type) {
     this.type = type;
   }
 
+  /**
+   * Return a string representing the shape type's name.
+   * @return the type of shape
+   */
   public String getType() {
     return type;
   }

@@ -453,4 +453,31 @@ public class AnimationModelImplTest {
                     "motion E 4 30 20 20 30 255 34 19    10 30 20 20 30 255 34 19",
             original.displayAnimation());
   }
+
+  @Test
+  public void testSetBounds() {
+    // starts as 0, 0, 0, 0
+
+    //can't add width and height less than zero
+  }
+
+  @Test
+  public void testGetTransformationAt() {
+
+  }
+
+  @Test
+  public void testBuilder() {
+    // test each of the methods inside the builder
+  }
+
+  @Test
+  public void testGetMotions() {
+
+  }
+
+  @Test
+  public void testGetShapeType() {
+
+  }
 }

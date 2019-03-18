@@ -29,10 +29,7 @@ public class TextView implements AnimationView {
     this.output = output;
   }
 
-  /**
-   *
-   * @param model the model to be played
-   */
+  @Override
   public void setModel(ReadOnlyModel model) {
     if (model == null) {
       throw new IllegalArgumentException("Model must not be null");
@@ -79,9 +76,13 @@ public class TextView implements AnimationView {
   /**
    * Format the output of the animation in the format described in animate().
    * @return the text animation
+   * @throws IllegalStateException if the model has not been set
    */
   private String createTextDisplay() {
-    List<String> shapesText = new ArrayList<String>(model.getShapes().size() + 1);
+    if (model == null) {
+      throw new IllegalStateException("Cannot animate a null model");
+    }
+    List<String> shapesText = new ArrayList<>(model.getShapes().size() + 1);
     shapesText.add(joinWithSpaces("canvas",
             Integer.toString(model.getX()),
             Integer.toString(model.getY()),

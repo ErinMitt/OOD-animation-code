@@ -10,7 +10,24 @@ import cs3500.animator.model.AnimationModelImpl;
 import cs3500.animator.util.AnimationReader;
 import cs3500.animator.view.AnimationView;
 
+/**
+ * A class that can run the program through command line arguments.
+ */
 public final class Excellence {
+  /**
+   * Generate an animation from a given file through the command line.
+   * The arguments must be one of:
+   * -in [the input file name]
+   * -out [the output file name]
+   * -speed [the speed of the animation in ticks per second]
+   * -view [the type of view]
+   * -speed must receive a positive int larger than zero,
+   * and -view must be one of visual, svg, or text.
+   * The arguments -in and -view are required, while -out will default to System.out
+   * and -speed will default to 1 if not otherwise specified.
+   * If an argument is invalid, System.out will display a message explaining why.
+   * @param args the command line arguments
+   */
   public static void main(String[] args) {
     int speed = 1;
     Appendable output = System.out;

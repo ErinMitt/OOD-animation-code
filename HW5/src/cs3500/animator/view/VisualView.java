@@ -15,6 +15,9 @@ public class VisualView  extends JFrame implements AnimationView {
   private AnimationPanel animationPanel;
   private double speed = 1;
 
+  /**
+   * Create a visual view.
+   */
   public VisualView() {
     super();
     this.setTitle("Animation");

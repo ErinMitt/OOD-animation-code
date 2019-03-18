@@ -43,7 +43,7 @@ class AnimationPanel extends JPanel {
     AffineTransform originalTransform = g2.getTransform();
     g2.translate(model.getX(), model.getY());
 
-    // fill in animation stuff here
+    // draw all the shapes
     for (String shape : model.getShapes()) {
       try {
         Motion state = model.getTransformationAt(shape, tick).getStateAt(tick);

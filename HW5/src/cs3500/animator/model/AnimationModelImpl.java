@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import cs3500.animator.util.AnimationBuilder;
-import cs3500.animator.util.AnimationReader;
 
 /**
  * A class representing an animation. It contains information about the various shapes
@@ -37,7 +36,6 @@ public class AnimationModelImpl implements AnimationModel {
     this.height = 0;
   }
 
-  // TODO: test this!
   @Override
   public void setBounds(int x, int y, int width, int height) {
     if (width <= 0 || height <= 0) {
@@ -163,9 +161,12 @@ public class AnimationModelImpl implements AnimationModel {
     }
   }
 
-  // TODO: test these
-  // TODO: is it ok to have builders that can't be reused?
-  //  AKA not resetting the model every time build is called?
+  /**
+   * A class representing a builder that can create an AnimationModel.
+   * Acts as a wrapper so that AnimationReader can create an AnimationModel.
+   * Each class can only be used once because the only way to reset the model is
+   * through the constructor.
+   */
   public static final class Builder implements AnimationBuilder<AnimationModel> {
     private final AnimationModel model;
 

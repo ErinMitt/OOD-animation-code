@@ -59,6 +59,10 @@ public class SVGView implements AnimationView {
     }
   }
 
+  /**
+   * Creates an SVG-formatted text representing the animation described in the model.
+   * @return the SVG text
+   */
   private String formatAnimation() {
     LinkedList<String> SVGLines = new LinkedList<>();
     SVGLines.add("<svg width=\"" + (model.getWidth() + model.getX())
@@ -93,6 +97,12 @@ public class SVGView implements AnimationView {
     return String.join("\n", SVGLines);
   }
 
+  /**
+   * Create the opening line for a rectangle at the initial position described in the given motion.
+   * @param m the rectangle's initial position
+   * @param shape the shape name
+   * @return the starting text for a rectangle
+   */
   private String initRect(Motion m, String shape) {
     return "<rect id=\"" + shape
             + "\" x=\"" + (m.getX() + model.getX())
@@ -105,6 +115,12 @@ public class SVGView implements AnimationView {
             + ")\" visibility=\"visible\" >";
   }
 
+  /**
+   * Create the opening line for an ellipse at the initial position described in the given motion.
+   * @param m the ellipse's original position
+   * @param shape the ellipse's name
+   * @return the starting text for an ellipse
+   */
   private String initEllipse(Motion m, String shape) {
     return "<ellipse id=\"" + shape
             + "\" cx=\"" + (m.getX() + model.getX())
@@ -117,14 +133,40 @@ public class SVGView implements AnimationView {
             + ")\" visibility=\"visible\" >";
   }
 
+  /**
+   * Write an animation formatted in SVG for a rectangle.
+   * @param start the start position
+   * @param end the end position
+   * @param shape the rectangle's name
+   * @return the animation line
+   */
   private List<String> moveEllipse(Motion start, Motion end, String shape) {
     return moveShape(start, end, shape, "cx", "cy", "rx", "ry");
   }
 
+  /**
+   * Write an animation formatted in SVG for an ellipse.
+   * @param start the start position
+   * @param end the end position
+   * @param shape the ellipse's name
+   * @return the animation line
+   */
   private List<String> moveRect(Motion start, Motion end, String shape) {
     return moveShape(start, end, shape, "x", "y", "width", "height");
   }
 
+  /**
+   * Write an SVG-formatted animation for any shape. Don't write animation lines
+   * for components (eg width, height, color) that do not change between the start and end.
+   * @param start the starting position
+   * @param end the ending position
+   * @param shape the shape name
+   * @param x the x component's name
+   * @param y the y component's name
+   * @param width the width component's name
+   * @param height the height component's name
+   * @return the animation line
+   */
   private List<String> moveShape(Motion start, Motion end, String shape,
                                  String x, String y, String width, String height) {
     ArrayList<String> motions = new ArrayList<>(5);

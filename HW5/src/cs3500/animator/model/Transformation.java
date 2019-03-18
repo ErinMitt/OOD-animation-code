@@ -8,6 +8,11 @@ public class Transformation {
   private final Motion start;
   private final Motion end;
 
+  /**
+   * Build a transformation representing a smooth movement of a shape from one state to another.
+   * @param start the start position
+   * @param end the end position
+   */
   public Transformation(Motion start, Motion end) {
     if (start.getTime() > end.getTime()) {
       throw new IllegalArgumentException(
