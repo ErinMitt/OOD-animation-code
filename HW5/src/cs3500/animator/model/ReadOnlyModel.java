@@ -67,8 +67,8 @@ public interface ReadOnlyModel {
 
   /**
    * Find the transformation of the shape in progress at the given tick.
-   * @param shapeName
-   * @param tick
+   * @param shapeName the shape's name
+   * @param tick the tick of the desired Transformation
    * @return the transformation
    * @throws IllegalArgumentException if there is no such shape name ir if the shape is not
    *    present on the screen during the given tick
