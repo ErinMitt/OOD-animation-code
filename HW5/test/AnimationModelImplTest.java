@@ -411,42 +411,6 @@ public class AnimationModelImplTest {
     list1.add("3");
     assertNotEquals(list1, original.getShapes());
   }
-  @Test
-  public void declareShapeTest() {
-    original.addEllipse("a");
-    original.setBounds(50,50,50,50);
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void declareShapeTestFails() {
-    original.addEllipse("a");
-    original.setBounds(50,50,-50,50);
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void declareShapeTestFailsHeight() {
-    original.addEllipse("a");
-    original.setBounds(50,50,50,-50);
-  }
-
-  @Test
-  public void declareShapeTestRect() {
-    original.addRectangle("b");
-    original.setBounds(50,50,50,50);
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void declareShapeTestFailsRect() {
-    original.addRectangle("a");
-    original.setBounds(50,50,-50,50);
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void declareShapeTestFailsHeightRect() {
-    original.addRectangle("a");
-    original.setBounds(50,50,50,-50);
-  }
-
 
   @Test
   public void testDisplayAnimation() {
@@ -489,31 +453,90 @@ public class AnimationModelImplTest {
                     "motion E 4 30 20 20 30 255 34 19    10 30 20 20 30 255 34 19",
             original.displayAnimation());
   }
+  @Test
+  public void declareShapeTest() {
+    original.addEllipse("a");
+    original.setBounds(50,50,50,50);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFails() {
+    original.addEllipse("a");
+    original.setBounds(50,50,-50,50);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFailsHeight() {
+    original.addEllipse("a");
+    original.setBounds(50,50,50,-50);
+  }
 
   @Test
-  public void testSetBounds() {
-    // starts as 0, 0, 0, 0
+  public void declareShapeTestRect() {
+    original.addRectangle("b");
+    original.setBounds(50,50,50,50);
+  }
 
-    //can't add width and height less than zero
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFailsRect() {
+    original.addRectangle("a");
+    original.setBounds(50,50,-50,50);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void declareShapeTestFailsHeightRect() {
+    original.addRectangle("a");
+    original.setBounds(50,50,50,-50);
   }
 
   @Test
   public void testGetTransformationAt() {
-
+    original.addRectangle("a");
+    original.addMotion("a", 1, 100, 100,
+            40, 50, 0, 0, 0);
+    original.getTransformationAt("a",1);
+  }
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetTransformationAtFails() {
+    original.addRectangle("a");
+    original.addMotion("a", 2, 100, 100,
+            40, 50, 0, 0, 0);
+    original.getTransformationAt("a",1);
   }
 
-  @Test
-  public void testBuilder() {
-    // test each of the methods inside the builder
-  }
 
   @Test
   public void testGetMotions() {
+    original.addRectangle("R");
+    original.addMotion("R", 4,100,100,40,
+            50,0,0,255);
+    original.addMotion("R", 7,100,200,40,
+            50,0,0,255);
+    original.addMotion("R", 10,100,200,40,
+            50,0,0,255);
+            original.getMotions("R");
+  }
 
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetMotionsFail() {
+    original.getMotions("R");
   }
 
   @Test
   public void testGetShapeType() {
+    original.addRectangle("R");
+    original.getShapeType("R");
+  }
 
+  @Test
+  public void testGetShapeTypeEclipse() {
+    original.addEllipse("E");
+    original.getShapeType("E");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetShapeTypeFail() {
+    original.getShapeType("I");
   }
 }
