@@ -37,7 +37,6 @@ public class AnimationModelImpl implements AnimationModel {
     this.height = 0;
   }
 
-  // TODO: test this!
   @Override
   public void setBounds(int x, int y, int width, int height) {
     if (width <= 0 || height <= 0) {
