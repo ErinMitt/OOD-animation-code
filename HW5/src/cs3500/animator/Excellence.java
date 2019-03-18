@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import cs3500.animator.model.AnimationModelImpl;
+import cs3500.animator.util.AnimationReader;
 import cs3500.animator.view.AnimationView;
 
 public final class Excellence {
@@ -69,7 +70,7 @@ public final class Excellence {
     view.setSpeed(speed);
     view.setOutput(output);
     try {
-      view.setModel(new AnimationModelImpl.Builder(input).build());
+      view.setModel(AnimationReader.parseFile(input, new AnimationModelImpl.Builder()));
     } catch (IllegalStateException e) {
       showErrorMessage("Unable to read file, returned error message: " + e.getMessage());
       return;

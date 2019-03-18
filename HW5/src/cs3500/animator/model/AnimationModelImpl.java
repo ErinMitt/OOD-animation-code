@@ -167,17 +167,15 @@ public class AnimationModelImpl implements AnimationModel {
   // TODO: is it ok to have builders that can't be reused?
   //  AKA not resetting the model every time build is called?
   public static final class Builder implements AnimationBuilder<AnimationModel> {
-    private final Readable input;
     private final AnimationModel model;
 
-    public Builder(Readable input) {
-      this.input = input;
+    public Builder() {
       this.model = new AnimationModelImpl();
     }
 
     @Override
     public AnimationModel build() {
-      return AnimationReader.parseFile(input, this);
+      return model;
     }
 
     @Override
