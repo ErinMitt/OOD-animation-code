@@ -34,10 +34,7 @@ public class VisualView  extends JFrame implements AnimationView {
     this.pack();
   }
 
-  /**
-   * Set the speed of the animation in ticks per second.
-   * @param speed ticks per second
-   */
+  @Override
   public void setSpeed(double speed) {
     if (speed <= 0) {
       throw new IllegalArgumentException("Number of ticks per second must be a positive number, "
@@ -45,6 +42,13 @@ public class VisualView  extends JFrame implements AnimationView {
     }
     this.speed = speed;
   }
+
+  /**
+   * This method is unsupported in VisualView. Do nothing.
+   * @param output the Appendable to which output is written.
+   */
+  @Override
+  public void setOutput(Appendable output) {}
 
   /**
    * Displays a non-looping visual representation of the model animation on screen.

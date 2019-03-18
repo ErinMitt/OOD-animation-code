@@ -15,9 +15,13 @@ public class TextView implements AnimationView {
   private ReadOnlyModel model;
 
   /**
-   * Set the
-   * @param output
+   * setSpeed is unsupported in this view. Do nothing.
+   * @param speed ticks per second
    */
+  @Override
+  public void setSpeed(double speed) {}
+
+  @Override
   public void setOutput(Appendable output) {
     if (output == null) {
       throw new IllegalArgumentException("Output Appendable must not be null");
@@ -58,7 +62,6 @@ public class TextView implements AnimationView {
    * @throws IllegalStateException if the output cannot be written to the appendable
    */
   @Override
-  // TODO: pass animate an appendable?
   public void animate() {
     if (output == null) {
       throw new IllegalStateException("The output Appendable has not been set");

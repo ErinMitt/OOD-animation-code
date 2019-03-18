@@ -18,4 +18,17 @@ public interface AnimationView {
    * @throws IllegalStateException if the model is null
    */
   void animate();
+
+  /**
+   * Set the speed of the animation in ticks per second.
+   * May not be supported by all views. If it is unsupported, do nothing.
+   * @param speed ticks per second
+   */
+  void setSpeed(double speed);
+
+  /**
+   * Set the location for the view to write output.
+   * @param output the Appendable to which the view will write output.
+   */
+  void setOutput(Appendable output);
 }

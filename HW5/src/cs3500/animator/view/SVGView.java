@@ -13,10 +13,7 @@ public class SVGView implements AnimationView {
   private Appendable output;
   private double speed = 1;
 
-  /**
-   * Set the speed of the animation in ticks per second.
-   * @param speed ticks per second
-   */
+  @Override
   public void setSpeed(double speed) {
     if (speed <= 0) {
       throw new IllegalArgumentException("Number of ticks per second must be a positive number, "
@@ -25,10 +22,7 @@ public class SVGView implements AnimationView {
     this.speed = speed;
   }
 
-  /**
-   * Set the
-   * @param output
-   */
+  @Override
   public void setOutput(Appendable output) {
     if (output == null) {
       throw new IllegalArgumentException("Output Appendable must not be null");
@@ -133,7 +127,7 @@ public class SVGView implements AnimationView {
     ArrayList<String> motions = new ArrayList<>(5);
     // order of inputs: start (ms), duration (ms), attribute type, from, to
     String template = "<animate attributeType=\"xml\" begin=\"%sms\" dur=\"%sms\" "
-            + "attributeName=\"%s\" from=\"%s\" to=\"%s\" />";
+            + "attributeName=\"%s\" from=\"%s\" to=\"%s\" fill=\"freeze\" />";
     int startTime = (int) Math.round((start.getTime() - 1) * 1000 / speed);
     int duration = (int) Math.round((end.getTime() - start.getTime()) * 1000 / speed);
 
