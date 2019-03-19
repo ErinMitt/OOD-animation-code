@@ -29,7 +29,7 @@ public class Transformation {
    * @return the state at time = tick
    */
   public Motion getStateAt(int tick) {
-    return new Motion (tick,
+    return new Motion(tick,
             stateAtTime(tick, start.getX(), end.getX()),
             stateAtTime(tick, start.getY(), end.getY()),
             stateAtTime(tick, start.getWidth(), end.getWidth()),

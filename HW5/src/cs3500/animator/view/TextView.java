@@ -8,7 +8,8 @@ import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
 /**
- * The class TextView represents
+ * The class TextView represents a view that can produce a text description of the animation
+ * described in an AnimationModel.
  */
 public class TextView implements AnimationView {
   private Appendable output;
@@ -19,7 +20,9 @@ public class TextView implements AnimationView {
    * @param speed ticks per second
    */
   @Override
-  public void setSpeed(double speed) {}
+  public void setSpeed(double speed) {
+    // setSpeed does nothing because the text view does not have a speed.
+  }
 
   @Override
   public void setOutput(Appendable output) {

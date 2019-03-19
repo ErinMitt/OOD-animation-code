@@ -8,6 +8,10 @@ import java.util.List;
 import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
+/**
+ * A class representing a view that can produce SVG-formatted texts of an animation
+ * represented by an AnimationModel.
+ */
 public class SVGView implements AnimationView {
   private ReadOnlyModel model;
   private Appendable output;
@@ -64,8 +68,8 @@ public class SVGView implements AnimationView {
    * @return the SVG text
    */
   private String formatAnimation() {
-    LinkedList<String> SVGLines = new LinkedList<>();
-    SVGLines.add("<svg width=\"" + (model.getWidth() + model.getX())
+    LinkedList<String> svgLines = new LinkedList<>();
+    svgLines.add("<svg width=\"" + (model.getWidth() + model.getX())
             + "\" height=\"" + (model.getHeight() + model.getY())
             + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">");
     for (String shape : model.getShapes()) {
@@ -73,28 +77,28 @@ public class SVGView implements AnimationView {
       switch (model.getShapeType(shape)) {
         case "ellipse":
           if (!motions.isEmpty()) {
-            SVGLines.add(initEllipse(motions.get(0), shape));
+            svgLines.add(initEllipse(motions.get(0), shape));
             for (int i = 0; i < motions.size() - 1; i++) {
-              SVGLines.addAll(moveEllipse(motions.get(i), motions.get(i + 1), shape));
+              svgLines.addAll(moveEllipse(motions.get(i), motions.get(i + 1), shape));
             }
-            SVGLines.add("</ellipse>");
+            svgLines.add("</ellipse>");
           }
           break;
         case "rectangle":
           if (!motions.isEmpty()) {
-            SVGLines.add(initRect(motions.get(0), shape));
+            svgLines.add(initRect(motions.get(0), shape));
             for (int i = 0; i < motions.size() - 1; i++) {
-              SVGLines.addAll(moveRect(motions.get(i), motions.get(i + 1), shape));
+              svgLines.addAll(moveRect(motions.get(i), motions.get(i + 1), shape));
             }
-            SVGLines.add("</rect>");
+            svgLines.add("</rect>");
           }
           break;
         default:
           throw new IllegalArgumentException("Invalid shape type");
       }
     }
-    SVGLines.add("</svg>");
-    return String.join("\n", SVGLines);
+    svgLines.add("</svg>");
+    return String.join("\n", svgLines);
   }
 
   /**

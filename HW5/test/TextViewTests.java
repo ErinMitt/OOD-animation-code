@@ -31,6 +31,11 @@ public class TextViewTests {
   @Test
   public void testSetSpeed() {
     // test that nothing happens
+    view.setSpeed(1);
+    view.setSpeed(0);
+    view.setSpeed(-5);
+    view.animate();
+    assertEquals("canvas 0 0 1 1", output.toString());
   }
 
   @Test
@@ -66,7 +71,7 @@ public class TextViewTests {
     view2.setOutput(output2);
     view2.animate();
 
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle\n" +
                     "motion R 1 1 1 1 1 1 1 1 2 1 1 2 2 1 1 1",
             output2.toString());
@@ -94,14 +99,14 @@ public class TextViewTests {
   public void testAnimate() {
     // no shapes
     view.animate();
-    assertEquals("canvas 0 0 0 0",
+    assertEquals("canvas 0 0 1 1",
             output.toString());
 
     // a single rectangle with no movements
     init();
     model.addRectangle("R");
     view.animate();
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle",
             output.toString());
 
@@ -110,7 +115,7 @@ public class TextViewTests {
     model.addRectangle("R");
     model.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
     view.animate();
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle\n" +
                     "motion R 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
             output.toString());
@@ -121,7 +126,7 @@ public class TextViewTests {
     model.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
     model.addMotion("R", 2, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle\n" +
                     "motion R 1 1 1 1 1 1 1 1 2 1 1 2 2 1 1 1",
             output.toString());
@@ -133,7 +138,7 @@ public class TextViewTests {
     model.addMotion("R", 3, 2, 2, 2, 2, 5, 5, 5);
     model.addMotion("R", 6, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle\n" +
                     "motion R 1 1 1 1 1 1 1 1 3 2 2 2 2 5 5 5\n" +
                     "motion R 3 2 2 2 2 5 5 5 6 1 1 2 2 1 1 1",
@@ -143,7 +148,7 @@ public class TextViewTests {
     init();
     model.addEllipse("E");
     view.animate();
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape E ellipse",
             output.toString());
 
@@ -152,7 +157,7 @@ public class TextViewTests {
     model.addEllipse("E");
     model.addMotion("E", 1, 1, 1, 1, 1, 1, 1, 1);
     view.animate();
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape E ellipse\n" +
                     "motion E 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
             output.toString());
@@ -163,7 +168,7 @@ public class TextViewTests {
     model.addMotion("E", 1, 1, 1, 1, 1, 1, 1, 1);
     model.addMotion("E", 2, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape E ellipse\n" +
                     "motion E 1 1 1 1 1 1 1 1 2 1 1 2 2 1 1 1",
             output.toString());
@@ -175,7 +180,7 @@ public class TextViewTests {
     model.addMotion("E", 3, 2, 2, 2, 2, 5, 5, 5);
     model.addMotion("E", 6, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape E ellipse\n" +
                     "motion E 1 1 1 1 1 1 1 1 3 2 2 2 2 5 5 5\n" +
                     "motion E 3 2 2 2 2 5 5 5 6 1 1 2 2 1 1 1",
@@ -190,7 +195,7 @@ public class TextViewTests {
     model.addMotion("E", 1, 3, 3, 3, 3, 3, 3, 3);
     model.addMotion("E", 4, 4, 4, 4, 4, 4, 4, 4);
     view.animate();
-    assertEquals("canvas 0 0 0 0\n" +
+    assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle\n" +
                     "motion R 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2\n" +
                     "shape E ellipse\n" +

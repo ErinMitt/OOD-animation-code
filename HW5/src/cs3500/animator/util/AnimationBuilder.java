@@ -1,5 +1,9 @@
 package cs3500.animator.util;
 
+/**
+ * An interface that translates between an AnimationModel and AnimationReader.
+ * @param <Doc> the AnimationModel
+ */
 public interface AnimationBuilder<Doc> {
   /**
    * Constructs a final document.

@@ -72,7 +72,7 @@ public class TransformationTests {
             s3.getBlue());
 
     // test that asking for times outside the boundaries throws an exception
-    Transformation t3 = new Transformation (m2, m4);
+    Transformation t3 = new Transformation(m2, m4);
     try {
       t3.getStateAt(2);
       fail("Got the state from before the transformation began");

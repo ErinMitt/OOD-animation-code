@@ -484,12 +484,6 @@ public class AnimationModelImplTest {
     original.setBounds(50,50,50,-50);
   }
 
-  @Test
-  public void declareShapeTestRect() {
-    original.addRectangle("b");
-    original.setBounds(50,50,50,50);
-  }
-
   @Test (expected = IllegalArgumentException.class)
   public void declareShapeTestFailsRect() {
     original.addRectangle("a");
@@ -516,6 +510,7 @@ public class AnimationModelImplTest {
     Motion m2 = t2.getStateAt(2);
     assertEquals(50, m2.getX());
   }
+
   @Test(expected = IllegalArgumentException.class)
   public void testGetTransformationAtFails() {
     original.addRectangle("a");

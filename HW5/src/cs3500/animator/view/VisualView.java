@@ -51,7 +51,9 @@ public class VisualView  extends JFrame implements AnimationView {
    * @param output the Appendable to which output is written.
    */
   @Override
-  public void setOutput(Appendable output) {}
+  public void setOutput(Appendable output) {
+    // this method does nothing because the visual view does not write text to a file.
+  }
 
   /**
    * Displays a non-looping visual representation of the model animation on screen.

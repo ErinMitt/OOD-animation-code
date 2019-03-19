@@ -2,6 +2,9 @@ package cs3500.animator.model;
 
 import java.util.List;
 
+/**
+ * A class representing a Model with only getters that cannot be mutated.
+ */
 public interface ReadOnlyModel {
 
   /**
@@ -71,7 +74,7 @@ public interface ReadOnlyModel {
    * @param tick the tick of the desired Transformation
    * @return the transformation
    * @throws IllegalArgumentException if there is no such shape name ir if the shape is not
-   *    present on the screen during the given tick
+   *     present on the screen during the given tick
    */
   Transformation getTransformationAt(String shapeName, int tick);
 

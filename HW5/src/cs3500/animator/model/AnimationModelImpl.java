@@ -209,15 +209,15 @@ public class AnimationModelImpl implements AnimationModel {
      * even if only the end position of each motion is added.
      */
     @Override
-    public AnimationBuilder<AnimationModel>
-    addMotion(String name, int t1, int x1, int y1, int w1, int h1, int r1, int g1, int b1,
-              int t2, int x2, int y2, int w2, int h2, int r2, int g2, int b2) {
+    public AnimationBuilder<AnimationModel> addMotion(
+            String name, int t1, int x1, int y1, int w1, int h1, int r1, int g1, int b1,
+            int t2, int x2, int y2, int w2, int h2, int r2, int g2, int b2) {
       return addKeyframe(name, t2, x2, y2, w2, h2, r2, g2, b2);
     }
 
     @Override
-    public AnimationBuilder<AnimationModel>
-    addKeyframe(String name, int t, int x, int y, int w, int h, int r, int g, int b) {
+    public AnimationBuilder<AnimationModel> addKeyframe(
+            String name, int t, int x, int y, int w, int h, int r, int g, int b) {
       model.addMotion(name, t, x, y, w, h, r, g, b);
       return this;
     }
