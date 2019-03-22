@@ -21,6 +21,10 @@ public class EditorView implements AnimationView {
 
   }
 
+  /**
+   * Does nothing
+   * @param output
+   */
   @Override
   public void setOutput(Appendable output) {
 
