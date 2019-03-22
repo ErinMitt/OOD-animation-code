@@ -14,6 +14,7 @@ import cs3500.animator.model.ReadOnlyModel;
 public class VisualView  extends JFrame implements AnimationView {
   private AnimationPanel animationPanel;
   private double speed = 1;
+  private int tick;
 
   /**
    * Create a visual view.
@@ -22,6 +23,7 @@ public class VisualView  extends JFrame implements AnimationView {
     super();
     this.setTitle("Animation");
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.tick = 1;
   }
 
   @Override
@@ -65,7 +67,7 @@ public class VisualView  extends JFrame implements AnimationView {
       throw new IllegalStateException("There is no model to animate");
     }
     Timer timer = new Timer((int) Math.round((1000 / speed)), (ActionEvent e) -> {
-      tick();
+      updateDisplay();
     });
     this.setVisible(true);
     timer.start();
@@ -74,8 +76,8 @@ public class VisualView  extends JFrame implements AnimationView {
   /**
    * Update the animation to the next tick and refresh the screen.
    */
-  private void tick() {
-    animationPanel.repaint();
-    animationPanel.incrementTick();
+  private void updateDisplay() {
+    animationPanel.paintTick(tick);
+    tick += 1;
   }
 }

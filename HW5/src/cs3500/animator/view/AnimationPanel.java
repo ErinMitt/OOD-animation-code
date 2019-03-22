@@ -13,7 +13,7 @@ import cs3500.animator.model.ReadOnlyModel;
 
 class AnimationPanel extends JPanel {
   private final ReadOnlyModel model;
-  private int tick;
+  private int tick; // the moment in time of the model that the panel displays
 
   /**
    * Build a JPanel that draws the current state of an animation model.
@@ -24,18 +24,9 @@ class AnimationPanel extends JPanel {
       throw new IllegalArgumentException("Model must not be null");
     }
     this.model = model;
-    this.tick = 1;
     setPreferredSize(new Dimension(model.getWidth() + model.getX(),
             model.getHeight() + model.getY()));
   }
-
-  /**
-   * Add one to the current time.
-   */
-  public void incrementTick() {
-    tick += 1;
-  }
-  // can be modified to mod tick if we want to loop the animation
 
   @Override
   protected void paintComponent(Graphics g) {
@@ -67,5 +58,14 @@ class AnimationPanel extends JPanel {
     }
 
     g2.setTransform(originalTransform);
+  }
+
+  /**
+   * Draw the scene of the animation described by the model at the given tick.
+   * @param tick the point in time to draw.
+   */
+  public void paintTick(int tick) {
+    this.tick = tick;
+    repaint();
   }
 }
