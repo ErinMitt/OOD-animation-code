@@ -44,4 +44,20 @@ public interface EditorAnimationView extends AnimationView {
    * @param features the interface containing all the necessary commands
    */
   void addFeatures(Features features);
+
+  /**
+   * Shows the user a given error message.
+   * @param message the message to be displayed
+   */
+  void displayErrorMessage(String message);
+
+  /**
+   * Reset focus onto the view instead of any of its components (like buttons or text fields).
+   */
+  void resetFocus();
+
+  /**
+   * Reset all text fields to their default state.
+   */
+  void resetTextFields();
 }

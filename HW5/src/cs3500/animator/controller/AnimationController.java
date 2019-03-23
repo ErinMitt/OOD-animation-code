@@ -44,4 +44,22 @@ public class AnimationController implements Features {
     view.pause();
     view.decrementTick();
   }
+
+  @Override
+  public void setSpeedToUserInput(String input) {
+    try {
+      view.setSpeed(Double.parseDouble(input));
+    } catch (NumberFormatException e) {
+      view.displayErrorMessage("Speed must be a number");
+    } catch (IllegalArgumentException e) {
+      view.displayErrorMessage(e.getMessage());
+    } finally {
+      view.resetFocus();
+    }
+  }
+
+  @Override
+  public void resetTextFields() {
+    view.resetTextFields();
+  }
 }

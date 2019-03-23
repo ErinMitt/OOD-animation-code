@@ -11,8 +11,8 @@ public class SanityCheck {
     AnimationModel model = new AnimationModelImpl();
     model.setBounds(0, 0, 100, 100);
     model.addEllipse("E");
-    model.addMotion("E", 1, 1, 1, 20, 20, 100, 100, 100);
-    model.addMotion("E", 10, 1, 1, 40, 60, 100, 100, 100);
+    model.addMotion("E", 1, 1, 1, 20, 20, 100, 100, 255);
+    model.addMotion("E", 10, 1, 1, 40, 60, 255, 100, 100);
     EditorAnimationView view = new EditorView();
     view.setModel(model);
     view.setSpeed(2);

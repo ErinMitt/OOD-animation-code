@@ -2,6 +2,8 @@ package cs3500.animator.view;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.*;
 
@@ -52,7 +54,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
 
     play = new JToggleButton("play");
     begin = new JButton("begin");
-    fps = new JTextField();
+    fps = new JTextField(3);
     loop = new JToggleButton("loop");
     forward = new JButton("->");
     back = new JButton("<-");
@@ -72,6 +74,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     playbackControlPanel.add(loop);
     playbackControlPanel.add(back);
     playbackControlPanel.add(forward);
+    playbackControlPanel.add(fps);
 
     add(playbackControlPanel, BorderLayout.PAGE_END);
   }
@@ -96,6 +99,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     if (animationPanel == null) {
       throw new IllegalStateException("The model has not been set");
     }
+    resetTextFields();
     pack();
 
     this.setVisible(true);
@@ -106,6 +110,9 @@ public class EditorView extends JFrame implements EditorAnimationView {
 
   @Override
   public void setSpeed(double speed) {
+    if (speed <= 0) {
+      throw new IllegalArgumentException("Speed must be positive");
+    }
     this.speed = speed;
     timer.setDelay((int) Math.round(1000 / speed));
   }
@@ -178,12 +185,42 @@ public class EditorView extends JFrame implements EditorAnimationView {
   }
 
   @Override
+  public void displayErrorMessage(String message) {
+    // TODO: this
+  }
+
+  @Override
+  public void resetFocus() {
+    this.setFocusable(true);
+    this.requestFocus();
+  }
+
+  @Override
+  public void resetTextFields() {
+    fps.setText(Double.toString(speed));
+  }
+
+  @Override
   public void addFeatures(Features features) {
+    // buttons
     play.addActionListener(evt -> features.togglePlay());
     loop.addActionListener(evt -> features.toggleLoop());
     begin.addActionListener(evt -> features.rewind());
     forward.addActionListener(evt -> features.stepForward());
     back.addActionListener(evt -> features.stepBackwards());
 
+    // text fields
+    fps.addActionListener(evt -> features.setSpeedToUserInput(fps.getText()));
+    fps.addFocusListener(new FocusListener() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        // do nothing if the focus is gained
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        features.resetTextFields();
+      }
+    });
   }
 }

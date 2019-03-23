@@ -20,7 +20,7 @@ public interface Features {
   void rewind();
 
   /**
-   * Move one framw forward.
+   * Move one frame forward.
    */
   void stepForward();
 
@@ -28,4 +28,12 @@ public interface Features {
    * Move one frame backward.
    */
   void stepBackwards();
+
+  /**
+   * Set the animation's speed to the given speed.
+   * @param input A String representing the desired speed.
+   */
+  void setSpeedToUserInput(String input);
+
+  void resetTextFields();
 }
