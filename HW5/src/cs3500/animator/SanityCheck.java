@@ -13,6 +13,12 @@ public class SanityCheck {
     model.addEllipse("E");
     model.addMotion("E", 1, 1, 1, 20, 20, 100, 100, 255);
     model.addMotion("E", 10, 1, 1, 40, 60, 255, 100, 100);
+    model.addMotion("E", 26, 70, 70, 20, 20, 100, 100, 255);
+
+    model.addRectangle("R");
+    model.addMotion("R", 0, 70, 70, 5, 30, 200, 200, 0);
+    model.addMotion("R", 30, 50, 50, 20, 4, 0, 200, 200);
+
     EditorAnimationView view = new EditorView();
     view.setModel(model);
     view.setSpeed(2);

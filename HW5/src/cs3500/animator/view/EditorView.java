@@ -1,11 +1,20 @@
 package cs3500.animator.view;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import javax.swing.JToggleButton;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JList;
+
 
 import cs3500.animator.controller.Features;
 import cs3500.animator.model.Motion;
@@ -14,6 +23,7 @@ import cs3500.animator.model.ReadOnlyModel;
 /**
  * Class representing a view that allows editing of an animation model.
  */
+// TODO: add a replaceMotion method to the model
 public class EditorView extends JFrame implements EditorAnimationView {
   private static String CAPTION = "Animation editor";
 
@@ -105,7 +115,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     this.setVisible(true);
     timer.start();
 
-    // TODO: finish some setup stuff
+    // TODO: add setup stuff as we write more features
   }
 
   @Override
