@@ -16,12 +16,13 @@ public class TextView implements AnimationView {
   private ReadOnlyModel model;
 
   /**
-   * setSpeed is unsupported in this view. Do nothing.
+   * setSpeed is unsupported in this view.
    * @param speed ticks per second
+   * @throws UnsupportedOperationException if called
    */
   @Override
-  public void setSpeed(double speed) {
-    // setSpeed does nothing because the text view does not have a speed.
+  public void setSpeed(double speed) throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("SVGView has no speed");
   }
 
   @Override

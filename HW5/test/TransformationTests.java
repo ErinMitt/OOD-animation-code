@@ -51,6 +51,10 @@ public class TransformationTests {
     assertEquals(2,
             s2.getBlue());
 
+    // test that getStateAt works at the start and end of a transformation
+    assertEquals(5, t1.getStateAt(5).getHeight());
+    assertEquals(1, t1.getStateAt(1).getHeight());
+
     // if the start and end happen at the same time, choose the start
     Transformation t2 = new Transformation(m1, m3);
     Motion s3 = t2.getStateAt(1);

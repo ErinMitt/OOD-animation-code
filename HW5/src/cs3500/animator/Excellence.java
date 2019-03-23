@@ -1,5 +1,6 @@
 package cs3500.animator;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -84,8 +85,12 @@ public final class Excellence {
       return;
     }
 
-    view.setSpeed(speed);
-    view.setOutput(output);
+    try {
+      view.setSpeed(speed);
+      view.setOutput(output);
+    } catch (UnsupportedOperationException e) {
+      // if the user specifies a speed or output but that is not supported, ignore it
+    }
     try {
       view.setModel(AnimationReader.parseFile(input, new AnimationModelImpl.Builder()));
     } catch (IllegalStateException e) {
@@ -94,9 +99,12 @@ public final class Excellence {
     }
     view.animate();
 
-    if (output instanceof FileWriter) {
+    // We cast here so that we're able to close FileWriters.
+    // It's necessary because the output is only required to be an Appendable, not a Closeable,
+    // but Appendables which are also Closeables require closing.
+    if (output instanceof Closeable) {
       try {
-        ((FileWriter) output).close();
+        ((Closeable) output).close();
       } catch (IOException e) {
         showErrorMessage("Unable to close output file");
       }

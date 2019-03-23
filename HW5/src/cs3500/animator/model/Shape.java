@@ -55,17 +55,15 @@ class Shape {
    * Add the given motion to the sequence of motions.
    *
    * @param m the motion to be added
-   * @throws IllegalArgumentException if the new Motion's time is less than or equal to the
-   *     last existing motion's time
    */
   private void addMotion(Motion m) {
     if (m == null) {
       throw new IllegalArgumentException("The motion cannot be null.");
     }
-    if (!motions.isEmpty() &&  m.getTime() <= motions.last().getTime()) {
-      throw new IllegalArgumentException("Cannot add a new motion into the middle of a sequence. "
-              + "New motions must occur after this shape's last existing motion.");
-    }
+    /*// do not allow new Motions that overlap existing Motions
+    if (motionOverlaps(m)) {
+      throw new IllegalArgumentException("This shape already has a motion at time " + m.getTime());
+    }*/
     motions.add(m);
   }
 
@@ -128,6 +126,19 @@ class Shape {
       }
     }
     return String.join("\n", lines);
+  }
+
+  /**
+   * Does this motion occur at the same time as one of this shape's existing motions?.
+   * @param m the motion
+   * @return whether the motions overlaps with an existing motion
+   */
+  private boolean motionOverlaps(Motion m) {
+    Motion nearestMotion = motions.ceiling(m);
+    if (nearestMotion == null) {
+      return false;
+    }
+    return motions.comparator().compare(nearestMotion, m) == 0;
   }
 
   /**

@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
  * Motions are immutable.
  */
 public class Motion {
+  public static final int START_TICK = 0;
+
   private final int time;
   private final int x;
   private final int y;
@@ -36,7 +38,7 @@ public class Motion {
       throw new IllegalArgumentException("Width and height must be positive nonzero integers, "
               + "given " + width + " & " + height);
     }
-    if (time < 1) {
+    if (time < START_TICK) {
       throw new IllegalArgumentException("Time must be a positive integer, given " + time);
     }
     this.time = time;

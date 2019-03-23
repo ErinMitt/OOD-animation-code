@@ -21,7 +21,6 @@ public interface AnimationView {
 
   /**
    * Set the speed of the animation in ticks per second.
-   * May not be supported by all views. If it is unsupported, do nothing.
    * @param speed ticks per second
    */
   void setSpeed(double speed);

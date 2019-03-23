@@ -30,10 +30,12 @@ public class TextViewTests {
 
   @Test
   public void testSetSpeed() {
-    // test that nothing happens
-    view.setSpeed(1);
-    view.setSpeed(0);
-    view.setSpeed(-5);
+    try {
+      view.setSpeed(1);
+      fail("Set speed for a text view");
+    } catch (UnsupportedOperationException e) {
+      assertEquals("SVGView has no speed", e.getMessage());
+    }
     view.animate();
     assertEquals("canvas 0 0 1 1", output.toString());
   }

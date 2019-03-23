@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -67,5 +68,20 @@ class AnimationPanel extends JPanel {
   public void paintTick(int tick) {
     this.tick = tick;
     repaint();
+  }
+
+  /**
+   * Find the last tick in the model.
+   * @return the last tick
+   */
+  public int getMaxTick() {
+    int maxTick = Motion.START_TICK;
+    for (String shape : model.getShapes()) {
+      List<Motion> motions = model.getMotions(shape);
+      if (! motions.isEmpty()) {
+        maxTick = Math.max(maxTick, motions.get(motions.size() - 1).getTime());
+      }
+    }
+    return maxTick;
   }
 }

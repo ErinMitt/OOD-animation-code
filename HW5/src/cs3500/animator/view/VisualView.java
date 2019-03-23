@@ -5,6 +5,7 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 
+import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
 /**
@@ -23,7 +24,7 @@ public class VisualView  extends JFrame implements AnimationView {
     super();
     this.setTitle("Animation");
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.tick = 1;
+    this.tick = Motion.START_TICK;
   }
 
   @Override
@@ -51,10 +52,11 @@ public class VisualView  extends JFrame implements AnimationView {
   /**
    * This method is unsupported in VisualView. Do nothing.
    * @param output the Appendable to which output is written.
+   * @throws UnsupportedOperationException if called
    */
   @Override
-  public void setOutput(Appendable output) {
-    // this method does nothing because the visual view does not write text to a file.
+  public void setOutput(Appendable output) throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("Visual view has no output");
   }
 
   /**

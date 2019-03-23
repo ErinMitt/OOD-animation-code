@@ -1,6 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.naming.OperationNotSupportedException;
+
 import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.AnimationModelImpl;
 import cs3500.animator.view.AnimationView;
