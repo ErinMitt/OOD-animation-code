@@ -29,7 +29,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
   private int tick;
   // INVARIANT: if animationPanel exists, it displays the current tick
   private boolean looping;
-  private int maxTick; // TODO: this!
+  private int maxTick;
   // INVARIANT: equals the time of the last keyframe in the model.
 
   // save location
@@ -45,7 +45,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
   private final JButton forward;
   private final JButton back;
   //private final JList frames = new JList(); // TODO: add MouseListener to labels in here
-  private final JList<String> shapes = new JList<String>();
+  private final JList<String> shapes = new JList<>();
   private final JButton editShape;
   private final JButton addShape;
 
@@ -114,7 +114,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     }
     this.animationPanel = new AnimationPanel(model);
     add(animationPanel, BorderLayout.CENTER);
-    maxTick = animationPanel.getMaxTick();
+    updateMaxTick();
     animationPanel.paintTick(tick);
     editFactory.setModel(model);
 
@@ -200,7 +200,11 @@ public class EditorView extends JFrame implements EditorAnimationView {
   public void toggleLoop() {
     looping = !looping;
     loop.setSelected(looping);
-    //rewind();
+  }
+
+  @Override
+  public void updateMaxTick() {
+    maxTick = animationPanel.getMaxTick();
   }
 
   @Override
@@ -229,6 +233,28 @@ public class EditorView extends JFrame implements EditorAnimationView {
     editDialog = null;
   }
 
+  @Override
+  public void setNewFrameText(Motion m) {
+    if (m == null) {
+      throw new IllegalArgumentException("Motion must not be null");
+    }
+    if (editDialog == null) {
+      throw new IllegalStateException("Shape editing dialog must be running to suggest keyframes");
+    }
+    editDialog.setNewFrameText(m);
+  }
+
+  @Override
+  public void setEditFrameText(Motion m) {
+    if (m == null) {
+      throw new IllegalArgumentException("Motion must not be null");
+    }
+    if (editDialog == null) {
+      throw new IllegalStateException("Shape editing dialog must be running to suggest keyframes");
+    }
+    editDialog.setEditFrameText(m);
+  }
+
   /**
    * TODO: should we pass an Appendable as an argument, or should we use the output?
    */
@@ -239,6 +265,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
 
   @Override
   public void displayErrorMessage(String message) {
+    System.out.println(message);
     // TODO: this
   }
 
@@ -280,22 +307,6 @@ public class EditorView extends JFrame implements EditorAnimationView {
     editShape.addActionListener(evt -> features.enterShapeEditor(shapes.getSelectedValue()));
 
     // Creating the EditShapeDialogFactory
-    this.editFactory = new EditShapeDialogFactory() {
-      @Override
-      public void addKeyframe() {
-        // TODO: this! fill in with features methods
-        exitShapeEditor();
-      }
-
-      @Override
-      public void editKeyframe() {
-        exitShapeEditor();
-      }
-
-      @Override
-      public void removeKeyframe() {
-        exitShapeEditor();
-      }
-    };
+    this.editFactory = new EditShapeDialogFactory(features);
   }
 }

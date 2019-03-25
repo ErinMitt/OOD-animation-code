@@ -69,6 +69,32 @@ public interface AnimationModel extends ReadOnlyModel {
   void extend(String shape, int time);
 
   /**
+   * Replace the motion at the given time with a motion of the given parameters.
+   * @param shape the shape name
+   * @param time the time
+   * @param x the x coordinate
+   * @param y the y coordinate
+   * @param width the width
+   * @param height the height
+   * @param red the r component of the color
+   * @param green the g component of the color
+   * @param blue the b component of the color
+   * @throws IllegalArgumentException if the shape does not exist, if there is no motion at the
+   *     given time, or if the given motion parameters are invalid
+   */
+  void editMotion(String shape, int time, int x, int y, int width, int height,
+                  int red, int green, int blue);
+
+  /**
+   * Delete the motion of the given shape at the given time.
+   * @param shape the shape name
+   * @param time the time of the motion
+   * @throws IllegalArgumentException if there is no shape by the given name or if there is no
+   *     motion at the given time
+   */
+  void deleteMotion(String shape, int time);
+
+  /**
    * Remove the last motion of the given shape.
    *
    * @param shapeName the shape from which the last motion will be deleted

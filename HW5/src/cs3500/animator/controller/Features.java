@@ -47,4 +47,58 @@ public interface Features {
    * Return to the default screen from the shape editor screen.
    */
   void exitShapeEditor();
+
+  /**
+   * Add a keyframe to the given shape with the given parameters.
+   * @param shape the shape name
+   * @param time the time
+   * @param x the x coordinate
+   * @param y the y coordinate
+   * @param width the width
+   * @param height the height
+   * @param red the r component of the color
+   * @param green the g component of the color
+   * @param blue the b component of the color
+   */
+  void addKeyframe(String shape, String time, String x, String y,
+                   String width, String height, String red, String green, String blue);
+
+  /**
+   * Edit an existing keyframe according to the given parameters.
+   * @param shape the shape name
+   * @param time the time
+   * @param x the x coordinate
+   * @param y the y coordinate
+   * @param width the width
+   * @param height the height
+   * @param red the r component of the color
+   * @param green the g component of the color
+   * @param blue the b component of the color
+   */
+  void editKeyframe(String shape, String time, String x, String y,
+                    String width, String height, String red, String green, String blue);
+
+  /**
+   * Delete the keyframe of the specified shape at the given time.
+   * @param shape the shape
+   * @param time the time of the keyframe
+   */
+  void removeKeyframe(String shape, String time);
+
+  /**
+   * If the user attempts to add a keyframe, autofill the most likely motion parameters.
+   * If the keyframe occurs between two other, suggest the in-between.
+   * If the keyframe happens before the first or after the last existing keyframe,
+   * suggest the nearest one.
+   * @param shape the shape whose keyframes are being edited
+   * @param time the time of the new keyframe
+   */
+  void suggestNewKeyframe(String shape, String time);
+
+  /**
+   * If the user attempts to edit a keyframe, autofill the current motion parameters.
+   * @param shape the shape whose keyframes are being edited
+   * @param time the time of the edited keyframe
+   */
+  void suggestEditKeyframe(String shape, String time);
 }

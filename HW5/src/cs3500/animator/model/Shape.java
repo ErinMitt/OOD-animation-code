@@ -56,14 +56,14 @@ class Shape {
    *
    * @param m the motion to be added
    */
-  private void addMotion(Motion m) {
+  void addMotion(Motion m) {
     if (m == null) {
       throw new IllegalArgumentException("The motion cannot be null.");
     }
-    /*// do not allow new Motions that overlap existing Motions
+    // do not allow new Motions that overlap existing Motions
     if (motionOverlaps(m)) {
       throw new IllegalArgumentException("This shape already has a motion at time " + m.getTime());
-    }*/
+    }
     motions.add(m);
   }
 
@@ -81,6 +81,19 @@ class Shape {
               + "cannot have its last motion extended.");
     }
     addMotion(motions.last().extend(time));
+  }
+
+  /**
+   * Delete the motion at the given time.
+   * @param time the time of the to-be-deleted motion
+   * @throws IllegalArgumentException if there is no motion at the given time
+   */
+  void deleteMotionAt(int time) {
+    if (time < Motion.START_TICK
+            || ! motionOverlaps(new Motion(time, 0, 0, 1, 1, 1, 1, 1))) {
+      throw new IllegalArgumentException("No motion at time " + time + " for the shape " + name);
+    }
+    motions.remove(motions.ceiling(new Motion(time, 0, 0, 1, 1, 1, 1, 1)));
   }
 
   /**
@@ -133,7 +146,7 @@ class Shape {
    * @param m the motion
    * @return whether the motions overlaps with an existing motion
    */
-  private boolean motionOverlaps(Motion m) {
+   private boolean motionOverlaps(Motion m) {
     Motion nearestMotion = motions.ceiling(m);
     if (nearestMotion == null) {
       return false;

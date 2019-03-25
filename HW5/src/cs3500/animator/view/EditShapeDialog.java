@@ -1,10 +1,12 @@
 package cs3500.animator.view;
 
-import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 
+import cs3500.animator.controller.Features;
 import cs3500.animator.model.Motion;
 
 /**
@@ -35,15 +37,26 @@ public class EditShapeDialog extends JDialog {
   private final JTextField editBlue;
 
   // delete keyframe controls
-  private final JButton delete;
+  private final JButton deleteButton;
 
   // keyframe timeline
-  //private final JList keyframes;
+  private final JList<String> keyframes;
 
-  public EditShapeDialog(JFrame owner, String title, EditShapeDialogFactory factory) {
-    super(owner, title);
+  public EditShapeDialog(JFrame owner, List<Motion> frames, String shape,
+                         Features features) {
+    super(owner, "Edit " + shape);
+
+    // create the timeline of keyframes
+    keyframes = new JList<>();
+    keyframes.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    List<String> keyframeNumbers = frames.stream()
+            .map(m -> Integer.toString(m.getTime()))
+            .collect(Collectors.toList());
+    keyframes.setListData(keyframeNumbers.toArray(new String[0]));
+    // TODO: add the listener
+
+    // create all buttons and text fields for adding frames
     addButton = new JButton("add frame");
-    addButton.addActionListener(evt -> factory.addKeyframe());
     addTime = new JTextField();
     addX = new JTextField();
     addY = new JTextField();
@@ -52,6 +65,10 @@ public class EditShapeDialog extends JDialog {
     addRed = new JTextField();
     addGreen = new JTextField();
     addBlue = new JTextField();
+    addButton.addActionListener(evt -> features.addKeyframe(shape, addTime.getText(),
+            addX.getText(), addY.getText(), addWidth.getText(), addHeight.getText(),
+            addRed.getText(), addGreen.getText(), addBlue.getText()));
+    addTime.addActionListener(evt -> features.suggestNewKeyframe(shape, addTime.getText()));
 
     addTime.setColumns(TEXT_FIELD_WIDTH);
     addX.setColumns(TEXT_FIELD_WIDTH);
@@ -62,8 +79,8 @@ public class EditShapeDialog extends JDialog {
     addGreen.setColumns(TEXT_FIELD_WIDTH);
     addBlue.setColumns(TEXT_FIELD_WIDTH);
 
+    // create all buttons and text fields for editing frames
     editButton = new JButton("edit");
-    editButton.addActionListener(evt -> factory.editKeyframe());
     editX = new JTextField();
     editY = new JTextField();
     editWidth = new JTextField();
@@ -71,36 +88,83 @@ public class EditShapeDialog extends JDialog {
     editRed = new JTextField();
     editGreen = new JTextField();
     editBlue = new JTextField();
+    editButton.addActionListener(evt -> features.editKeyframe(shape, keyframes.getSelectedValue(),
+            editX.getText(), editY.getText(), editWidth.getText(), editHeight.getText(),
+            editRed.getText(), editGreen.getText(), editBlue.getText()));
+    keyframes.addListSelectionListener(
+            evt -> features.suggestEditKeyframe(shape, keyframes.getSelectedValue()));
 
-    delete = new JButton("delete");
-    delete.addActionListener(evt -> factory.removeKeyframe());
+    editX.setColumns(TEXT_FIELD_WIDTH);
+    editY.setColumns(TEXT_FIELD_WIDTH);
+    editWidth.setColumns(TEXT_FIELD_WIDTH);
+    editHeight.setColumns(TEXT_FIELD_WIDTH);
+    editRed.setColumns(TEXT_FIELD_WIDTH);
+    editGreen.setColumns(TEXT_FIELD_WIDTH);
+    editBlue.setColumns(TEXT_FIELD_WIDTH);
+
+    // create the button for deleting a keyframe
+    deleteButton = new JButton("delete");
+    deleteButton.addActionListener(
+            evt -> features.removeKeyframe(shape, keyframes.getSelectedValue()));
+
+
+
 
     // add all buttons and text fields to the dialog
     JPanel container = new JPanel();
     container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
     this.add(container);
 
+    // add stuff to "add keyframe" panel
+    JPanel addPanel = new JPanel();
+    addPanel.setLayout(new FlowLayout());
+    container.add(addPanel);
+
+    addPanel.add(addButton);
+    addPanel.add(new JLabel("time:"));
+    addPanel.add(addTime);
+    addPanel.add(new JLabel("X"));
+    addPanel.add(addX);
+    addPanel.add(new JLabel("Y"));
+    addPanel.add(addY);
+    addPanel.add(new JLabel("width"));
+    addPanel.add(addWidth);
+    addPanel.add(new JLabel("height"));
+    addPanel.add(addHeight);
+    addPanel.add(new JLabel("red"));
+    addPanel.add(addRed);
+    addPanel.add(new JLabel("green"));
+    addPanel.add(addGreen);
+    addPanel.add(new JLabel("blue"));
+    addPanel.add(addBlue);
+
+    // add stuff to "edit keyframe" panel
     JPanel editPanel = new JPanel();
     editPanel.setLayout(new FlowLayout());
     container.add(editPanel);
 
-    editPanel.add(addButton);
-    editPanel.add(new JLabel("time:"));
-    editPanel.add(addTime);
+    editPanel.add(editButton);
+    editPanel.add(deleteButton);
     editPanel.add(new JLabel("X"));
-    editPanel.add(addX);
+    editPanel.add(editX);
     editPanel.add(new JLabel("Y"));
-    editPanel.add(addY);
+    editPanel.add(editY);
     editPanel.add(new JLabel("width"));
-    editPanel.add(addWidth);
+    editPanel.add(editWidth);
     editPanel.add(new JLabel("height"));
-    editPanel.add(addHeight);
+    editPanel.add(editHeight);
     editPanel.add(new JLabel("red"));
-    editPanel.add(addRed);
+    editPanel.add(editRed);
     editPanel.add(new JLabel("green"));
-    editPanel.add(addGreen);
+    editPanel.add(editGreen);
     editPanel.add(new JLabel("blue"));
-    editPanel.add(addBlue);
+    editPanel.add(editBlue);
+
+    // add the keyframe timeline
+    //JScrollPane scroll = new JScrollPane();
+    //scroll.add(keyframes);
+    //scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    container.add(keyframes);
 
     pack();
   }

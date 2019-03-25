@@ -93,6 +93,23 @@ public class AnimationModelImpl implements AnimationModel {
   }
 
   @Override
+  public void editMotion(String shapeName, int time, int x, int y, int width, int height,
+                         int red, int green, int blue) {
+    checkShapeExists(shapeName);
+    // Motion constructor check for validity of inputs, throw IAE if invalid
+    Motion m = new Motion(time, x, y, width, height, red, green, blue);
+    Shape shape = shapes.get(shapeName);
+    shape.deleteMotionAt(time); // throws IAE if there is no motion at the given time
+    shape.addMotion(m);
+  }
+
+  @Override
+  public void deleteMotion(String shapeName, int time) {
+    checkShapeExists(shapeName);
+    shapes.get(shapeName).deleteMotionAt(time); // throws IAE if there is not motion at that time
+  }
+
+  @Override
   public void deleteLastMotion(String shapeName) {
     checkShapeExists(shapeName);
     shapes.get(shapeName).deleteLastMotion();

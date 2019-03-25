@@ -3,6 +3,7 @@ package cs3500.animator.view;
 import java.util.List;
 
 import cs3500.animator.controller.Features;
+import cs3500.animator.model.Motion;
 
 public interface EditorAnimationView extends AnimationView {
   /**
@@ -34,6 +35,11 @@ public interface EditorAnimationView extends AnimationView {
    * Switch whether the animation loops or not.
    */
   void toggleLoop();
+
+  /**
+   * Recalculate the last tick in the animation.
+   */
+  void updateMaxTick();
 
   /**
    * Displays an interactive list of shapes in the order that they are stored in the model.
@@ -77,4 +83,16 @@ public interface EditorAnimationView extends AnimationView {
    * Return to the default screen from the shape editor screen.
    */
   void exitShapeEditor();
+
+  /**
+   * Set the text boxes for creating a new frame to the given Motion.
+   * @param m the motion to set the text boxes to
+   */
+  void setNewFrameText(Motion m);
+
+  /**
+   * Set the text boxes for editing an existing frame to the given Motion.
+   * @param m the motion to set the text boxes to
+   */
+  void setEditFrameText(Motion m);
 }

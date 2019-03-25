@@ -1,33 +1,25 @@
 package cs3500.animator.view;
 
-import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.List;
 
 import javax.swing.*;
 
+import cs3500.animator.controller.Features;
 import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
 /**
  * Represents a class that can create dialog boxes to edit, add, or remove a shape's keyframes.
  */
-abstract class EditShapeDialogFactory {
+class EditShapeDialogFactory {
   private ReadOnlyModel model;
+  private final Features features;
 
-  /**
-   * A method that adds a keyframe to an AnimationModel. Must be overridden.
-   */
-  public abstract void addKeyframe();
-
-  /**
-   * A method that can edit an existing keyframe in an AnimationModel. Must be overridden.
-   */
-  public abstract void editKeyframe();
-
-  /**
-   * A method that can remove a keyframe from an AnimationModel. Must be overridden.
-   */
-  public abstract void removeKeyframe();
+  public EditShapeDialogFactory(Features features) {
+    this.features = features;
+  }
 
   /**
    * Build a dialog box that allows editing of a shape's Motions.
@@ -40,11 +32,48 @@ abstract class EditShapeDialogFactory {
     }
     List<Motion> motions;
     try {
-      motions = model.getMotions(shape); // TODO: come back to this
+      motions = model.getMotions(shape);
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException ("No such shape " + shape);
     }
-    EditShapeDialog dialog = new EditShapeDialog(owner, "Edit " + shape, this);
+    EditShapeDialog dialog = new EditShapeDialog(owner, motions, shape, features);
+    dialog.addWindowListener(new WindowListener() {
+      @Override
+      public void windowOpened(WindowEvent e) {
+        // do nothing if the window is open
+      }
+
+      @Override
+      public void windowClosing(WindowEvent e) {
+        // if the dialog is closed manually, reset the dialog.
+        features.exitShapeEditor();
+      }
+
+      @Override
+      public void windowClosed(WindowEvent e) {
+        // do nothing
+      }
+
+      @Override
+      public void windowIconified(WindowEvent e) {
+        // do nothing
+      }
+
+      @Override
+      public void windowDeiconified(WindowEvent e) {
+        // do nothing
+      }
+
+      @Override
+      public void windowActivated(WindowEvent e) {
+        // do nothing
+      }
+
+      @Override
+      public void windowDeactivated(WindowEvent e) {
+        // do nothing
+      }
+    });
     // TODO: more setup stuff?
     return dialog;
   }
