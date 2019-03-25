@@ -7,6 +7,11 @@ import cs3500.animator.model.Motion;
 
 public interface EditorAnimationView extends AnimationView {
   /**
+   * Reset the display to reflect the current tick.
+   */
+  void drawCurrentTick();
+
+  /**
    * Change whether the animation is currently playing or not.
    */
   void togglePlay();

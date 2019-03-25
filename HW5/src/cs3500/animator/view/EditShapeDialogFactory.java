@@ -18,6 +18,9 @@ class EditShapeDialogFactory {
   private final Features features;
 
   public EditShapeDialogFactory(Features features) {
+    if (features == null) {
+      throw new IllegalArgumentException("Features must not be null");
+    }
     this.features = features;
   }
 
@@ -74,7 +77,6 @@ class EditShapeDialogFactory {
         // do nothing
       }
     });
-    // TODO: more setup stuff?
     return dialog;
   }
 

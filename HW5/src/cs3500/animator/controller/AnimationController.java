@@ -104,6 +104,7 @@ public class AnimationController implements Features {
               Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue));
       view.exitShapeEditor();
       view.updateMaxTick();
+      view.drawCurrentTick();
     } catch (NumberFormatException e) {
       view.displayErrorMessage("Keyframe parameters must be numbers");
     } catch (IllegalArgumentException e) {
@@ -130,6 +131,7 @@ public class AnimationController implements Features {
               Integer.parseInt(width), Integer.parseInt(height),
               Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue));
       view.exitShapeEditor();
+      view.drawCurrentTick();
     } catch (NumberFormatException e) {
       view.displayErrorMessage("Keyframe parameters must be numbers");
     } catch (IllegalArgumentException e) {
@@ -153,6 +155,7 @@ public class AnimationController implements Features {
       model.deleteMotion(shape, Integer.parseInt(time));
       view.exitShapeEditor();
       view.updateMaxTick();
+      view.drawCurrentTick();
     } catch (NumberFormatException e) {
       view.displayErrorMessage("Keyframe parameters must be numbers");
     } catch (IllegalArgumentException e) {
@@ -175,9 +178,6 @@ public class AnimationController implements Features {
       view.displayErrorMessage("Tick number must be an integer");
       return;
     }
-    if (shape == null) {
-      throw new IllegalArgumentException("Shape must not be null");
-    }
     if (! model.getShapes().contains(shape)) {
       throw new IllegalArgumentException("No such shape " + shape);
     }
@@ -197,8 +197,12 @@ public class AnimationController implements Features {
         m = motions.get(motions.size() - 1);
       }
     }
+    if (t < Motion.START_TICK) {
+      view.displayErrorMessage("Cannot add a frame at tick " + t);
+      return;
+    }
     try {
-      view.setNewFrameText(m);
+      view.setNewFrameText(m.extend(t));
     } catch (IllegalStateException e) {
       view.displayErrorMessage("Can't add a new frame when not in shape editor mode");
     }

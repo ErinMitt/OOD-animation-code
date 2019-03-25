@@ -1,8 +1,7 @@
 package cs3500.animator.view;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.List;
@@ -17,8 +16,7 @@ import cs3500.animator.model.ReadOnlyModel;
 /**
  * Class representing a view that allows editing of an animation model.
  */
-// TODO: add a replaceMotion method to the model
-public class EditorView extends JFrame implements EditorAnimationView {
+public class EditorView extends JFrame implements EditorAnimationView { // TODO: extend VisualView instead of JFrame
   private static String CAPTION = "Animation editor";
 
   private AnimationPanel animationPanel;
@@ -44,10 +42,11 @@ public class EditorView extends JFrame implements EditorAnimationView {
   // INVARIANT: if toggled, looping = true. If not toggled, looping = false
   private final JButton forward;
   private final JButton back;
-  //private final JList frames = new JList(); // TODO: add MouseListener to labels in here
   private final JList<String> shapes = new JList<>();
   private final JButton editShape;
   private final JButton addShape;
+  private final JLabel tickLabel;
+  // INVARIANT: text is equal to the current tick
 
   private EditShapeDialogFactory editFactory;
   private EditShapeDialog editDialog; // if there is no dialog, this will be null.
@@ -70,6 +69,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     back = new JButton("<-");
     editShape = new JButton("edit");
     addShape = new JButton("add");
+    tickLabel = new JLabel(Integer.toString(tick));
 
     timer = new Timer((int) Math.round((1000 / speed)), (ActionEvent e) -> {
       if (playing) {
@@ -81,6 +81,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
 
     JPanel playbackControlPanel = new JPanel();
     playbackControlPanel.setLayout(new FlowLayout());
+    playbackControlPanel.add(tickLabel);
     playbackControlPanel.add(begin);
     playbackControlPanel.add(play);
     playbackControlPanel.add(loop);
@@ -115,12 +116,15 @@ public class EditorView extends JFrame implements EditorAnimationView {
     this.animationPanel = new AnimationPanel(model);
     add(animationPanel, BorderLayout.CENTER);
     updateMaxTick();
-    animationPanel.paintTick(tick);
+    drawCurrentTick();
     editFactory.setModel(model);
 
     setShapeList(model.getShapes());
   }
 
+  // animate can be successfully called if setFeatures hasn't been called yet.
+  // however, button presses won't do anything, and attempting to open a shape edit dialog
+  // will cause an error.
   @Override
   public void animate() {
     if (animationPanel == null) {
@@ -129,10 +133,22 @@ public class EditorView extends JFrame implements EditorAnimationView {
     resetTextFields();
     pack();
 
+    // set the size to a constant so the buttons don't move with the changing label size
+    tickLabel.setPreferredSize(new Dimension(4 * tickLabel.getSize().width,
+            tickLabel.getSize().height));
+
+    pack();
+
     this.setVisible(true);
     timer.start();
 
     // TODO: add setup stuff as we write more features
+  }
+
+  @Override
+  public void drawCurrentTick() {
+    animationPanel.paintTick(tick);
+    tickLabel.setText(Integer.toString(tick));
   }
 
   @Override
@@ -167,33 +183,53 @@ public class EditorView extends JFrame implements EditorAnimationView {
 
   @Override
   public void rewind() {
-    tick = Motion.START_TICK;
-    animationPanel.paintTick(tick);
+    setTick(Motion.START_TICK);
   }
 
-  // TODO: fix this to work with any start tick instead of just 0
   @Override
   public void incrementTick() {
-    tick += 1;
+    int t = tick + 1;
     if (looping) {
-      tick = tick % (maxTick + 1);
+      setTick(normalizeTick(t));
     }
     else {
-      tick = Math.min(tick, maxTick);
+      setTick(Math.min(t, maxTick));
     }
-    animationPanel.paintTick(tick);
   }
 
   @Override
   public void decrementTick() {
-    tick -= 1;
+    int t = tick - 1;
     if (looping) {
-      tick = (((tick % (maxTick + 1)) + maxTick + 1) % (maxTick + 1));
+      setTick(normalizeTick(t));
     }
     else {
-      tick = Math.max(tick, Motion.START_TICK);
+      setTick(Math.max(t, Motion.START_TICK));
     }
-    animationPanel.paintTick(tick);
+  }
+
+  /**
+   * Set the current tick to the given tick. Call this method whenever changing the tick.
+   * This method enforces display invariants on the current tick:
+   * it calls drawCurrentTick to update any relevant display components.
+   * @param tick the new tick.
+   */
+  private void setTick(int tick) {
+    this.tick = tick;
+    drawCurrentTick();
+  }
+
+  /**
+   * Return an out-of-bounds tick to within-range using modulus.
+   * For example, if a tick is 1 before the minimum tick, it is corrected to the maximum tick.
+   * If a tick is one above the maximum tick, it is corrected to the minimum tick.
+   * If a tick is between the minimum and maximum ticks, it does not change.
+   * @param tick the tick to be returned within-bounds
+   * @return the corrected tick
+   */
+  private int normalizeTick(int tick) {
+    int range = maxTick - Motion.START_TICK + 1;
+    return ((((tick - Motion.START_TICK) % range) + range) % range) + Motion.START_TICK;
   }
 
   @Override
@@ -219,6 +255,9 @@ public class EditorView extends JFrame implements EditorAnimationView {
     }
     if (editDialog != null) {
       throw new IllegalStateException("The shape editor dialog is already open");
+    }
+    if (editFactory == null) {
+      throw new IllegalStateException("The editor factory has not been set");
     }
     editDialog = editFactory.getDialog(shape, this);
     editDialog.setVisible(true);
@@ -282,6 +321,9 @@ public class EditorView extends JFrame implements EditorAnimationView {
 
   @Override
   public void addFeatures(Features features) {
+    if (features == null) {
+      throw new IllegalArgumentException("Features must not be null");
+    }
     // playback buttons
     play.addActionListener(evt -> features.togglePlay());
     loop.addActionListener(evt -> features.toggleLoop());

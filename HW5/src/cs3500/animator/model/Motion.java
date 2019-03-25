@@ -83,7 +83,7 @@ public class Motion {
    * @param time the time for the new Motion
    * @return the new Motion created
    */
-  Motion extend(int time) {
+  public Motion extend(int time) {
     return new Motion(time, x, y, width, height, red, green, blue);
   }
 

@@ -53,7 +53,6 @@ public class EditShapeDialog extends JDialog {
             .map(m -> Integer.toString(m.getTime()))
             .collect(Collectors.toList());
     keyframes.setListData(keyframeNumbers.toArray(new String[0]));
-    // TODO: add the listener
 
     // create all buttons and text fields for adding frames
     addButton = new JButton("add frame");
