@@ -36,4 +36,15 @@ public interface Features {
   void setSpeedToUserInput(String input);
 
   void resetTextFields();
+
+  /**
+   * Enter a screen from which a shape's Motions can be edited.
+   * @param shape the shape to be edited
+   */
+  void enterShapeEditor(String shape);
+
+  /**
+   * Return to the default screen from the shape editor screen.
+   */
+  void exitShapeEditor();
 }

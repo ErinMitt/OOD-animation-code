@@ -20,9 +20,9 @@ public class SanityCheck {
     model.addMotion("R", 30, 50, 50, 20, 4, 0, 200, 200);
 
     EditorAnimationView view = new EditorView();
-    view.setModel(model);
     view.setSpeed(2);
     new AnimationController(model, view);
+    view.setModel(model);
     view.animate();
   }
 }

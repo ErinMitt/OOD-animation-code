@@ -1,5 +1,7 @@
 package cs3500.animator.view;
 
+import java.util.List;
+
 import cs3500.animator.controller.Features;
 
 public interface EditorAnimationView extends AnimationView {
@@ -34,6 +36,11 @@ public interface EditorAnimationView extends AnimationView {
   void toggleLoop();
 
   /**
+   * Displays an interactive list of shapes in the order that they are stored in the model.
+   */
+  void setShapeList(List<String> shapes);
+
+  /**
    * Save this animation to the output specified in setOutput.
    * @throws IllegalStateException if the output has not been set.
    */
@@ -60,4 +67,14 @@ public interface EditorAnimationView extends AnimationView {
    * Reset all text fields to their default state.
    */
   void resetTextFields();
+
+  /**
+   * Enter a screen from which a shape's Motions can be edited.
+   */
+  void enterShapeEditor(String shape);
+
+  /**
+   * Return to the default screen from the shape editor screen.
+   */
+  void exitShapeEditor();
 }

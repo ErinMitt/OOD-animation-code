@@ -62,4 +62,24 @@ public class AnimationController implements Features {
   public void resetTextFields() {
     view.resetTextFields();
   }
+
+  @Override
+  public void enterShapeEditor(String shape) {
+    try {
+      view.enterShapeEditor(shape);
+    } catch (IllegalArgumentException e) {
+      view.displayErrorMessage("No shape selected");
+    } catch (IllegalStateException e) {
+      view.displayErrorMessage(e.getMessage());
+    }
+  }
+
+  @Override
+  public void exitShapeEditor() {
+    try {
+      view.exitShapeEditor();
+    } catch (IllegalStateException e) {
+      view.displayErrorMessage(e.getMessage());
+    }
+  }
 }

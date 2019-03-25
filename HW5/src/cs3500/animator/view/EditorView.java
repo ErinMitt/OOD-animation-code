@@ -5,15 +5,9 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.Timer;
-import javax.swing.JToggleButton;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.*;
 
 
 import cs3500.animator.controller.Features;
@@ -50,8 +44,14 @@ public class EditorView extends JFrame implements EditorAnimationView {
   // INVARIANT: if toggled, looping = true. If not toggled, looping = false
   private final JButton forward;
   private final JButton back;
-  private final JList<JLabel> frames = new JList<>(); // TODO: add MouseListener to labels in here
-  private final JList<JLabel> shapes = new JList<>(); // TODO: add MouseListener to labels in here
+  //private final JList frames = new JList(); // TODO: add MouseListener to labels in here
+  private final JList<String> shapes = new JList<String>();
+  private final JButton editShape;
+  private final JButton addShape;
+
+  private EditShapeDialogFactory editFactory;
+  private EditShapeDialog editDialog; // if there is no dialog, this will be null.
+  // the dialog is stored as a field to allow the view to call methods on it.
 
   public EditorView() {
     super(CAPTION);
@@ -68,6 +68,8 @@ public class EditorView extends JFrame implements EditorAnimationView {
     loop = new JToggleButton("loop");
     forward = new JButton("->");
     back = new JButton("<-");
+    editShape = new JButton("edit");
+    addShape = new JButton("add");
 
     timer = new Timer((int) Math.round((1000 / speed)), (ActionEvent e) -> {
       if (playing) {
@@ -87,6 +89,18 @@ public class EditorView extends JFrame implements EditorAnimationView {
     playbackControlPanel.add(fps);
 
     add(playbackControlPanel, BorderLayout.PAGE_END);
+
+    JPanel shapeEditor = new JPanel();
+    shapeEditor.setLayout(new BoxLayout(shapeEditor, BoxLayout.Y_AXIS));
+    JPanel containerFrame = new JPanel();
+    // this is to make it look pretty and align, it has no functional purpose
+    containerFrame.add(shapes);
+    shapeEditor.add(containerFrame);
+    shapeEditor.add(editShape);
+    shapeEditor.add(addShape);
+    shapes.setLayoutOrientation(JList.VERTICAL);
+
+    add(shapeEditor, BorderLayout.EAST);
   }
 
 
@@ -102,6 +116,9 @@ public class EditorView extends JFrame implements EditorAnimationView {
     add(animationPanel, BorderLayout.CENTER);
     maxTick = animationPanel.getMaxTick();
     animationPanel.paintTick(tick);
+    editFactory.setModel(model);
+
+    setShapeList(model.getShapes());
   }
 
   @Override
@@ -183,7 +200,33 @@ public class EditorView extends JFrame implements EditorAnimationView {
   public void toggleLoop() {
     looping = !looping;
     loop.setSelected(looping);
-    rewind();
+    //rewind();
+  }
+
+  @Override
+  public void setShapeList(List<String> shapes) {
+    this.shapes.setListData(shapes.toArray(new String[0]));
+  }
+
+  @Override
+  public void enterShapeEditor(String shape) {
+    if (shape == null) {
+      throw new IllegalArgumentException("Shape cannot be null");
+    }
+    if (editDialog != null) {
+      throw new IllegalStateException("The shape editor dialog is already open");
+    }
+    editDialog = editFactory.getDialog(shape, this);
+    editDialog.setVisible(true);
+  }
+
+  @Override
+  public void exitShapeEditor() {
+    if (editDialog == null) {
+      throw new IllegalStateException("The shape editor is already closed");
+    }
+    editDialog.dispose();
+    editDialog = null;
   }
 
   /**
@@ -212,7 +255,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
 
   @Override
   public void addFeatures(Features features) {
-    // buttons
+    // playback buttons
     play.addActionListener(evt -> features.togglePlay());
     loop.addActionListener(evt -> features.toggleLoop());
     begin.addActionListener(evt -> features.rewind());
@@ -232,5 +275,27 @@ public class EditorView extends JFrame implements EditorAnimationView {
         features.resetTextFields();
       }
     });
+
+    // shape editing buttons
+    editShape.addActionListener(evt -> features.enterShapeEditor(shapes.getSelectedValue()));
+
+    // Creating the EditShapeDialogFactory
+    this.editFactory = new EditShapeDialogFactory() {
+      @Override
+      public void addKeyframe() {
+        // TODO: this! fill in with features methods
+        exitShapeEditor();
+      }
+
+      @Override
+      public void editKeyframe() {
+        exitShapeEditor();
+      }
+
+      @Override
+      public void removeKeyframe() {
+        exitShapeEditor();
+      }
+    };
   }
 }
