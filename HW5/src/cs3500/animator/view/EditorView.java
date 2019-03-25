@@ -16,7 +16,7 @@ import cs3500.animator.model.ReadOnlyModel;
 /**
  * Class representing a view that allows editing of an animation model.
  */
-public class EditorView extends JFrame implements EditorAnimationView { // TODO: extend VisualView instead of JFrame
+public class EditorView extends JFrame implements EditorAnimationView {
   private static String CAPTION = "Animation editor";
 
   private AnimationPanel animationPanel;
@@ -44,7 +44,9 @@ public class EditorView extends JFrame implements EditorAnimationView { // TODO:
   private final JButton back;
   private final JList<String> shapes = new JList<>();
   private final JButton editShape;
-  private final JButton addShape;
+  private final JButton addRectangle;
+  private final JButton addEllipse;
+  private final JTextField addShapeName;
   private final JLabel tickLabel;
   // INVARIANT: text is equal to the current tick
 
@@ -68,7 +70,9 @@ public class EditorView extends JFrame implements EditorAnimationView { // TODO:
     forward = new JButton("->");
     back = new JButton("<-");
     editShape = new JButton("edit");
-    addShape = new JButton("add");
+    addRectangle = new JButton("new rect");
+    addEllipse = new JButton("new ellipse");
+    addShapeName = new JTextField();
     tickLabel = new JLabel(Integer.toString(tick));
 
     timer = new Timer((int) Math.round((1000 / speed)), (ActionEvent e) -> {
@@ -93,12 +97,11 @@ public class EditorView extends JFrame implements EditorAnimationView { // TODO:
 
     JPanel shapeEditor = new JPanel();
     shapeEditor.setLayout(new BoxLayout(shapeEditor, BoxLayout.Y_AXIS));
-    JPanel containerFrame = new JPanel();
-    // this is to make it look pretty and align, it has no functional purpose
-    containerFrame.add(shapes);
-    shapeEditor.add(containerFrame);
+    shapeEditor.add(new JScrollPane(shapes));
     shapeEditor.add(editShape);
-    shapeEditor.add(addShape);
+    shapeEditor.add(addEllipse);
+    shapeEditor.add(addRectangle);
+    shapeEditor.add(addShapeName);
     shapes.setLayoutOrientation(JList.VERTICAL);
 
     add(shapeEditor, BorderLayout.EAST);
@@ -134,15 +137,13 @@ public class EditorView extends JFrame implements EditorAnimationView { // TODO:
     pack();
 
     // set the size to a constant so the buttons don't move with the changing label size
-    tickLabel.setPreferredSize(new Dimension(4 * tickLabel.getSize().width,
-            tickLabel.getSize().height));
+    tickLabel.setPreferredSize(new Dimension(4 * (int) tickLabel.getSize().getWidth(),
+            (int) tickLabel.getSize().getHeight()));
 
     pack();
 
     this.setVisible(true);
     timer.start();
-
-    // TODO: add setup stuff as we write more features
   }
 
   @Override

@@ -7,9 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import cs3500.animator.controller.AnimationController;
+import cs3500.animator.controller.Controller;
 import cs3500.animator.model.AnimationModelImpl;
 import cs3500.animator.util.AnimationReader;
 import cs3500.animator.view.AnimationView;
+import cs3500.animator.view.EditorAnimationView;
 
 /**
  * A class that can run the program through command line arguments.
@@ -33,7 +36,7 @@ public final class Excellence {
     int speed = 1;
     Appendable output = System.out;
     FileReader input = null;
-    AnimationView view = null;
+    EditorAnimationView view = null;
 
     for (int i = 0; i < args.length - 1; i += 2) {
       switch (args[i]) {
@@ -87,17 +90,27 @@ public final class Excellence {
 
     try {
       view.setSpeed(speed);
-      view.setOutput(output);
     } catch (UnsupportedOperationException e) {
-      // if the user specifies a speed or output but that is not supported, ignore it
+      // if the user specifies a speed but that is not supported, ignore it
     }
     try {
-      view.setModel(AnimationReader.parseFile(input, new AnimationModelImpl.Builder()));
+      view.setOutput(output);
+    } catch (UnsupportedOperationException e) {
+      // if the user specifies an output but that is not supported, ignore it
+    }
+
+    Controller controller;
+
+    try {
+      controller = new AnimationController(
+              AnimationReader.parseFile(input, new AnimationModelImpl.Builder()),
+              view);
     } catch (IllegalStateException e) {
       showErrorMessage("Unable to read file, returned error message: " + e.getMessage());
       return;
     }
-    view.animate();
+    controller.go();
+    System.out.println("Got past animate for the editor view");
 
     // We cast here so that we're able to close FileWriters.
     // It's necessary because the output is only required to be an Appendable, not a Closeable,

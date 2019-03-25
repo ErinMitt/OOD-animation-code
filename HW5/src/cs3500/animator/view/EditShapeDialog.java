@@ -1,6 +1,6 @@
 package cs3500.animator.view;
 
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,11 +48,12 @@ public class EditShapeDialog extends JDialog {
 
     // create the timeline of keyframes
     keyframes = new JList<>();
-    keyframes.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    keyframes.setLayoutOrientation(JList.VERTICAL_WRAP);
     List<String> keyframeNumbers = frames.stream()
             .map(m -> Integer.toString(m.getTime()))
             .collect(Collectors.toList());
     keyframes.setListData(keyframeNumbers.toArray(new String[0]));
+    keyframes.setVisibleRowCount(1);
 
     // create all buttons and text fields for adding frames
     addButton = new JButton("add frame");
@@ -160,10 +161,11 @@ public class EditShapeDialog extends JDialog {
     editPanel.add(editBlue);
 
     // add the keyframe timeline
-    //JScrollPane scroll = new JScrollPane();
-    //scroll.add(keyframes);
-    //scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    container.add(keyframes);
+    JScrollPane scroll = new JScrollPane(keyframes);
+    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    container.add(scroll);
+    scroll.setSize(new Dimension());
 
     pack();
   }

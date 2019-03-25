@@ -10,16 +10,30 @@ import cs3500.animator.view.EditorAnimationView;
  * A class representing a controller that allows communication
  * between an AnimationModel and an EditorView.
  */
-public class AnimationController implements Features {
+public class AnimationController implements Features, Controller {
   private final AnimationModel model;
   private final EditorAnimationView view;
 
   public AnimationController(AnimationModel model, EditorAnimationView view) {
+    if (model == null || view == null) {
+      throw new IllegalArgumentException("Model and view must not be null");
+    }
     this.model = model;
-    this.view = view; // TODO: add model to view here!
-    view.addFeatures(this);
+    this.view = view;
+    try {
+      view.addFeatures(this);
+    } catch (UnsupportedOperationException e) {
+      // addFeatures may be unsupported if the view does not need user controls,
+      // such as a VisualView, TextView, or SVGView wrapped in an EditorViewWrapper.
+      // This is expected - do nothing if this happens.
+    }
+    view.setModel(model);
   }
 
+  @Override
+  public void go() {
+    view.animate();
+  }
 
   @Override
   public void togglePlay() {
