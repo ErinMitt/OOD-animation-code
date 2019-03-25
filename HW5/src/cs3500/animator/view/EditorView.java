@@ -48,6 +48,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
   private final JButton addEllipse;
   private final JTextField addShapeName;
   private final JLabel tickLabel;
+  private final JButton deleteShape;
   // INVARIANT: text is equal to the current tick
 
   private EditShapeDialogFactory editFactory;
@@ -74,6 +75,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     addEllipse = new JButton("new ellipse");
     addShapeName = new JTextField();
     tickLabel = new JLabel(Integer.toString(tick));
+    deleteShape = new JButton("delete shape");
 
     timer = new Timer((int) Math.round((1000 / speed)), (ActionEvent e) -> {
       if (playing) {
@@ -99,9 +101,10 @@ public class EditorView extends JFrame implements EditorAnimationView {
     shapeEditor.setLayout(new BoxLayout(shapeEditor, BoxLayout.Y_AXIS));
     shapeEditor.add(new JScrollPane(shapes));
     shapeEditor.add(editShape);
+    shapeEditor.add(addShapeName);
     shapeEditor.add(addEllipse);
     shapeEditor.add(addRectangle);
-    shapeEditor.add(addShapeName);
+    shapeEditor.add(deleteShape);
     shapes.setLayoutOrientation(JList.VERTICAL);
 
     add(shapeEditor, BorderLayout.EAST);
@@ -331,6 +334,11 @@ public class EditorView extends JFrame implements EditorAnimationView {
     begin.addActionListener(evt -> features.rewind());
     forward.addActionListener(evt -> features.stepForward());
     back.addActionListener(evt -> features.stepBackwards());
+
+    // shape editing controls
+    addRectangle.addActionListener(evt -> features.addShape(addShapeName.getText(), "rectangle"));
+    addEllipse.addActionListener(evt -> features.addShape(addShapeName.getText(), "ellipse"));
+    deleteShape.addActionListener(evt -> features.deleteShape(shapes.getSelectedValue()));
 
     // text fields
     fps.addActionListener(evt -> features.setSpeedToUserInput(fps.getText()));

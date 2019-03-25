@@ -101,4 +101,17 @@ public interface Features {
    * @param time the time of the edited keyframe
    */
   void suggestEditKeyframe(String shape, String time);
+
+  /**
+   * Add a shape by the given name of the given type to the model's list of shapes.
+   * @param name the shape's name
+   * @param type the shape's type
+   */
+  void addShape(String name, String type);
+
+  /**
+   * Delete a shape from the model and all of it's keyframes by deleting the given shape name.
+   * @param name the shape's name
+   */
+  void deleteShape(String name);
 }

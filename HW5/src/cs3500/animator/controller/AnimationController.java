@@ -196,19 +196,20 @@ public class AnimationController implements Features, Controller {
       throw new IllegalArgumentException("No such shape " + shape);
     }
     Motion m;
-    try { // if the new keyframe happens during the existing animation
-      m = model.getTransformationAt(shape, t).getStateAt(t);
-    } catch (IllegalArgumentException e) {
-      // if the new keyframe happens before or after the animation
-      List<Motion> motions = model.getMotions(shape);
-      if (motions.isEmpty()) { // if there are no reference motions, choose a random one
-        m = new Motion(Motion.START_TICK, 0, 0, 10, 10, 0, 0, 0);
-      }
-      else if (t < motions.get(0).getTime()) {
-        m = motions.get(0);
-      }
-      else {
-        m = motions.get(motions.size() - 1);
+    if (model.getMotions(shape).isEmpty()) {
+      m = new Motion(Motion.START_TICK, 0, 0, 10, 10, 0, 0, 0);
+    }
+    else {
+      try { // if the new keyframe happens during the existing animation
+        m = model.getTransformationAt(shape, t).getStateAt(t);
+      } catch (IllegalArgumentException e) {
+        // if the new keyframe happens before or after the animation
+        List<Motion> motions = model.getMotions(shape);
+        if (t < motions.get(0).getTime()) {
+          m = motions.get(0);
+        } else {
+          m = motions.get(motions.size() - 1);
+        }
       }
     }
     if (t < Motion.START_TICK) {
@@ -255,5 +256,47 @@ public class AnimationController implements Features, Controller {
       }
     }
     view.displayErrorMessage("The shape " + shape + " has no keyframes at tick " + time);
+  }
+
+  @Override
+  public void addShape(String name, String type) {
+    if (name == null || type == null) {
+      throw new IllegalArgumentException("Shape name and type must not be null");
+    }
+    if (name.equals("")) {
+      view.displayErrorMessage("Names must have at least one character");
+      return;
+    }
+    if (model.getShapes().contains(name)) {
+      view.displayErrorMessage("There is already a shape by the name " + name);
+      return;
+    }
+    switch (type) {
+      case "ellipse":
+        model.addEllipse(name);
+        break;
+      case "rectangle":
+        model.addRectangle(name);
+        break;
+      default:
+        throw new IllegalArgumentException("There is no shape type " + type);
+    }
+    view.setShapeList(model.getShapes());
+  }
+
+  @Override
+  public void deleteShape(String name){
+    if (name == null) {
+      view.displayErrorMessage("There is no shape selected");
+      return;
+    }
+
+    if (!model.getShapes().contains(name)) {
+      view.displayErrorMessage("There is no shape by this name");
+      return;
+    }
+    model.deleteShape(name);
+    view.setShapeList(model.getShapes());
+    view.drawCurrentTick();
   }
 }
