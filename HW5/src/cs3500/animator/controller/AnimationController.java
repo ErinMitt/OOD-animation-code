@@ -84,7 +84,6 @@ public class AnimationController implements Features, Controller {
   public void enterShapeEditor(String shape) {
     try {
       view.enterShapeEditor(shape);
-      // TODO: automatically suggest edit/add based on current frame?
       view.pause();
     } catch (IllegalArgumentException e) {
       view.displayErrorMessage("No shape selected");
