@@ -34,7 +34,7 @@ public class TextViewTests {
       view.setSpeed(1);
       fail("Set speed for a text view");
     } catch (UnsupportedOperationException e) {
-      assertEquals("SVGView has no speed", e.getMessage());
+      assertEquals("TextView has no speed", e.getMessage());
     }
     view.animate();
     assertEquals("canvas 0 0 1 1", output.toString());
@@ -75,6 +75,7 @@ public class TextViewTests {
 
     assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle\n" +
+                    "motion R 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n" +
                     "motion R 1 1 1 1 1 1 1 1 2 1 1 2 2 1 1 1",
             output2.toString());
 
@@ -130,6 +131,7 @@ public class TextViewTests {
     view.animate();
     assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle\n" +
+                    "motion R 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n" +
                     "motion R 1 1 1 1 1 1 1 1 2 1 1 2 2 1 1 1",
             output.toString());
 
@@ -142,6 +144,7 @@ public class TextViewTests {
     view.animate();
     assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle\n" +
+                    "motion R 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n" +
                     "motion R 1 1 1 1 1 1 1 1 3 2 2 2 2 5 5 5\n" +
                     "motion R 3 2 2 2 2 5 5 5 6 1 1 2 2 1 1 1",
             output.toString());
@@ -172,6 +175,7 @@ public class TextViewTests {
     view.animate();
     assertEquals("canvas 0 0 1 1\n" +
                     "shape E ellipse\n" +
+                    "motion E 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n" +
                     "motion E 1 1 1 1 1 1 1 1 2 1 1 2 2 1 1 1",
             output.toString());
 
@@ -184,6 +188,7 @@ public class TextViewTests {
     view.animate();
     assertEquals("canvas 0 0 1 1\n" +
                     "shape E ellipse\n" +
+                    "motion E 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n" +
                     "motion E 1 1 1 1 1 1 1 1 3 2 2 2 2 5 5 5\n" +
                     "motion E 3 2 2 2 2 5 5 5 6 1 1 2 2 1 1 1",
             output.toString());
@@ -199,8 +204,10 @@ public class TextViewTests {
     view.animate();
     assertEquals("canvas 0 0 1 1\n" +
                     "shape R rectangle\n" +
+                    "motion R 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n" +
                     "motion R 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2\n" +
                     "shape E ellipse\n" +
+                    "motion E 1 3 3 3 3 3 3 3 1 3 3 3 3 3 3 3\n" +
                     "motion E 1 3 3 3 3 3 3 3 4 4 4 4 4 4 4 4",
             output.toString());
 
@@ -222,7 +229,7 @@ public class TextViewTests {
       view2.animate();
       fail("Animated with no view");
     } catch (IllegalStateException e) {
-      assertEquals("The modelOutput Appendable has not been set",
+      assertEquals("The output Appendable has not been set",
               e.getMessage());
     }
 
@@ -234,7 +241,7 @@ public class TextViewTests {
       view2.animate();
       fail("Animated to an Appendable that can't be written to");
     } catch (IllegalStateException e) {
-      assertEquals("Could not write to the modelOutput",
+      assertEquals("Could not write to the output",
               e.getMessage());
     }
   }

@@ -57,15 +57,6 @@ public class MotionTests {
               e.getMessage());
     }
 
-    // time < 1
-    try {
-      new Motion(0, 1, 2, 3, 4, 5, 6, 7);
-      fail("Made a motion with a time of zero");
-    } catch (IllegalArgumentException e) {
-      assertEquals("Time must be a positive integer, given 0",
-              e.getMessage());
-    }
-
     try {
       new Motion(-2, 1, 2, 3, 4, 5, 6, 7);
       fail("Made a motion with a negative time");

@@ -69,7 +69,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testSetSpeedToUserInput() { // TODO: tests with mocks that throw exceptions
+  public void testSetSpeedToUserInput() {
     clear();
     controller.setSpeedToUserInput("test");
     assertEquals("Error: Speed must be a number\n" +
@@ -92,7 +92,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testEnterShapeEditor() { // TODO: tests with mocks that throw exceptions
+  public void testEnterShapeEditor() {
     clear();
     controller.enterShapeEditor("Shape!");
     assertEquals("Entered shape editor: Shape!\n" +
@@ -100,7 +100,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testExitShapeEditor() { // TODO: tests with mocks that throw exceptions
+  public void testExitShapeEditor() {
     clear();
     controller.exitShapeEditor();
     assertEquals("Exited shape editor\n", viewOutput.toString());

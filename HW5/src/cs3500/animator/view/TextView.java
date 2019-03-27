@@ -23,7 +23,7 @@ public class TextView implements AnimationView {
    */
   @Override
   public void setSpeed(double speed) throws UnsupportedOperationException {
-    throw new UnsupportedOperationException("SVGView has no speed");
+    throw new UnsupportedOperationException("TextView has no speed");
   }
 
   @Override
@@ -49,18 +49,20 @@ public class TextView implements AnimationView {
    * Export the animation as a text file in the format:
    * canvas 200 70 360 360
    * shape R rectangle
+   * motion R 1 200 200 50 100 255 0 0 1 200 200 50 100 255 0 0
    * motion R 1 200 200 50 100 255 0 0 10 200 200 50 100 255 0 0
    * motion R 10 200 200 50 100 255 0 0 50 300 300 50 100 255 0 0
    * motion R 50 300 300 50 100 255 0 0 51 300 300 50 100 255 0 0
    * motion R 51 300 300 50 100 255 0 0 70 300 300 25 100 255 0 0
    * motion R 70 300 300 25 100 255 0 0 100 200 200 25 100 255 0 0
    * shape C ellipse
+   * motion C 20 440 70 120 60 0 0 255 20 440 70 120 60 0 0 255
    * motion C 6 440 70 120 60 0 0 255 20 440 70 120 60 0 0 255
    * motion C 20 440 70 120 60 0 0 255 50 440 250 120 60 0 0 255
    * motion C 50 440 250 120 60 0 0 255 70 440 370 120 60 0 170 85
    * motion C 70 440 370 120 60 0 170 85 80 440 370 120 60 0 255 0
    * motion C 80 440 370 120 60 0 255 0 100 440 370 120 60 0 255 0
-   * .
+   * On the first line for every shape, display a motion repeating the first keyframe.
    * @throws IllegalStateException if the output cannot be written to the appendable
    */
   @Override
@@ -97,7 +99,7 @@ public class TextView implements AnimationView {
       List<Motion> motions = model.getMotions(shape);
       List<String> motionLines = new ArrayList<>(motions.size());
       motionLines.add(joinWithSpaces("shape", shape, model.getShapeType(shape)));
-      if (motions.size() == 1) {
+      if (motions.size() >= 1) {
         motionLines.add(joinWithSpaces("motion", shape,
                 motions.get(0).display(), motions.get(0).display()));
       }

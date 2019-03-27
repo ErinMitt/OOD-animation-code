@@ -19,8 +19,8 @@ public class SVGViewTests {
   private AnimationModel model;
   private AnimationView view;
   private StringBuilder output;
-  private final String easyOutput = "<svg width=\"0\" height=\"0\" version=\"1.1\" xmlns=\"" +
-          "http://www.w3.org/2000/svg\">\n" +
+  private final String easyOutput = "<svg width=\"1\" height=\"1\" version=\"1.1\" " +
+          "xmlns=\"http://www.w3.org/2000/svg\">\n" +
           "<rect id=\"R\" x=\"1\" y=\"1\" width=\"1\" height=\"1\" fill=\"rgb(1,1,1)\" " +
           "visibility=\"visible\" >\n" +
           "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"1000ms\" attributeName=\"width\" " +
@@ -133,15 +133,16 @@ public class SVGViewTests {
   public void testAnimate() {
     // no shapes
     view.animate();
-    assertEquals("<svg width=\"0\" height=\"0\" version=\"1.1\" " +
-            "xmlns=\"http://www.w3.org/2000/svg\">\n</svg>",
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
+                    "xmlns=\"http://www.w3.org/2000/svg\">\n" +
+                    "</svg>",
             output.toString());
 
     // a single rectangle with no movements
     init();
     model.addRectangle("R");
     view.animate();
-    assertEquals("<svg width=\"0\" height=\"0\" version=\"1.1\" " +
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n</svg>",
             output.toString());
 
@@ -150,7 +151,7 @@ public class SVGViewTests {
     model.addRectangle("R");
     model.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
     view.animate();
-    assertEquals("<svg width=\"0\" height=\"0\" version=\"1.1\" " +
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
                     "<rect id=\"R\" x=\"1\" y=\"1\" width=\"1\" height=\"1\" fill=\"rgb(1,1,1)\" " +
                     "visibility=\"visible\" >\n</rect>\n" +
@@ -168,39 +169,41 @@ public class SVGViewTests {
     init();
     // two movements for a rectangle (all parameters change in motion 1)
     model.addRectangle("R");
-    model.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
+    model.addMotion("R", 1, 1, 1, 1, 1, 1, 2, 3);
     model.addMotion("R", 3, 2, 2, 2, 2, 5, 5, 5);
     model.addMotion("R", 6, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
-    assertEquals("<svg width=\"0\" height=\"0\" version=\"1.1\" " +
-            "xmlns=\"http://www.w3.org/2000/svg\">\n" +
-            "<rect id=\"R\" x=\"1\" y=\"1\" width=\"1\" height=\"1\" fill=\"rgb(1,1,1)\" " +
-            "visibility=\"visible\" >\n" +
-            "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" attributeName=\"x\" " +
-            "from=\"1\" to=\"2\" fill=\"freeze\" />\n" +
-            "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" attributeName=\"y\" " +
-            "from=\"1\" to=\"2\" fill=\"freeze\" />\n" +
-            "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" attributeName=" +
-            "\"width\" from=\"1\" to=\"2\" fill=\"freeze\" />\n" +
-            "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" attributeName=" +
-            "\"height\" from=\"1\" to=\"2\" fill=\"freeze\" />\n" +
-            "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" attributeName=\"fill\" " +
-            "from=\"rgb(1,1,1)\" to=\"rgb(5,5,5)\" fill=\"freeze\" />\n" +
-            "<animate attributeType=\"xml\" begin=\"2000ms\" dur=\"3000ms\" attributeName=\"x\" " +
-            "from=\"2\" to=\"1\" fill=\"freeze\" />\n" +
-            "<animate attributeType=\"xml\" begin=\"2000ms\" dur=\"3000ms\" attributeName=\"y\" " +
-            "from=\"2\" to=\"1\" fill=\"freeze\" />\n" +
-            "<animate attributeType=\"xml\" begin=\"2000ms\" dur=\"3000ms\" attributeName=" +
-            "\"fill\" from=\"rgb(5,5,5)\" to=\"rgb(1,1,1)\" fill=\"freeze\" />\n" +
-            "</rect>\n" +
-            "</svg>",
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
+                    "xmlns=\"http://www.w3.org/2000/svg\">\n" +
+                    "<rect id=\"R\" x=\"1\" y=\"1\" width=\"1\" height=\"1\" fill=\"rgb(1,2,3)\" " +
+                    "visibility=\"visible\" >\n" +
+                    "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" " +
+                    "attributeName=\"x\" from=\"1\" to=\"2\" fill=\"freeze\" />\n" +
+                    "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" " +
+                    "attributeName=\"y\" from=\"1\" to=\"2\" fill=\"freeze\" />\n" +
+                    "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" " +
+                    "attributeName=\"width\" from=\"1\" to=\"2\" fill=\"freeze\" />\n" +
+                    "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" " +
+                    "attributeName=\"height\" from=\"1\" to=\"2\" fill=\"freeze\" />\n" +
+                    "<animate attributeType=\"xml\" begin=\"0ms\" dur=\"2000ms\" " +
+                    "attributeName=\"fill\" from=\"rgb(1,2,3)\" to=\"rgb(5,5,5)\" " +
+                    "fill=\"freeze\" />\n" +
+                    "<animate attributeType=\"xml\" begin=\"2000ms\" dur=\"3000ms\" " +
+                    "attributeName=\"x\" from=\"2\" to=\"1\" fill=\"freeze\" />\n" +
+                    "<animate attributeType=\"xml\" begin=\"2000ms\" dur=\"3000ms\" " +
+                    "attributeName=\"y\" from=\"2\" to=\"1\" fill=\"freeze\" />\n" +
+                    "<animate attributeType=\"xml\" begin=\"2000ms\" dur=\"3000ms\" " +
+                    "attributeName=\"fill\" from=\"rgb(5,5,5)\" to=\"rgb(1,1,1)\" " +
+                    "fill=\"freeze\" />\n" +
+                    "</rect>\n" +
+                    "</svg>",
             output.toString());
 
     // a single ellipse with no movements
     init();
     model.addEllipse("E");
     view.animate();
-    assertEquals("<svg width=\"0\" height=\"0\" version=\"1.1\" " +
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n</svg>",
             output.toString());
 
@@ -209,7 +212,7 @@ public class SVGViewTests {
     model.addEllipse("E");
     model.addMotion("E", 1, 1, 1, 1, 1, 1, 1, 1);
     view.animate();
-    assertEquals("<svg width=\"0\" height=\"0\" version=\"1.1\" " +
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
                     "<ellipse id=\"E\" cx=\"1\" cy=\"1\" rx=\"1\" ry=\"1\" " +
                     "fill=\"rgb(1,1,1)\" visibility=\"visible\" >\n" +
@@ -223,7 +226,7 @@ public class SVGViewTests {
     model.addMotion("E", 1, 1, 1, 1, 1, 1, 1, 1);
     model.addMotion("E", 2, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
-    assertEquals("<svg width=\"0\" height=\"0\" version=\"1.1\" " +
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
                     "<ellipse id=\"E\" cx=\"1\" cy=\"1\" rx=\"1\" ry=\"1\" " +
                     "fill=\"rgb(1,1,1)\" visibility=\"visible\" >\n" +
@@ -242,7 +245,7 @@ public class SVGViewTests {
     model.addMotion("E", 3, 2, 2, 2, 2, 5, 5, 5);
     model.addMotion("E", 6, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
-    assertEquals("<svg width=\"0\" height=\"0\" version=\"1.1\" " +
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
             "xmlns=\"http://www.w3.org/2000/svg\">\n" +
             "<ellipse id=\"E\" cx=\"1\" cy=\"1\" rx=\"1\" ry=\"1\" fill=\"rgb(1,1,1)\" " +
             "visibility=\"visible\" >\n" +
@@ -275,7 +278,7 @@ public class SVGViewTests {
     model.addMotion("E", 1, 3, 3, 3, 3, 3, 3, 3);
     model.addMotion("E", 4, 4, 4, 4, 4, 4, 4, 4);
     view.animate();
-    assertEquals("<svg width=\"0\" height=\"0\" version=\"1.1\" " +
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
                     "<rect id=\"R\" x=\"1\" y=\"1\" width=\"1\" height=\"1\" " +
                     "fill=\"rgb(1,1,1)\" visibility=\"visible\" >\n" +
@@ -326,7 +329,7 @@ public class SVGViewTests {
       view2.animate();
       fail("Animated with no view");
     } catch (IllegalStateException e) {
-      assertEquals("The modelOutput Appendable has not been set",
+      assertEquals("The output Appendable has not been set",
               e.getMessage());
     }
 
@@ -338,7 +341,7 @@ public class SVGViewTests {
       view2.animate();
       fail("Animated to an Appendable that can't be written to");
     } catch (IllegalStateException e) {
-      assertEquals("Could not write to the modelOutput",
+      assertEquals("Could not write to the output",
               e.getMessage());
     }
   }
