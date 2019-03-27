@@ -10,7 +10,7 @@ import cs3500.animator.view.VisualView;
 /**
  * A class that is able to create an instance of different types of animation views.
  */
-class ViewFactory {
+public class ViewFactory {
   /**
    * Create an animation view of the type given. If the type specified is invalid or null,
    * throw an exception.

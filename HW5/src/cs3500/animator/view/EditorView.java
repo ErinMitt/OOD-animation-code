@@ -9,7 +9,10 @@ import java.util.List;
 import javax.swing.*;
 
 
+import cs3500.animator.ViewFactory;
+import cs3500.animator.controller.AnimationController;
 import cs3500.animator.controller.Features;
+import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
@@ -47,9 +50,12 @@ public class EditorView extends JFrame implements EditorAnimationView {
   private final JButton addRectangle;
   private final JButton addEllipse;
   private final JTextField addShapeName;
-  private final JLabel tickLabel;
   private final JButton deleteShape;
+  private final JLabel tickLabel;
   // INVARIANT: text is equal to the current tick
+  private final JTextField saveFileName;
+  private final JButton saveSVG;
+  private final JButton saveText;
 
   private EditShapeDialogFactory editFactory;
   private EditShapeDialog editDialog; // if there is no dialog, this will be null.
@@ -74,8 +80,11 @@ public class EditorView extends JFrame implements EditorAnimationView {
     addRectangle = new JButton("new rect");
     addEllipse = new JButton("new ellipse");
     addShapeName = new JTextField();
-    tickLabel = new JLabel(Integer.toString(tick));
     deleteShape = new JButton("delete shape");
+    tickLabel = new JLabel(Integer.toString(tick));
+    saveFileName = new JTextField(10);
+    saveSVG = new JButton("save to SVG");
+    saveText = new JButton("save to text");
 
     timer = new Timer((int) Math.round((1000 / speed)), (ActionEvent e) -> {
       if (playing) {
@@ -108,6 +117,14 @@ public class EditorView extends JFrame implements EditorAnimationView {
     shapes.setLayoutOrientation(JList.VERTICAL);
 
     add(shapeEditor, BorderLayout.EAST);
+
+    JPanel saveBar = new JPanel();
+    saveBar.setLayout(new FlowLayout());
+    saveBar.add(saveFileName);
+    saveBar.add(saveSVG);
+    saveBar.add(saveText);
+
+    add(saveBar, BorderLayout.PAGE_START);
   }
 
 
@@ -298,12 +315,20 @@ public class EditorView extends JFrame implements EditorAnimationView {
     editDialog.setEditFrameText(m);
   }
 
-  /**
-   * TODO: should we pass an Appendable as an argument, or should we use the output?
-   */
   @Override
-  public void save() {
-    // TODO: implement this!
+  public void save(String type, AnimationModel model) {
+    if (output == null) {
+      throw new IllegalStateException("Output cannot be null");
+    }
+    try {
+      EditorAnimationView view = ViewFactory.buildView(type); // may throw IAE if view type is wrong
+      view.setOutput(output);
+      new AnimationController(model, view).go();
+    } catch (UnsupportedOperationException e) {
+      throw new IllegalArgumentException("The chosen view type does not support output");
+    } catch (IllegalStateException e) {
+      throw new IllegalStateException("Could not write to the output");
+    }
   }
 
   @Override
@@ -339,6 +364,10 @@ public class EditorView extends JFrame implements EditorAnimationView {
     addRectangle.addActionListener(evt -> features.addShape(addShapeName.getText(), "rectangle"));
     addEllipse.addActionListener(evt -> features.addShape(addShapeName.getText(), "ellipse"));
     deleteShape.addActionListener(evt -> features.deleteShape(shapes.getSelectedValue()));
+
+    // saving controls
+    saveSVG.addActionListener(evt -> features.save("svg", saveFileName.getText()));
+    saveText.addActionListener(evt -> features.save("text", saveFileName.getText()));
 
     // text fields
     fps.addActionListener(evt -> features.setSpeedToUserInput(fps.getText()));

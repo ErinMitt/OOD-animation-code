@@ -114,4 +114,10 @@ public interface Features {
    * @param name the shape's name
    */
   void deleteShape(String name);
+
+  /**
+   * Save the model's output in the given file type in a file by the given name.
+   * @param type format to save in: either .svg or .txt
+   */
+  void save(String type, String fileName);
 }
