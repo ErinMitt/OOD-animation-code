@@ -114,8 +114,8 @@ public class SVGView implements AnimationView {
             + "\" width=\"" + m.getWidth()
             + "\" height=\"" + m.getHeight()
             + "\" fill=\"rgb(" + m.getRed()
-            + "," + m.getRed()
-            + "," + m.getRed()
+            + "," + m.getGreen()
+            + "," + m.getBlue()
             + ")\" visibility=\"visible\" >";
   }
 
@@ -132,8 +132,8 @@ public class SVGView implements AnimationView {
             + "\" rx=\"" + m.getWidth()
             + "\" ry=\"" + m.getHeight()
             + "\" fill=\"rgb(" + m.getRed()
-            + "," + m.getRed()
-            + "," + m.getRed()
+            + "," + m.getGreen()
+            + "," + m.getBlue()
             + ")\" visibility=\"visible\" >";
   }
 

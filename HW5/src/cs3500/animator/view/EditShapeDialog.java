@@ -12,7 +12,7 @@ import cs3500.animator.model.Motion;
 /**
  * Represents a dialog window that allows a user to edit a shape in an AnimationModel's Motions.
  */
-class EditShapeDialog extends JDialog {
+class EditShapeDialog extends JDialog { // TODO: convert to "has-a" instead of "is-a"
   private final static int TEXT_FIELD_WIDTH = 3;
 
   // new keyframe controls

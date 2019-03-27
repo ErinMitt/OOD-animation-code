@@ -12,6 +12,9 @@ import javax.swing.JPanel;
 import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
+/**
+ * A class that draws the state of an animation represented by a model at one point in time.
+ */
 class AnimationPanel extends JPanel {
   private final ReadOnlyModel model;
   private int tick; // the moment in time of the model that the panel displays
