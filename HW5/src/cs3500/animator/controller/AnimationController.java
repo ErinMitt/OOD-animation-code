@@ -1,5 +1,7 @@
 package cs3500.animator.controller;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import cs3500.animator.model.AnimationModel;
@@ -297,5 +299,49 @@ public class AnimationController implements Features, Controller {
     model.deleteShape(name);
     view.setShapeList(model.getShapes());
     view.drawCurrentTick();
+  }
+
+  @Override
+  public void save(String type, String fileName) {
+    if (type == null || fileName == null) {
+      throw new IllegalArgumentException("Arguments must not be null");
+    }
+    if (fileName.equals("")) {
+      view.displayErrorMessage("Output location must be set");
+      return;
+    }
+    switch (type) {
+      case "svg":
+        fileName += ".svg";
+        break;
+      case "text":
+        fileName += ".txt";
+        break;
+      default:
+        throw new IllegalArgumentException("Unsupported file type " + type);
+    }
+    FileWriter writer;
+    try {
+      writer = new FileWriter(fileName);
+    } catch (IOException e) {
+      view.displayErrorMessage("Could not create a file named " + fileName);
+      return;
+    }
+    try {
+      view.setOutput(writer);
+    } catch (UnsupportedOperationException e) {
+      throw new IllegalArgumentException("View does not support setting an output");
+    }
+    try {
+      view.save(type, model);
+    } catch (IllegalStateException e) {
+      view.displayErrorMessage("Could not write to the output file");
+      return;
+    }
+    try {
+      writer.close();
+    } catch (IOException e) {
+      view.displayErrorMessage("Could not close output file");
+    }
   }
 }

@@ -3,6 +3,7 @@ package cs3500.animator.view;
 import java.util.List;
 
 import cs3500.animator.controller.Features;
+import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.Motion;
 
 public interface EditorAnimationView extends AnimationView {
@@ -53,9 +54,14 @@ public interface EditorAnimationView extends AnimationView {
 
   /**
    * Save this animation to the output specified in setOutput.
-   * @throws IllegalStateException if the output has not been set.
+   * @param type the type of output saving will produce. "text" will produce a text description
+   *             of the animation in a .txt file, while "svg" will produce an svg animation
+   *             in a .svg file.
+   * @param model the model whose animation is to be saved
+   * @throws IllegalArgumentException if the text type is incorrect
+   * @throws IllegalStateException if the output has not been set or is invalid (ie unwritable)
    */
-  void save() throws IllegalStateException;
+  void save(String type, AnimationModel model);
 
   /**
    * Tie the commands given by the Controller to the buttons/control scheme of this view.
