@@ -53,10 +53,11 @@ public interface EditorAnimationView extends AnimationView {
   void setShapeList(List<String> shapes);
 
   /**
-   * Save this animation to the output specified in setOutput.
+   * Write the representation of the given model's animation to this view's output in the format
+   * determined by another view's type.
    * @param type the type of output saving will produce. "text" will produce a text description
    *             of the animation in a .txt file, while "svg" will produce an svg animation
-   *             in a .svg file.
+   *             in a .svg file
    * @param model the model whose animation is to be saved
    * @throws IllegalArgumentException if the text type is incorrect
    * @throws IllegalStateException if the output has not been set or is invalid (ie unwritable)
