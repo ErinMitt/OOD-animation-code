@@ -283,6 +283,7 @@ public class AnimationController implements Features, Controller {
         throw new IllegalArgumentException("There is no shape type " + type);
     }
     view.setShapeList(model.getShapes());
+    view.drawCurrentTick();
   }
 
   @Override

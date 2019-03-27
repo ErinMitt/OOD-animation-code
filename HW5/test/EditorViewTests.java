@@ -1,9 +1,6 @@
-import com.sun.deploy.uitoolkit.impl.awt.AWTAnimationPanel2;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,45 +21,48 @@ import static org.junit.Assert.fail;
  * Tests for the class EditorView.
  */
 public class EditorViewTests {
+  EditorView original;
 
+  @Before
+  public void init() {
+    original = new EditorView();
+  }
 
   @Test
   public void testAddFeatures() {
     // use controller mock
   }
 
-/*  @Override
-  public void setModel(ReadOnlyModel model) {
-    if (model == null) {
-      throw new IllegalArgumentException("Model must not be null");
-    }
-    if (animationPanel != null) {
-      throw new IllegalStateException("This view already has a model");
-    }
-    this.animationPanel = new AnimationPanel(model);
-    add(animationPanel, BorderLayout.CENTER);
-    updateMaxTick();
-    drawCurrentTick();
-    editFactory.setModel(model);
+  /*  @Override
+    public void setModel(ReadOnlyModel model) {
+      if (model == null) {
+        throw new IllegalArgumentException("Model must not be null");
+      }
+      if (animationPanel != null) {
+        throw new IllegalStateException("This view already has a model");
+      }
+      this.animationPanel = new AnimationPanel(model);
+      add(animationPanel, BorderLayout.CENTER);
+      updateMaxTick();
+      drawCurrentTick();
+      editFactory.setModel(model);
 
-    setShapeList(model.getShapes());
-  }*/
-EditorView original;
-  @Before
-  public void init() {
-    original = new EditorView();
-  }
+      setShapeList(model.getShapes());
+    }*/
+
   @Test (expected = IllegalArgumentException.class)
   public void testSetModelNull() {
-  ReadOnlyModel model =null;
+    ReadOnlyModel model =null;
     original.setModel(model);
   }
+
   @Test (expected = IllegalArgumentException.class)
   public void testSetModelExists() {
   }
 
   @Test
   public void testSetModelWorks() {
+
   }
 
   @Test

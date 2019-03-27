@@ -42,7 +42,7 @@ public class TextViewTests {
 
   @Test
   public void testSetOutput() {
-    // test that output is set and old output is removed
+    // test that modelOutput is set and old modelOutput is removed
     StringBuilder output2 = new StringBuilder();
     view.setOutput(output2);
     view.animate();
@@ -52,7 +52,7 @@ public class TextViewTests {
     // test that null outputs cause exceptions
     try {
       view.setOutput(null);
-      fail("Set output to null");
+      fail("Set modelOutput to null");
     } catch (IllegalArgumentException e) {
       assertEquals("Output Appendable must not be null",
               e.getMessage());
@@ -215,14 +215,14 @@ public class TextViewTests {
               e.getMessage());
     }
 
-    // exception if output is null
+    // exception if modelOutput is null
     view2 = new TextView();
     view2.setModel(model);
     try {
       view2.animate();
       fail("Animated with no view");
     } catch (IllegalStateException e) {
-      assertEquals("The output Appendable has not been set",
+      assertEquals("The modelOutput Appendable has not been set",
               e.getMessage());
     }
 
@@ -234,7 +234,7 @@ public class TextViewTests {
       view2.animate();
       fail("Animated to an Appendable that can't be written to");
     } catch (IllegalStateException e) {
-      assertEquals("Could not write to the output",
+      assertEquals("Could not write to the modelOutput",
               e.getMessage());
     }
   }
