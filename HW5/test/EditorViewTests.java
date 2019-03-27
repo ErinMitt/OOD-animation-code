@@ -1,15 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import cs3500.animator.model.AnimationModel;
-import cs3500.animator.model.AnimationModelImpl;
-import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
-import cs3500.animator.model.Transformation;
 import cs3500.animator.view.EditorView;
 
 import static org.junit.Assert.assertEquals;
