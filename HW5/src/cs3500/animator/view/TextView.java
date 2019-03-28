@@ -12,7 +12,6 @@ import cs3500.animator.model.ReadOnlyModel;
  * described in an AnimationModel.
  */
 public class TextView implements AnimationView {
-  // TODO: print the first motion as a repeat regardless of length
   private Appendable output;
   private ReadOnlyModel model;
 

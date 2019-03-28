@@ -1,6 +1,7 @@
 package cs3500.animator.view;
 
 import java.awt.*;
+import java.awt.event.WindowListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,8 @@ import cs3500.animator.model.Motion;
 /**
  * Represents a dialog window that allows a user to edit a shape in an AnimationModel's Motions.
  */
-class EditShapeDialog extends JDialog { // TODO: convert to "has-a" instead of "is-a"
+class EditShapeDialog {
+  private final JDialog dialog;
   private final static int TEXT_FIELD_WIDTH = 3;
 
   // new keyframe controls
@@ -44,7 +46,7 @@ class EditShapeDialog extends JDialog { // TODO: convert to "has-a" instead of "
 
   public EditShapeDialog(JFrame owner, List<Motion> frames, String shape,
                          Features features) {
-    super(owner, "Edit " + shape);
+    dialog = new JDialog(owner, "Edit " + shape);
 
     // create the timeline of keyframes
     keyframes = new JList<>();
@@ -113,7 +115,7 @@ class EditShapeDialog extends JDialog { // TODO: convert to "has-a" instead of "
     // add all buttons and text fields to the dialog
     JPanel container = new JPanel();
     container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-    this.add(container);
+    dialog.add(container);
 
     // add stuff to "add keyframe" panel
     JPanel addPanel = new JPanel();
@@ -167,7 +169,7 @@ class EditShapeDialog extends JDialog { // TODO: convert to "has-a" instead of "
     container.add(scroll);
     scroll.setSize(new Dimension());
 
-    pack();
+    dialog.pack();
   }
 
   /**
@@ -197,5 +199,34 @@ class EditShapeDialog extends JDialog { // TODO: convert to "has-a" instead of "
     editRed.setText(Integer.toString(m.getRed()));
     editGreen.setText(Integer.toString(m.getGreen()));
     editBlue.setText(Integer.toString(m.getBlue()));
+  }
+
+  /**
+   * Get the shape-editing dialog box.
+   * @return the dialog
+   */
+  public JDialog getDialog() {
+    return dialog;
+  }
+
+  /**
+   * Call the method setVisible on the JDialog.
+   */
+  public void makeVisible() {
+    dialog.setVisible(true);
+  }
+
+  /**
+   * Call the method addWindowListener on the JDialog.
+   */
+  public void addWindowListener(WindowListener listener) {
+    dialog.addWindowListener(listener);
+  }
+
+  /**
+   * Call the method dispose on the JDialog.
+   */
+  public void dispose() {
+    dialog.dispose();
   }
 }

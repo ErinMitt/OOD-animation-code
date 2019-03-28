@@ -297,7 +297,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
       throw new IllegalStateException("The editor factory has not been set");
     }
     editDialog = editFactory.getDialog(shape, this);
-    editDialog.setVisible(true);
+    editDialog.makeVisible();
   }
 
   @Override
