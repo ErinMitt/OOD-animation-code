@@ -72,8 +72,8 @@ public class WritingMockView implements EditorAnimationView {
   }
 
   @Override
-  public void save(String type, AnimationModel model) {
-    append("save called with " + type);
+  public void save(String text) {
+    append("save called");
   }
 
   @Override

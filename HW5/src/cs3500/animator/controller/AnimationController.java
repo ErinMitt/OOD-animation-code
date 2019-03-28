@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import cs3500.animator.ViewFactory;
 import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.AnimationModelImpl;
 import cs3500.animator.model.Motion;
@@ -273,6 +274,10 @@ public class AnimationController implements Features, Controller {
       view.displayErrorMessage("Names must have at least one character");
       return;
     }
+    if (name.contains(" ")) {
+      view.displayErrorMessage("Names cannot have spaces");
+      return;
+    }
     if (model.getShapes().contains(name)) {
       view.displayErrorMessage("There is already a shape by the name " + name);
       return;
@@ -308,6 +313,7 @@ public class AnimationController implements Features, Controller {
 
   @Override
   public void save(String type, String fileName) {
+    // check inputs for validity
     if (type == null || fileName == null) {
       throw new IllegalArgumentException("Arguments must not be null");
     }
@@ -315,6 +321,7 @@ public class AnimationController implements Features, Controller {
       view.displayErrorMessage("Output location must be set");
       return;
     }
+    // set up the Editor view's new output
     switch (type) {
       case "svg":
         fileName += ".svg";
@@ -337,8 +344,22 @@ public class AnimationController implements Features, Controller {
     } catch (UnsupportedOperationException e) {
       throw new IllegalArgumentException("View does not support setting an output");
     }
+    // may throw IAE if view type is wrong
+    EditorAnimationView saveView = ViewFactory.buildView(type);
+    String text;
     try {
-      view.save(type, model);
+      StringBuilder builder = new StringBuilder();
+      saveView.setOutput(builder);
+      new AnimationController(model, saveView).go();
+      text = builder.toString();
+    } catch (UnsupportedOperationException e) {
+      throw new IllegalArgumentException("View type " + type + " does not support output");
+    } catch (IllegalStateException e) {
+      view.displayErrorMessage("Could not write to the output");
+      return;
+    }
+    try {
+      view.save(text);
     } catch (IllegalStateException e) {
       view.displayErrorMessage("Could not write to the output file");
       return;

@@ -7,7 +7,7 @@ package cs3500.animator.model;
 enum ShapeType {
   ELLIPSE("ellipse"), RECTANGLE("rectangle");
 
-  private String type;
+  private final String type;
 
   /**
    * Build an enum representing a shape type.

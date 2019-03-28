@@ -55,14 +55,11 @@ public interface EditorAnimationView extends AnimationView {
   /**
    * Write the representation of the given model's animation to this view's output in the format
    * determined by another view's type.
-   * @param type the type of output saving will produce. "text" will produce a text description
-   *             of the animation in a .txt file, while "svg" will produce an svg animation
-   *             in a .svg file
-   * @param model the model whose animation is to be saved
+   * @param output the string to be written to the view's output.
    * @throws IllegalArgumentException if the text type is incorrect
    * @throws IllegalStateException if the output has not been set or is invalid (ie unwritable)
    */
-  void save(String type, AnimationModel model);
+  void save(String output);
 
   /**
    * Tie the commands given by the Controller to the buttons/control scheme of this view.

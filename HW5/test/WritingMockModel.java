@@ -129,7 +129,7 @@ public class WritingMockModel implements AnimationModel {
   @Override
   public String getShapeType(String shapeName) {
     append("getShapeType called with " + shapeName);
-    return "";
+    return "ellipse";
   }
 
   /**

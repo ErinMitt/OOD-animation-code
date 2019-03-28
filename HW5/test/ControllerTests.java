@@ -370,6 +370,10 @@ public class ControllerTests {
     assertEquals("Error: Names must have at least one character\n", viewOutput.toString());
 
     clear();
+    controller.addShape("name with spaces", "ellipse");
+    assertEquals("Error: Names cannot have spaces\n", viewOutput.toString());
+
+    clear();
     controller.addShape("shape", "ellipse");
     assertEquals("Error: There is already a shape by the name shape\n", viewOutput.toString());
 
@@ -439,12 +443,12 @@ public class ControllerTests {
     clear();
     controller.save("svg", "file");
     assertEquals("setOutput called\n" +
-            "save called with svg\n", viewOutput.toString());
+            "save called\n", viewOutput.toString());
 
     clear();
     controller.save("text", "file");
     assertEquals("setOutput called\n" +
-            "save called with text\n", viewOutput.toString());
+            "save called\n", viewOutput.toString());
 
     try {
       controller.save("none", "file");

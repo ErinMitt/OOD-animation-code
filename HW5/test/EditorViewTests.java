@@ -100,15 +100,13 @@ public class EditorViewTests {
   public void testSave() {
     StringBuilder output = new StringBuilder();
     original.setOutput(output);
-
-    AnimationModel model = new AnimationModelImpl();
-    original.save("text", model);
-    assertEquals("canvas 0 0 1 1", output.toString());
+    original.save("something");
+    assertEquals("something", output.toString());
 
     init();
     original.setOutput(new EvilAppendable());
     try {
-      original.save("text", model);
+      original.save("text");
       fail("Failed to signal unwritable Appendable");
     } catch (IllegalStateException e) {
       assertEquals("Could not write to the output", e.getMessage());

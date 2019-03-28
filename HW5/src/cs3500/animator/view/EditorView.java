@@ -1,18 +1,26 @@
 package cs3500.animator.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.IOException;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+import javax.swing.JToggleButton;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JList;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
 
-
-import cs3500.animator.ViewFactory;
-import cs3500.animator.controller.AnimationController;
 import cs3500.animator.controller.Features;
-import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
@@ -332,18 +340,14 @@ public class EditorView extends JFrame implements EditorAnimationView {
   }
 
   @Override
-  public void save(String type, AnimationModel model) {
-    if (output == null) {
+  public void save(String text) {
+    if (text == null) {
       throw new IllegalStateException("Output cannot be null");
     }
     try {
-      EditorAnimationView view = ViewFactory.buildView(type); // may throw IAE if view type is wrong
-      view.setOutput(output);
-      new AnimationController(model, view).go();
-    } catch (UnsupportedOperationException e) {
-      throw new IllegalArgumentException("The chosen view type does not support output");
-    } catch (IllegalStateException e) {
-      throw new IllegalStateException("Could not write to the output");
+      output.append(text);
+    } catch (IOException e) {
+      throw new IllegalStateException("Could not write to output");
     }
   }
 

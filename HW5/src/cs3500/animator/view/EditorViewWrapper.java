@@ -89,7 +89,7 @@ public class EditorViewWrapper implements EditorAnimationView {
   }
 
   @Override
-  public void save(String type, AnimationModel model) {
+  public void save(String output) {
     throw new UnsupportedOperationException(ERROR_MESSAGE);
   }
 

@@ -94,7 +94,7 @@ public class SVGView implements AnimationView {
           }
           break;
         default:
-          throw new IllegalArgumentException("Invalid shape type");
+          throw new IllegalArgumentException("Invalid shape type " + model.getShapeType(shape));
       }
     }
     svgLines.add("</svg>");

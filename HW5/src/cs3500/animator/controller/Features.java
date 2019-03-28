@@ -117,7 +117,9 @@ public interface Features {
 
   /**
    * Save the model's output in the given file type in a file by the given name.
-   * @param type format to save in: either .svg or .txt
+   * @param type format to save in:
+   *             "text" will produce a text description of the animation in a .txt file,
+   *             while "svg" will produce an svg animation in a .svg file
    */
   void save(String type, String fileName);
 
