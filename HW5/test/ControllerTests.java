@@ -382,8 +382,7 @@ public class ControllerTests {
 
     clear();
     controller.addShape("shp", "ellipse");
-    assertEquals("setShapeList called with [shape]\n" +
-            "drawCurrentTick called\n", viewOutput.toString());
+    assertEquals("setShapeList called with [shape]\n", viewOutput.toString());
     assertEquals("getShapes called\n" +
             "addEllipse called with shp\n" +
             "getShapes called\n",
@@ -391,8 +390,7 @@ public class ControllerTests {
 
     clear();
     controller.addShape("shp", "rectangle");
-    assertEquals("setShapeList called with [shape]\n" +
-            "drawCurrentTick called\n",
+    assertEquals("setShapeList called with [shape]\n",
             viewOutput.toString());
     assertEquals("getShapes called\n" +
                     "addRectangle called with shp\n" +
@@ -416,5 +414,57 @@ public class ControllerTests {
                     "deleteShape called with shape\n" +
                     "getShapes called\n",
             modelOutput.toString());
+  }
+
+  @Test
+  public void testSave() {
+    try {
+      controller.save(null, "file");
+      fail("Allowed null inputs");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Arguments must not be null", e.getMessage());
+    }
+
+    try {
+      controller.save("svg", null);
+      fail("Allowed null inputs");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Arguments must not be null", e.getMessage());
+    }
+
+    clear();
+    controller.save("svg", "");
+    assertEquals("Error: Output location must be set\n", viewOutput.toString());
+
+    clear();
+    controller.save("svg", "file");
+    assertEquals("setOutput called\n" +
+            "save called with svg\n", viewOutput.toString());
+
+    clear();
+    controller.save("text", "file");
+    assertEquals("setOutput called\n" +
+            "save called with text\n", viewOutput.toString());
+
+    try {
+      controller.save("none", "file");
+      fail("saved with illegal file type");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Unsupported file type none", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testLoad() {
+    try {
+      controller.load(null);
+      fail("Allowed null inputs");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Arguments must not be null", e.getMessage());
+    }
+
+    clear();
+    controller.load("");
+    assertEquals("Error: Unable to locate file.\n", viewOutput.toString());
   }
 }

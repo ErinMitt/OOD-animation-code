@@ -9,7 +9,7 @@ import java.util.List;
 import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.AnimationModelImpl;
 import cs3500.animator.model.Motion;
-import cs3500.animator.view.AnimationView;
+import cs3500.animator.util.AnimationReader;
 import cs3500.animator.view.EditorAnimationView;
 import cs3500.animator.view.EditorView;
 
@@ -288,7 +288,6 @@ public class AnimationController implements Features, Controller {
         throw new IllegalArgumentException("There is no shape type " + type);
     }
     view.setShapeList(model.getShapes());
-    view.drawCurrentTick();
   }
 
   @Override
@@ -356,14 +355,20 @@ public class AnimationController implements Features, Controller {
     if (fileName == null) {
       throw new IllegalArgumentException("Arguments must not be null");
     }
+    FileReader reader;
     try {
-      FileReader reader = new FileReader(fileName);
+      reader = new FileReader(fileName);
     } catch (FileNotFoundException e) {
-      view.displayErrorMessage("Unable to create file.");
+      view.displayErrorMessage("Unable to locate file.");
       return;
     }
-    AnimationModelImpl.Builder.build;
-    AnimationModel model = new AnimationModelImpl();
+    AnimationModel model;
+    try {
+      model = AnimationReader.parseFile(reader, new AnimationModelImpl.Builder());
+    } catch (IllegalStateException e) {
+      view.displayErrorMessage("Incorrect file formatting");
+      return;
+    }
     EditorAnimationView view = new EditorView();
     AnimationController controller = new AnimationController(model, view);
     controller.go();

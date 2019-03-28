@@ -73,7 +73,7 @@ public class WritingMockView implements EditorAnimationView {
 
   @Override
   public void save(String type, AnimationModel model) {
-    append("save called with " + type + ", " + model);
+    append("save called with " + type);
   }
 
   @Override
@@ -133,7 +133,7 @@ public class WritingMockView implements EditorAnimationView {
 
   @Override
   public void setOutput(Appendable output) {
-    append("setOutput called with " + output);
+    append("setOutput called");
   }
 
   /**

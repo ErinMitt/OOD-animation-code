@@ -58,6 +58,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
   private final JButton saveText;
   private final JButton load;
   private final JTextField loadInfo;
+  private final JLabel errorDisplay;
 
   private EditShapeDialogFactory editFactory;
   private EditShapeDialog editDialog; // if there is no dialog, this will be null.
@@ -89,6 +90,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     saveText = new JButton("save to text");
     load = new JButton("load");
     loadInfo = new JTextField(10);
+    errorDisplay = new JLabel("No errors yet :)");
 
     timer = new Timer((int) Math.round((1000 / speed)), (ActionEvent e) -> {
       if (playing) {
@@ -97,6 +99,9 @@ public class EditorView extends JFrame implements EditorAnimationView {
     });
 
     setLayout(new BorderLayout());
+
+    JPanel bottomScreen = new JPanel();
+    bottomScreen.setLayout(new BoxLayout(bottomScreen, BoxLayout.Y_AXIS));
 
     JPanel playbackControlPanel = new JPanel();
     playbackControlPanel.setLayout(new FlowLayout());
@@ -108,7 +113,10 @@ public class EditorView extends JFrame implements EditorAnimationView {
     playbackControlPanel.add(forward);
     playbackControlPanel.add(fps);
 
-    add(playbackControlPanel, BorderLayout.PAGE_END);
+    bottomScreen.add(playbackControlPanel);
+    bottomScreen.add(errorDisplay);
+
+    add(bottomScreen, BorderLayout.PAGE_END);
 
     JPanel shapeEditor = new JPanel();
     shapeEditor.setLayout(new BoxLayout(shapeEditor, BoxLayout.Y_AXIS));
@@ -192,6 +200,9 @@ public class EditorView extends JFrame implements EditorAnimationView {
    */
   @Override
   public void setOutput(Appendable output) {
+    if (output == null) {
+      throw new IllegalArgumentException("Output must not be null");
+    }
     this.output = output;
   }
 
@@ -338,8 +349,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
 
   @Override
   public void displayErrorMessage(String message) {
-    System.out.println(message);
-    // TODO: this
+    errorDisplay.setText(message);
   }
 
   @Override

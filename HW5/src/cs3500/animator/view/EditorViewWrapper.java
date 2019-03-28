@@ -7,6 +7,11 @@ import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 
+/**
+ * Represents a class that "wraps" an AnimationView to implement an EditorAnimationView.
+ * Any methods that do not exist in the AnimationView are unsupported;
+ * all the rest are delegated.
+ */
 public class EditorViewWrapper implements EditorAnimationView {
   private static final String ERROR_MESSAGE
           = "The view wrapper does not support EditorAnimationView-exclusive methods";
