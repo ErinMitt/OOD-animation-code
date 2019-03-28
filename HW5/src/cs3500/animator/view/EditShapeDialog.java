@@ -1,11 +1,20 @@
 package cs3500.animator.view;
 
-import java.awt.*;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.event.WindowListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.*;
+import javax.swing.JDialog;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JList;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 import cs3500.animator.controller.Features;
 import cs3500.animator.model.Motion;
@@ -15,10 +24,10 @@ import cs3500.animator.model.Motion;
  */
 class EditShapeDialog {
   private final JDialog dialog;
-  private final static int TEXT_FIELD_WIDTH = 3;
+  private static final int TEXT_FIELD_WIDTH = 3;
 
   // new keyframe controls
-  private final JButton addButton;
+  //private final JButton addButton;
   private final JTextField addTime;
   private final JTextField addX;
   private final JTextField addY;
@@ -29,7 +38,7 @@ class EditShapeDialog {
   private final JTextField addBlue;
 
   // edit keyframe controls
-  private final JButton editButton;
+  //private final JButton editButton;
   private final JTextField editX;
   private final JTextField editY;
   private final JTextField editWidth;
@@ -39,7 +48,7 @@ class EditShapeDialog {
   private final JTextField editBlue;
 
   // delete keyframe controls
-  private final JButton deleteButton;
+  //private final JButton deleteButton;
 
   // keyframe timeline
   private final JList<String> keyframes;
@@ -58,7 +67,7 @@ class EditShapeDialog {
     keyframes.setVisibleRowCount(1);
 
     // create all buttons and text fields for adding frames
-    addButton = new JButton("add frame");
+    JButton addButton = new JButton("add frame");
     addTime = new JTextField();
     addX = new JTextField();
     addY = new JTextField();
@@ -82,7 +91,7 @@ class EditShapeDialog {
     addBlue.setColumns(TEXT_FIELD_WIDTH);
 
     // create all buttons and text fields for editing frames
-    editButton = new JButton("edit");
+    JButton editButton = new JButton("edit");
     editX = new JTextField();
     editY = new JTextField();
     editWidth = new JTextField();
@@ -91,10 +100,10 @@ class EditShapeDialog {
     editGreen = new JTextField();
     editBlue = new JTextField();
     editButton.addActionListener(evt -> features.editKeyframe(shape, keyframes.getSelectedValue(),
-            editX.getText(), editY.getText(), editWidth.getText(), editHeight.getText(),
-            editRed.getText(), editGreen.getText(), editBlue.getText()));
+        editX.getText(), editY.getText(), editWidth.getText(), editHeight.getText(),
+        editRed.getText(), editGreen.getText(), editBlue.getText()));
     keyframes.addListSelectionListener(
-            evt -> features.suggestEditKeyframe(shape, keyframes.getSelectedValue()));
+        evt -> features.suggestEditKeyframe(shape, keyframes.getSelectedValue()));
 
     editX.setColumns(TEXT_FIELD_WIDTH);
     editY.setColumns(TEXT_FIELD_WIDTH);
@@ -105,9 +114,9 @@ class EditShapeDialog {
     editBlue.setColumns(TEXT_FIELD_WIDTH);
 
     // create the button for deleting a keyframe
-    deleteButton = new JButton("delete");
+    JButton deleteButton = new JButton("delete");
     deleteButton.addActionListener(
-            evt -> features.removeKeyframe(shape, keyframes.getSelectedValue()));
+        evt -> features.removeKeyframe(shape, keyframes.getSelectedValue()));
 
 
 

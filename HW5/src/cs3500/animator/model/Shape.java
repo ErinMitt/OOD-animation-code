@@ -146,7 +146,7 @@ class Shape {
    * @param m the motion
    * @return whether the motions overlaps with an existing motion
    */
-   private boolean motionOverlaps(Motion m) {
+  private boolean motionOverlaps(Motion m) {
     Motion nearestMotion = motions.ceiling(m);
     if (nearestMotion == null) {
       return false;

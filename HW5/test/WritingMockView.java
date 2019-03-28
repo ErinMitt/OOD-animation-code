@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.util.List;
 
 import cs3500.animator.controller.Features;
-import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 import cs3500.animator.view.EditorAnimationView;
@@ -137,8 +136,8 @@ public class WritingMockView implements EditorAnimationView {
   }
 
   /**
-   * Append the given message onto the output appendable
-   * @param message
+   * Append the given message onto the output appendable.
+   * @param message the message to be written
    */
   private void append(String message) {
     try {

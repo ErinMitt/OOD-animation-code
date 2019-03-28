@@ -3,9 +3,11 @@ package cs3500.animator.view;
 import java.util.List;
 
 import cs3500.animator.controller.Features;
-import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.Motion;
 
+/**
+ * Represents a view that displays an animation and allows a user to edit it.
+ */
 public interface EditorAnimationView extends AnimationView {
   /**
    * Reset the display to reflect the current tick.

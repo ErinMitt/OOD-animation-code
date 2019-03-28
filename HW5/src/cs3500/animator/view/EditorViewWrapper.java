@@ -3,7 +3,6 @@ package cs3500.animator.view;
 import java.util.List;
 
 import cs3500.animator.controller.Features;
-import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.Motion;
 import cs3500.animator.model.ReadOnlyModel;
 

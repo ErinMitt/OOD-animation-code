@@ -21,6 +21,6 @@ public class SanityCheck {
 
     EditorAnimationView view = new EditorView();
     view.setSpeed(2);
-    new AnimationController(model, view).go();
+    new AnimationController(model, view).gogo();
   }
 }

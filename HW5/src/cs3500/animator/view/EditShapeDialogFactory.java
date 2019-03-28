@@ -4,7 +4,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import cs3500.animator.controller.Features;
 import cs3500.animator.model.Motion;
@@ -37,7 +37,7 @@ class EditShapeDialogFactory {
     try {
       motions = model.getMotions(shape);
     } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException ("No such shape " + shape);
+      throw new IllegalArgumentException("No such shape " + shape);
     }
     EditShapeDialog dialog = new EditShapeDialog(owner, motions, shape, features);
     dialog.addWindowListener(new WindowListener() {

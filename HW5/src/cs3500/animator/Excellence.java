@@ -11,7 +11,6 @@ import cs3500.animator.controller.AnimationController;
 import cs3500.animator.controller.Controller;
 import cs3500.animator.model.AnimationModelImpl;
 import cs3500.animator.util.AnimationReader;
-import cs3500.animator.view.AnimationView;
 import cs3500.animator.view.EditorAnimationView;
 
 /**
@@ -109,7 +108,7 @@ public final class Excellence {
       showErrorMessage("Unable to read file, returned error message: " + e.getMessage());
       return;
     }
-    controller.go();
+    controller.gogo();
     System.out.println("Got past animate for the editor view");
 
     // We cast here so that we're able to close FileWriters.

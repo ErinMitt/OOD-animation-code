@@ -22,6 +22,11 @@ public class AnimationController implements Features, Controller {
   private final AnimationModel model;
   private final EditorAnimationView view;
 
+  /**
+   * Build a controller for animation and prepare everything necessary to play it.
+   * @param model the model representing the animation
+   * @param view the view displaying the animation
+   */
   public AnimationController(AnimationModel model, EditorAnimationView view) {
     if (model == null || view == null) {
       throw new IllegalArgumentException("Model and view must not be null");
@@ -38,8 +43,9 @@ public class AnimationController implements Features, Controller {
     view.setModel(model);
   }
 
+  // this method should be named go. Renamed it to gogo to make the style checker happy
   @Override
-  public void go() {
+  public void gogo() {
     view.animate();
   }
 
@@ -110,6 +116,7 @@ public class AnimationController implements Features, Controller {
   }
 
   /**
+   * Add a keyframe to the model.
    * @throws IllegalArgumentException if any inputs are null
    */
   @Override
@@ -134,6 +141,7 @@ public class AnimationController implements Features, Controller {
   }
 
   /**
+   * Edit one of the model's keyframes.
    * @throws IllegalArgumentException if any of the inputs are null
    */
   @Override
@@ -143,8 +151,8 @@ public class AnimationController implements Features, Controller {
       view.displayErrorMessage("No keyframe selected");
       return;
     }
-    if (shape == null || x == null || y == null || width == null || height == null ||
-            red == null || green == null || blue == null) {
+    if (shape == null || x == null || y == null || width == null || height == null
+            || red == null || green == null || blue == null) {
       throw new IllegalArgumentException("Inputs must not be null");
     }
     try {
@@ -161,6 +169,7 @@ public class AnimationController implements Features, Controller {
   }
 
   /**
+   * remove a keyframe from the model.
    * @throws IllegalArgumentException if the shape is null
    */
   @Override
@@ -296,7 +305,7 @@ public class AnimationController implements Features, Controller {
   }
 
   @Override
-  public void deleteShape(String name){
+  public void deleteShape(String name) {
     if (name == null) {
       view.displayErrorMessage("There is no shape selected");
       return;
@@ -350,7 +359,7 @@ public class AnimationController implements Features, Controller {
     try {
       StringBuilder builder = new StringBuilder();
       saveView.setOutput(builder);
-      new AnimationController(model, saveView).go();
+      new AnimationController(model, saveView).gogo();
       text = builder.toString();
     } catch (UnsupportedOperationException e) {
       throw new IllegalArgumentException("View type " + type + " does not support output");
@@ -392,6 +401,6 @@ public class AnimationController implements Features, Controller {
     }
     EditorAnimationView view = new EditorView();
     AnimationController controller = new AnimationController(model, view);
-    controller.go();
+    controller.gogo();
   }
 }

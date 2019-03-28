@@ -2,11 +2,30 @@ Editor View by Erin Mittmann and Omer Zeliger
 
 The interface EditorAnimationView represents a view that allows a user to play and edit
    an animation described by an AnimationModel.
-Also talk about Controllers, Features, etc. Mention the view wrapper class. // TODO: finish this.
+All of the methods added to the EditorAnimationModel interface are related to displaying
+   the content on-screen. For example, the method drawCurrentTick updates the graphics
+   to line up with the view's tick, while the displayErrorMessage method shows the user
+   a given error message.
+All of the previous views are compatible with the new AnimationController if they are wrapped in
+   the EditorViewWrapper class. This class implements the EditorAnimationView interface,
+   and the AnimationController takes in an EditorAnimationView and an AnimationView
+   as parameters for its construction.
+To use an EditorView, first call addFeatures with a Features object, then call setModel.
+   This order is required, and calling setModel first will cause an IllegalStateException.
+   If the view and model are passed to a controller as constructor arguments,
+   the controller will automatically call these methods in the correct order.
+To start an animation playing from the controller, call controller.go().
+The EditorView requires a controller, but the three existing views (text, svg, visual) do not.
 
-Features:
+The Features interface defines all of the methods that the EditorAnimationView requires its
+   controller to implement. These are methods that will be called when a user presses on buttons
+   or otherwise interacts with the view.
+
+
+
+How to use:
 Playback control
-To play the animation, press the "play" button at the bottom.
+To play and pause the animation, press the "play" button at the bottom.
 To toggle looping on and off, press the "loop" button.
 To rewind the animation back to the beginning, press the "begin" button.
 The number at the bottom left shows the number of the current frame being displayed on screen.

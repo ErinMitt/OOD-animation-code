@@ -27,7 +27,7 @@ public class ControllerTests {
   }
 
   /**
-   * Clear the output so that new lines can be written
+   * Clear the output so that new lines can be written.
    */
   private void clear() {
     viewOutput = new StringBuilder();
@@ -63,7 +63,7 @@ public class ControllerTests {
   @Test
   public void testGo() {
     clear();
-    controller.go();
+    controller.gogo();
     assertEquals("", modelOutput.toString());
     assertEquals("animate called\n", viewOutput.toString());
   }
@@ -146,6 +146,7 @@ public class ControllerTests {
     assertEquals("Exited shape editor\n" +
             "updateMaxTick called\n" +
             "drawCurrentTick called\n", viewOutput.toString());
+    assertEquals(1, m.getMotions("E").size());
 
     clear();
     c.addKeyframe("E", "3", "1", "1", "1", "1", "1", "1", "1");

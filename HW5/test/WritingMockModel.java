@@ -60,7 +60,8 @@ public class WritingMockModel implements AnimationModel {
   }
 
   @Override
-  public void editMotion(String shape, int time, int x, int y, int width, int height, int red, int green, int blue) {
+  public void editMotion(String shape, int time, int x, int y, int width, int height,
+                         int red, int green, int blue) {
     append(String.join(" ", "editMotion called with", shape,
             Integer.toString(time), Integer.toString(x), Integer.toString(y),
             Integer.toString(width), Integer.toString(height),
@@ -133,8 +134,8 @@ public class WritingMockModel implements AnimationModel {
   }
 
   /**
-   * Append the given message onto the output appendable
-   * @param message
+   * Append the given message onto the output appendable.
+   * @param message the message to be written
    */
   private void append(String message) {
     try {

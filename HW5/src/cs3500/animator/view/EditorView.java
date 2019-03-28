@@ -72,6 +72,9 @@ public class EditorView extends JFrame implements EditorAnimationView {
   private EditShapeDialog editDialog; // if there is no dialog, this will be null.
   // the dialog is stored as a field to allow the view to call methods on it.
 
+  /**
+   * Create an EditorView.
+   */
   public EditorView() {
     super(CAPTION);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -161,7 +164,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     if (animationPanel != null) {
       throw new IllegalStateException("This view already has a model");
     }
-    if(editFactory == null) {
+    if (editFactory == null) {
       throw new IllegalStateException("Must set features before setting the model");
     }
     this.animationPanel = new AnimationPanel(model);

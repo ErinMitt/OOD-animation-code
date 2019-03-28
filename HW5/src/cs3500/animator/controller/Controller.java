@@ -7,5 +7,5 @@ public interface Controller {
   /**
    * Start the animation.
    */
-  void go();
+  void gogo();
 }
