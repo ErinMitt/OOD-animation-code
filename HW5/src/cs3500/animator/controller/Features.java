@@ -120,4 +120,10 @@ public interface Features {
    * @param type format to save in: either .svg or .txt
    */
   void save(String type, String fileName);
+
+  /**
+   * Load a file from the source folder by file name.
+   * @param fileName the name of the file in the source folder.
+   */
+  void load(String fileName);
 }

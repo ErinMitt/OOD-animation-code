@@ -1,12 +1,17 @@
 package cs3500.animator.controller;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
 import cs3500.animator.model.AnimationModel;
+import cs3500.animator.model.AnimationModelImpl;
 import cs3500.animator.model.Motion;
+import cs3500.animator.view.AnimationView;
 import cs3500.animator.view.EditorAnimationView;
+import cs3500.animator.view.EditorView;
 
 /**
  * A class representing a controller that allows communication
@@ -344,5 +349,23 @@ public class AnimationController implements Features, Controller {
     } catch (IOException e) {
       view.displayErrorMessage("Could not close output file");
     }
+  }
+
+  @Override
+  public void load(String fileName) {
+    if (fileName == null) {
+      throw new IllegalArgumentException("Arguments must not be null");
+    }
+    try {
+      FileReader reader = new FileReader(fileName);
+    } catch (FileNotFoundException e) {
+      view.displayErrorMessage("Unable to create file.");
+      return;
+    }
+    AnimationModelImpl.Builder.build;
+    AnimationModel model = new AnimationModelImpl();
+    EditorAnimationView view = new EditorView();
+    AnimationController controller = new AnimationController(model, view);
+    controller.go();
   }
 }

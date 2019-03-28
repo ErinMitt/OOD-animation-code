@@ -56,6 +56,8 @@ public class EditorView extends JFrame implements EditorAnimationView {
   private final JTextField saveFileName;
   private final JButton saveSVG;
   private final JButton saveText;
+  private final JButton load;
+  private final JTextField loadInfo;
 
   private EditShapeDialogFactory editFactory;
   private EditShapeDialog editDialog; // if there is no dialog, this will be null.
@@ -85,6 +87,8 @@ public class EditorView extends JFrame implements EditorAnimationView {
     saveFileName = new JTextField(10);
     saveSVG = new JButton("save to SVG");
     saveText = new JButton("save to text");
+    load = new JButton("load");
+    loadInfo = new JTextField(10);
 
     timer = new Timer((int) Math.round((1000 / speed)), (ActionEvent e) -> {
       if (playing) {
@@ -123,6 +127,8 @@ public class EditorView extends JFrame implements EditorAnimationView {
     saveBar.add(saveFileName);
     saveBar.add(saveSVG);
     saveBar.add(saveText);
+    saveBar.add(loadInfo);
+    saveBar.add(load);
 
     add(saveBar, BorderLayout.PAGE_START);
   }
@@ -136,18 +142,17 @@ public class EditorView extends JFrame implements EditorAnimationView {
     if (animationPanel != null) {
       throw new IllegalStateException("This view already has a model");
     }
+    if(editFactory == null) {
+      throw new IllegalStateException("Must set features before setting the model");
+    }
     this.animationPanel = new AnimationPanel(model);
     add(animationPanel, BorderLayout.CENTER);
     updateMaxTick();
     drawCurrentTick();
     editFactory.setModel(model);
-
     setShapeList(model.getShapes());
   }
 
-  // animate can be successfully called if setFeatures hasn't been called yet.
-  // however, button presses won't do anything, and attempting to open a shape edit dialog
-  // will cause an error.
   @Override
   public void animate() {
     if (animationPanel == null) {
@@ -368,6 +373,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     // saving controls
     saveSVG.addActionListener(evt -> features.save("svg", saveFileName.getText()));
     saveText.addActionListener(evt -> features.save("text", saveFileName.getText()));
+    load.addActionListener(evt -> features.load(loadInfo.getText()));
 
     // text fields
     fps.addActionListener(evt -> features.setSpeedToUserInput(fps.getText()));

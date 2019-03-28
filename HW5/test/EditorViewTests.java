@@ -1,7 +1,10 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import cs3500.animator.controller.AnimationController;
+import cs3500.animator.model.AnimationModelImpl;
 import cs3500.animator.model.ReadOnlyModel;
+import cs3500.animator.view.EditorAnimationView;
 import cs3500.animator.view.EditorView;
 
 import static org.junit.Assert.assertEquals;
@@ -13,11 +16,13 @@ import static org.junit.Assert.fail;
  * Tests for the class EditorView.
  */
 public class EditorViewTests {
-  EditorView original;
+  EditorAnimationView original;
+  AnimationController controller;
 
   @Before
   public void init() {
     original = new EditorView();
+  //  controller = new AnimationController();
   }
 
   @Test
@@ -48,13 +53,18 @@ public class EditorViewTests {
     original.setModel(model);
   }
 
-  @Test (expected = IllegalArgumentException.class)
+@Test (expected = IllegalArgumentException.class)
   public void testSetModelExists() {
+    original.addFeatures(controller);
+    original.setModel(new AnimationModelImpl());
   }
+
 
   @Test
   public void testSetModelWorks() {
-
+  ReadOnlyModel model;
+  original.addFeatures(controller);
+  original.setModel(new AnimationModelImpl());
   }
 
   @Test
