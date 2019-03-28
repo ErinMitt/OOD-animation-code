@@ -43,7 +43,7 @@ public class EditorAnimationWrapperTests {
   public void testSetOutput() {
     assertEquals("", modelOutput.toString());
     outerView.setOutput(new StringBuilder());
-    assertEquals("setOutput called with \n", modelOutput.toString());
+    assertEquals("setOutput called\n", modelOutput.toString());
   }
 
   @Test

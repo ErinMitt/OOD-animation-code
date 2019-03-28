@@ -109,7 +109,7 @@ public class EditorViewTests {
       original.save("text");
       fail("Failed to signal unwritable Appendable");
     } catch (IllegalStateException e) {
-      assertEquals("Could not write to the output", e.getMessage());
+      assertEquals("Could not write to output", e.getMessage());
     }
   }
 

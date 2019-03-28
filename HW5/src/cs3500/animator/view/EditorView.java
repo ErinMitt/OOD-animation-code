@@ -149,7 +149,10 @@ public class EditorView extends JFrame implements EditorAnimationView {
     add(saveBar, BorderLayout.PAGE_START);
   }
 
-
+  /**
+   * Set the animation model to be animated.
+   * This method requires a previous call to addFeatures.
+   */
   @Override
   public void setModel(ReadOnlyModel model) {
     if (model == null) {
