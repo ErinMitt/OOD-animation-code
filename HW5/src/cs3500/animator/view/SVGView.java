@@ -129,8 +129,8 @@ public class SVGView implements AnimationView {
     return "<ellipse id=\"" + shape
             + "\" cx=\"" + (m.getX() + model.getX())
             + "\" cy=\"" + (m.getY() + model.getY())
-            + "\" rx=\"" + m.getWidth()
-            + "\" ry=\"" + m.getHeight()
+            + "\" rx=\"" + (m.getWidth() / 2)
+            + "\" ry=\"" + (m.getHeight() / 2)
             + "\" fill=\"rgb(" + m.getRed()
             + "," + m.getGreen()
             + "," + m.getBlue()
@@ -145,7 +145,7 @@ public class SVGView implements AnimationView {
    * @return the animation line
    */
   private List<String> moveEllipse(Motion start, Motion end, String shape) {
-    return moveShape(start, end, shape, "cx", "cy", "rx", "ry");
+    return moveShape(start, end, shape, "cx", "cy", "rx", "ry", 2);
   }
 
   /**
@@ -156,7 +156,7 @@ public class SVGView implements AnimationView {
    * @return the animation line
    */
   private List<String> moveRect(Motion start, Motion end, String shape) {
-    return moveShape(start, end, shape, "x", "y", "width", "height");
+    return moveShape(start, end, shape, "x", "y", "width", "height", 1);
   }
 
   /**
@@ -169,10 +169,12 @@ public class SVGView implements AnimationView {
    * @param y the y component's name
    * @param width the width component's name
    * @param height the height component's name
+   * @param widthModifier the number by which to divide the shape's width and height
    * @return the animation line
    */
   private List<String> moveShape(Motion start, Motion end, String shape,
-                                 String x, String y, String width, String height) {
+                                 String x, String y, String width, String height,
+                                 int widthModifier) {
     ArrayList<String> motions = new ArrayList<>(5);
     // order of inputs: start (ms), duration (ms), attribute type, from, to
     String template = "<animate attributeType=\"xml\" begin=\"%sms\" dur=\"%sms\" "
@@ -190,11 +192,11 @@ public class SVGView implements AnimationView {
     }
     if (start.getWidth() - end.getWidth() != 0) {
       motions.add(String.format(template, startTime, duration,
-              width, start.getWidth(), end.getWidth()));
+              width, (start.getWidth() / widthModifier), (end.getWidth() / widthModifier)));
     }
     if (start.getHeight() - end.getHeight() != 0) {
       motions.add(String.format(template, startTime, duration,
-              height, start.getHeight(), end.getHeight()));
+              height, (start.getHeight() / widthModifier), (end.getHeight() / widthModifier)));
     }
     if (start.getRed() - end.getRed() != 0
             || start.getGreen() - end.getGreen() != 0

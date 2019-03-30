@@ -208,7 +208,7 @@ public class SVGViewTests {
     // one keyframe for a ellipse
     init();
     model.addEllipse("E");
-    model.addMotion("E", 1, 1, 1, 1, 1, 1, 1, 1);
+    model.addMotion("E", 1, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
@@ -221,8 +221,8 @@ public class SVGViewTests {
     // a single movement for a ellipse
     init();
     model.addEllipse("E");
-    model.addMotion("E", 1, 1, 1, 1, 1, 1, 1, 1);
-    model.addMotion("E", 2, 1, 1, 2, 2, 1, 1, 1);
+    model.addMotion("E", 1, 1, 1, 2, 2, 1, 1, 1);
+    model.addMotion("E", 2, 1, 1, 4, 4, 1, 1, 1);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
@@ -239,9 +239,9 @@ public class SVGViewTests {
     // two movements for a ellipse (all parameters change in motion 1)
     init();
     model.addEllipse("E");
-    model.addMotion("E", 1, 1, 1, 1, 1, 1, 1, 1);
-    model.addMotion("E", 3, 2, 2, 2, 2, 5, 5, 5);
-    model.addMotion("E", 6, 1, 1, 2, 2, 1, 1, 1);
+    model.addMotion("E", 1, 1, 1, 2, 2, 1, 1, 1);
+    model.addMotion("E", 3, 2, 2, 4, 4, 5, 5, 5);
+    model.addMotion("E", 6, 1, 1, 4, 4, 1, 1, 1);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
             "xmlns=\"http://www.w3.org/2000/svg\">\n" +
@@ -273,8 +273,8 @@ public class SVGViewTests {
     model.addEllipse("E");
     model.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
     model.addMotion("R", 2, 2, 2, 2, 2, 2, 2, 2);
-    model.addMotion("E", 1, 3, 3, 3, 3, 3, 3, 3);
-    model.addMotion("E", 4, 4, 4, 4, 4, 4, 4, 4);
+    model.addMotion("E", 1, 3, 3, 6, 6, 3, 3, 3);
+    model.addMotion("E", 4, 4, 4, 8, 8, 4, 4, 4);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
