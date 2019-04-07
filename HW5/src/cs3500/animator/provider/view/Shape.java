@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.Motion;
@@ -27,7 +26,8 @@ public class Shape {
   }
 
   /**
-   *
+   * Find which type of shape this shape is.
+   * @return the ShapeType enum of this shape
    */
   public ShapeType getShapeType() {
     switch (model.getShapeType(name)) {
@@ -41,16 +41,25 @@ public class Shape {
   }
 
   /**
-   *
+   * Return a MoveList that gives access to the model's motions for the given shape.
    */
   public MoveList getMoves() {
     return new MoveList(name, model);
   }
 
   /**
-   * A class that mimics a list. It can mutate the model held by the shape class.
+   * A class that mimics a TreeMap. It can mutate the model held by the shape class.
    * It has to extend TreeMap so that the compiler will like us,
    * but any methods that are actually used in the view are overridden.
+   *
+   * The original code returns the Shape's mutable Map of motions.
+   * To interact with the model, the provider's view mutates the Map
+   * rather than calling methods on Shape.
+   * This class lets us pass any instructions made to the "Map" of motions on to the model.
+   *
+   * It's not quite an adapter, but it's pretty close - it doesn't adapt our list of motions
+   * to imitate the providers' list of motions, but it does transfer any changes made
+   * to the providers' list of motions to our AnimationModel.
    */
   public class MoveList extends TreeMap<Integer, int[]> {
     private final String name;
