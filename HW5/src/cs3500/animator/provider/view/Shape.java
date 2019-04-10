@@ -1,9 +1,13 @@
 package cs3500.animator.provider.view;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import cs3500.animator.model.AnimationModel;
 import cs3500.animator.model.Motion;
@@ -49,8 +53,9 @@ public class Shape {
 
   /**
    * A class that mimics a TreeMap. It can mutate the model held by the shape class.
-   * It has to extend TreeMap so that the compiler will like us,
-   * but any methods that are actually used in the view are overridden.
+   * It has to implement SortedMap so that the compiler will like us.
+   * Any unused methods throw an UnsupportedOperationException,
+   * while methods that the provider code uses defer to the AnimationModel instead of a Map.
    *
    * The original code returns the Shape's mutable Map of motions.
    * To interact with the model, the provider's view mutates the Map
@@ -61,7 +66,7 @@ public class Shape {
    * to imitate the providers' list of motions, but it does transfer any changes made
    * to the providers' list of motions to our AnimationModel.
    */
-  public class MoveList extends TreeMap<Integer, int[]> {
+  public class MoveList implements SortedMap<Integer, int[]> {
     private final String name;
     private final AnimationModel model;
 
@@ -118,17 +123,17 @@ public class Shape {
     }
 
     /**
-     * Build an entrySet of all of the shape's Motions mapped to the time they happen at.
+     * Build a Map of MoveListEntry, each of which corresponds to a keyframe in the animation.
+     * A MoveListEntry is able to mutate the model by calling setValue.
      * @return the set
      */
     @Override
     public Set<Map.Entry<Integer, int[]>> entrySet() {
-      TreeMap<Integer, int[]> map = new TreeMap<>();
+      TreeSet<Map.Entry<Integer, int[]>> map = new TreeSet<>();
       for (Motion m : model.getMotions(name)) {
-        map.put(m.getTime(), new int[]{m.getX(), m.getY(), m.getWidth(), m.getHeight(),
-                m.getRed(), m.getGreen(), m.getBlue()});
+        map.add(new MoveListEntry(model, name, m.getTime()));
       }
-      return map.entrySet();
+      return map;
     }
 
     /**
@@ -180,6 +185,148 @@ public class Shape {
       int[] m = get(key);
       model.deleteMotion(name, (int) key);
       return m;
+    }
+
+    // unused methods
+
+    @Override
+    public void putAll(Map<? extends Integer, ? extends int[]> m) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void clear() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Comparator<? super Integer> comparator() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public SortedMap<Integer, int[]> subMap(Integer fromKey, Integer toKey) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public SortedMap<Integer, int[]> headMap(Integer toKey) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public SortedMap<Integer, int[]> tailMap(Integer fromKey) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Set<Integer> keySet() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Collection<int[]> values() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int size() {
+      return model.getMotions(name).size();
+    }
+  }
+
+  /**
+   * A class representing a single keyframe of a shape at a given time.
+   * Any mutation to this class carries over to the model.
+   */
+  public class MoveListEntry implements Map.Entry<Integer, int[]>, Comparable<MoveListEntry> {
+    private final AnimationModel model;
+    private final String name;
+    private final int time;
+    // INVARIANT: the model contains a keyframe of the shape "name" at this time.
+    private Motion motion;
+    // INVARIANT: motion has the same info as the Motion of the model at the given shape and time.
+
+    /**
+     * Build a MoveListEntry.
+     * @param model the model that contains the shape
+     * @param name the shape name
+     * @param time the time of the keyframe
+     */
+    private MoveListEntry(AnimationModel model, String name, int time) {
+      this.model = model;
+      this.name = name;
+      this.time = time;
+      motion = model.getTransformationAt(name, time).getStateAt(time);
+    }
+
+    /**
+     * Get the time of this keyframe.
+     * @return this keyframe's time
+     */
+    @Override
+    public Integer getKey() {
+      return time;
+    }
+
+    /**
+     * Return this keyframe's information in the format [x, y, width, height, r, g, b]
+     * @return the keyframe parameters.
+     */
+    @Override
+    public int[] getValue() {
+      return new int[] {motion.getX(), motion.getY(), motion.getWidth(), motion.getHeight(),
+              motion.getRed(), motion.getGreen(), motion.getBlue()};
+    }
+
+    /**
+     * Mutate the model's keyframe to match the given values.
+     * @param value the keyframe's new parameters in the format [x, y, width, height, r, g, b]
+     * @return the previous motion
+     */
+    @Override
+    public int[] setValue(int[] value) {
+      model.editMotion(name, time, value[0], value[1], value[2], value[3],
+              value[4], value[5], value[6]);
+
+      Motion m = motion;
+      motion = model.getTransformationAt(name, time).getStateAt(time);
+      return new int[] {m.getX(), m.getY(), m.getWidth(), m.getHeight(),
+              m.getRed(), m.getGreen(), m.getBlue()};
+    }
+
+    /**
+     * This method is not overridden because it is not used in the provider code.
+     * @param o the other object to be compared
+     * @return nothing
+     */
+    @Override
+    public boolean equals(Object o) {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * This method is not overridden because it is not used in the provider code.
+     * @return nothing
+     */
+    @Override
+    public int hashCode() {
+      throw new UnsupportedOperationException();
+    }
+
+    /**
+     * MoveListEntry is sorted according to its time - earlier times are sorted as "before".
+     * @param o the other MoveListEntry
+     * @return an int representing this MoveListEntry's relationship to a given MoveListEntry
+     */
+    @Override
+    public int compareTo(MoveListEntry o) {
+      return Integer.compare(this.getKey(), o.getKey());
     }
   }
 }

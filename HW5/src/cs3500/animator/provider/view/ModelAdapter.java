@@ -18,6 +18,7 @@ public class ModelAdapter implements IModel {
   @Override
   public void addShape(String name, ShapeType type) {
     // this method is never used.
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -26,6 +27,7 @@ public class ModelAdapter implements IModel {
                          int t2, int x2, int y2, int w2, int h2,
                          int r2, int g2, int b2) {
     // this method is never used
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -40,11 +42,12 @@ public class ModelAdapter implements IModel {
   @Override
   public int[] getScreenDimensions() {
     // this method is never used
-    return new int[0];
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void updateCanvas(int[] dim) {
     // this method is never used
+    throw new UnsupportedOperationException();
   }
 }
