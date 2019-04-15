@@ -1,0 +1,53 @@
+Design Critique
+Using the Model View controller design pattern and having it execute correctly shows
+some strength in your design.
+However, we thought that the View took over some of the Controller’s responsibilities.
+In particular, we went over in class how we were supposed to pass some sort of ReadOnlyModel
+to the View, and leave any mutation to the Controller.
+In this design, the View directly mutated the Model.
+The View also defined and assigned all of the commands, which is also usually the Controller’s job.
+These two things combined meant that code in the Controller itself was pretty sparse.
+Also, the direct mutation of the Model by the View made adapting the code to work
+with our Model pretty difficult.
+In this implementation, the EditorView asks the Model for a list of Shapes,
+and then uses getters to directly access and mutate the shapes’ fields.
+This means we had to write adapters for not only the Model and Shape classes,
+but also for several built-in Java classes like Map.Entry and SortedMap.
+We think a better and safer design would have been to mutate the Model by
+calling public methods on the Model itself rather than calling methods on its fields.
+This would make things like maintaining invariants easier
+and would protect the private fields from malicious actors.
+
+Implementation Critique
+Most methods were implemented well, and allowed your code to run as an animator effectively.
+You created shapes correctly and had working buttons, which is important to the core of an animator.
+However, every time someone presses enter to add or edit a keyframe your code
+throws a null pointer exception.
+The null pointer exception happened because of a scoping issue,
+the variable textField was defined in the “add” case,
+but that definition won’t carry over to the “data” case.
+If you want to keep a reference to the object, it might help to make it a field so that it can be
+stored over long periods of time instead of just a local variable.
+There was also an issue where the user could not change the animation speed.
+Though the action listener successfully changed the field called “tempo” to the correct speed,
+this didn’t actually change the speed of the animation.
+This is also the result of handling the commands in the View rather than in the Controller.
+The Controller sets the tempo by setting a Timer that calls View.update,
+but the View has no way of communicating with the Controller to tell it to change the tempo.
+This can be fixed either by moving the timer to the View, or by moving the commands to the
+Controller (where they have access to the timer).
+
+Documentation Critique
+We appreciated that each variable was described concisely in the documentation
+before it was declared.
+We also appreciated that each method had a description, and that each parameter was described.
+We had some trouble understanding some areas of the code because the documentation didn’t
+always give enough information to understand the methods.
+For example, the views take information about the shape’s location in an Array of ints,
+but we couldn’t find any documentation telling the order of inputs. We had to look through the
+AnimationPanel code to figure out that details[0] was the x coordinate and details[2] was the width.
+There were a lot of cases where, for example, a method called “byChangeType” had the description
+“Sorts all actions by their change type.“
+This doesn’t really tell us what a change type is, nor what the method returns.
+Adding a bit more  of a description to the methods and adding in documentation for things
+that are not yet explained would really help a user quickly and fully understand your code.

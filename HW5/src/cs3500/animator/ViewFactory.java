@@ -1,5 +1,6 @@
 package cs3500.animator;
 
+import cs3500.animator.provider.view.ViewAdapter;
 import cs3500.animator.view.EditorAnimationView;
 import cs3500.animator.view.EditorView;
 import cs3500.animator.view.EditorViewWrapper;
@@ -31,6 +32,8 @@ public class ViewFactory {
         return new EditorViewWrapper(new VisualView());
       case "edit":
         return new EditorView();
+      case "provider":
+        return new EditorViewWrapper(new ViewAdapter());
       default:
         throw new IllegalArgumentException("Invalid view type " + type);
     }

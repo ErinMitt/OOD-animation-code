@@ -109,7 +109,6 @@ public final class Excellence {
       return;
     }
     controller.gogo();
-    System.out.println("Got past animate for the editor view");
 
     // We cast here so that we're able to close FileWriters.
     // It's necessary because the output is only required to be an Appendable, not a Closeable,

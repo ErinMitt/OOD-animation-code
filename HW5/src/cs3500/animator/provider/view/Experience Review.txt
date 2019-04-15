@@ -1,0 +1,17 @@
+We did not end up having to change any code for our customers, but we’re glad that when we
+originally designed our code we had interfaces for everything.
+This probably was what allowed them to adapt our code to their model,
+and why we did not have to change our code.
+It also helped that we maintained separation between the model/controller/view’s
+responsibilities and implementations.
+If the view had had access to any classes beyond just the Model interface,
+it would have been much harder to extricate the two.
+That would have either been a lot of work for us, or more difficult for our customers.
+
+The biggest lesson we learned from our provider code was to document with the intention
+that people unfamiliar with our code should be able to read it.
+
+Our providers were very easy to communicate with,
+since they responded to our questions within a few hours.
+They responded factually and concisely,
+which allowed us to get and interpret their code in a more timely manner.
