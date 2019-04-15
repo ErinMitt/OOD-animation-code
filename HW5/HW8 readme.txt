@@ -1,6 +1,6 @@
 Features that work:
 The new hybrid view can play/pause, loop, add new keyframes, edit existing keyframes,
-   delete keyframes, restart the animation from the beginning.
+   delete keyframes, and restart the animation from the beginning.
 (Occasionally we get weird bugs when removing keyframes,
    but we're pretty sure it's because the project is not threadsafe
    ie ConcurrentModificationExceptionExceptions.)
@@ -12,8 +12,8 @@ The view also can't change the speed once the animation begins.
 This is because the speed is determined by a timer in the controller,
    but the controller has no permanent reference to the timer and as a result
    can't change its delay.
-This was fixable by rewriting the controller, but we chose not to edit it for reasons
-   explained in point 2 of the questionable design choices section.
+This was fixable by rewriting the controller, but we chose not to edit it
+   for reasons explained in point 2 of the questionable design choices section.
 
 
 Explaining some questionable design choices:

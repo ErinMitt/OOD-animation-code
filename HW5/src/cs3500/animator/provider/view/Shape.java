@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import cs3500.animator.model.AnimationModel;
@@ -301,6 +300,16 @@ public class Shape {
     }
 
     /**
+     * MoveListEntry is sorted according to its time - earlier times are sorted as "before".
+     * @param o the other MoveListEntry
+     * @return an int representing this MoveListEntry's relationship to a given MoveListEntry
+     */
+    @Override
+    public int compareTo(MoveListEntry o) {
+      return Integer.compare(this.getKey(), o.getKey());
+    }
+
+    /**
      * This method is not overridden because it is not used in the provider code.
      * @param o the other object to be compared
      * @return nothing
@@ -317,16 +326,6 @@ public class Shape {
     @Override
     public int hashCode() {
       throw new UnsupportedOperationException();
-    }
-
-    /**
-     * MoveListEntry is sorted according to its time - earlier times are sorted as "before".
-     * @param o the other MoveListEntry
-     * @return an int representing this MoveListEntry's relationship to a given MoveListEntry
-     */
-    @Override
-    public int compareTo(MoveListEntry o) {
-      return Integer.compare(this.getKey(), o.getKey());
     }
   }
 }
