@@ -109,8 +109,8 @@ public class SVGView implements AnimationView {
    */
   private String initRect(Motion m, String shape) {
     return "<rect id=\"" + shape
-            + "\" x=\"" + (m.getX() + model.getX())
-            + "\" y=\"" + (m.getY() + model.getY())
+            + "\" x=\"" + (m.getX())
+            + "\" y=\"" + (m.getY())
             + "\" width=\"" + m.getWidth()
             + "\" height=\"" + m.getHeight()
             + "\" fill=\"rgb(" + m.getRed()
@@ -127,8 +127,8 @@ public class SVGView implements AnimationView {
    */
   private String initEllipse(Motion m, String shape) {
     return "<ellipse id=\"" + shape
-            + "\" cx=\"" + (m.getX() + model.getX())
-            + "\" cy=\"" + (m.getY() + model.getY())
+            + "\" cx=\"" + (m.getX())
+            + "\" cy=\"" + (m.getY())
             + "\" rx=\"" + (m.getWidth() / 2)
             + "\" ry=\"" + (m.getHeight() / 2)
             + "\" fill=\"rgb(" + m.getRed()
@@ -184,11 +184,11 @@ public class SVGView implements AnimationView {
 
     if (start.getX() - end.getX() != 0) {
       motions.add(String.format(template, startTime, duration, x,
-              start.getX() + model.getX(), end.getX() + model.getX()));
+              start.getX(), end.getX()));
     }
     if (start.getY() - end.getY() != 0) {
       motions.add(String.format(template, startTime, duration, y,
-              start.getY() + model.getY(), end.getY() + model.getY()));
+              start.getY(), end.getY()));
     }
     if (start.getWidth() - end.getWidth() != 0) {
       motions.add(String.format(template, startTime, duration,

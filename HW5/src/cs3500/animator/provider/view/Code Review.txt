@@ -23,19 +23,16 @@ Most methods were implemented well, and allowed your code to run as an animator 
 You created shapes correctly and had working buttons, which is important to the core of an animator.
 However, every time someone presses enter to add or edit a keyframe your code
 throws a null pointer exception.
-The null pointer exception happened because of a scoping issue,
-the variable textField was defined in the “add” case,
+The null pointer exception happened because of a scoping issue.
+The variable textField was defined in the “add” case,
 but that definition won’t carry over to the “data” case.
 If you want to keep a reference to the object, it might help to make it a field so that it can be
 stored over long periods of time instead of just a local variable.
 There was also an issue where the user could not change the animation speed.
-Though the action listener successfully changed the field called “tempo” to the correct speed,
-this didn’t actually change the speed of the animation.
-This is also the result of handling the commands in the View rather than in the Controller.
-The Controller sets the tempo by setting a Timer that calls View.update,
-but the View has no way of communicating with the Controller to tell it to change the tempo.
-This can be fixed either by moving the timer to the View, or by moving the commands to the
-Controller (where they have access to the timer).
+It looks like this was an issue of not being able to access the Controller's timer
+to set a new delay.
+This has a similar fix as the previous problem - storing the timer as a field so that it will
+be accessible later.
 
 Documentation Critique
 We appreciated that each variable was described concisely in the documentation

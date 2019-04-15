@@ -184,7 +184,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     pack();
 
     // set the size to a constant so the buttons don't move with the changing label size
-    tickLabel.setPreferredSize(new Dimension(4 * (int) tickLabel.getSize().getWidth(),
+    tickLabel.setPreferredSize(new Dimension(5 * (int) tickLabel.getSize().getWidth(),
             (int) tickLabel.getSize().getHeight()));
 
     pack();

@@ -39,7 +39,7 @@ class AnimationPanel extends JPanel {
     Graphics2D g2 = (Graphics2D) g;
 
     AffineTransform originalTransform = g2.getTransform();
-    g2.translate(model.getX(), model.getY());
+    //g2.translate(model.getX(), model.getY());
 
     // draw all the shapes
     for (String shape : model.getShapes()) {

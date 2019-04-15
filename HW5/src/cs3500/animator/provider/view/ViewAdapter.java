@@ -11,19 +11,20 @@ import cs3500.animator.view.AnimationView;
 public class ViewAdapter implements AnimationView {
   private IView view;
   private AnimationController controller;
+  private int tempo = 1;
 
   @Override
   public void setModel(ReadOnlyModel model) {
     if (this.view != null) {
       throw new IllegalStateException("The model has already been set");
     }
-    // We have to use casting here because in our code the view only receives an
+    // We have to use casting here because in our code the view receives an
     // immutable ReadOnlyModel, but in the provider code the view mutates the model.
     // Therefore the method in our code only expects a ReadOnlyModel,
     // while their code requires a mutable AnimationModel.
     IModel pModel = new ModelAdapter((AnimationModel) model);
-    this.view = new EditView(model.getWidth(), model.getHeight(), 1, pModel.getShapes());
-    this.controller = new AnimationController(pModel, this.view, "edit", null, 1);
+    this.view = new EditView(model.getWidth(), model.getHeight(), tempo, pModel.getShapes());
+    this.controller = new AnimationController(pModel, this.view, "edit", "", tempo);
   }
 
   @Override
@@ -36,7 +37,7 @@ public class ViewAdapter implements AnimationView {
 
   @Override
   public void setSpeed(double speed) {
-    throw new UnsupportedOperationException();
+    this.tempo = (int) Math.round(speed);
   }
 
   @Override
