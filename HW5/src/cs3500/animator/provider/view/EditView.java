@@ -290,6 +290,9 @@ public class EditView implements ActionListener, IView, ItemListener {
         innerView.updateShapes(shapes);
         break;
       }
+      default: {
+        throw new IllegalArgumentException("Unknown command!");
+      }
     }
   }
 

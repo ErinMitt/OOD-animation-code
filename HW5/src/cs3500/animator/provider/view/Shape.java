@@ -55,12 +55,10 @@ public class Shape {
    * It has to implement SortedMap so that the compiler will like us.
    * Any unused methods throw an UnsupportedOperationException,
    * while methods that the provider code uses defer to the AnimationModel instead of a Map.
-   *
    * The original code returns the Shape's mutable Map of motions.
    * To interact with the model, the provider's view mutates the Map
    * rather than calling methods on Shape.
    * This class lets us pass any instructions made to the "Map" of motions on to the model.
-   *
    * It's not quite an adapter, but it's pretty close - it doesn't adapt our list of motions
    * to imitate the providers' list of motions, but it does transfer any changes made
    * to the providers' list of motions to our AnimationModel.
@@ -75,7 +73,7 @@ public class Shape {
     }
 
     /**
-     * Does this shape have a Motion at the given time?
+     * Does this shape have a Motion at the given time?.
      * @param key an Integer representing the time of motion
      * @return true if there is a motion at the given time
      */
@@ -136,7 +134,7 @@ public class Shape {
     }
 
     /**
-     * Does this shape have no motions?
+     * Does this shape have no motions?.
      * @return whether the shape's list of motions is empty
      */
     @Override
@@ -274,7 +272,7 @@ public class Shape {
     }
 
     /**
-     * Return this keyframe's information in the format [x, y, width, height, r, g, b]
+     * Return this keyframe's information in the format [x, y, width, height, r, g, b].
      * @return the keyframe parameters.
      */
     @Override
