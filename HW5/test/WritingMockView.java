@@ -41,6 +41,11 @@ public class WritingMockView implements EditorAnimationView {
   }
 
   @Override
+  public void setTick(int tick) {
+    append("setTick called with " + tick);
+  }
+
+  @Override
   public void rewind() {
     append("rewind called");
   }

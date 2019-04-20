@@ -37,6 +37,11 @@ public class TestingController implements Features, Controller {
   }
 
   @Override
+  public void setTick(int tick) {
+    //this controller exists for testing only and doesn't do anything
+  }
+
+  @Override
   public void setSpeedToUserInput(String input) {
     //this controller exists for testing only and doesn't do anything
   }

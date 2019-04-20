@@ -1,7 +1,9 @@
 package cs3500.animator.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,12 +14,7 @@ import cs3500.animator.util.AnimationBuilder;
  * that can move, and the possible movements that the shapes make.
  */
 public class AnimationModelImpl implements AnimationModel {
-  /**
-   * A list representing every shape that can appear in the animation.
-   * Shapes can be accessed through their unique names.
-   */
-  private final Map<String, Shape> shapes;
-  // INVARIANT: each Shape's key is the same String as its name.
+  private final List<Layer> layers;
   private int x;
   private int y;
   private int width;
@@ -27,7 +24,7 @@ public class AnimationModelImpl implements AnimationModel {
    * Build an AnimationModel.
    */
   public AnimationModelImpl() {
-    this.shapes = new LinkedHashMap<>();
+    this.layers = new LinkedList<>();
     // top left defaults to (0, 0)
     // width and height default to 1
     this.x = 0;
@@ -48,54 +45,54 @@ public class AnimationModelImpl implements AnimationModel {
   }
 
   @Override
-  public void addEllipse(String name) {
-    addShape(name, ShapeType.ELLIPSE);
+  public void addEllipse(int layer, String name) {
+    addShape(layer, name, ShapeType.ELLIPSE);
   }
 
   @Override
-  public void addRectangle(String name) {
-    addShape(name, ShapeType.RECTANGLE);
+  public void addRectangle(int layer, String name) {
+    addShape(layer, name, ShapeType.RECTANGLE);
   }
 
   /**
-   * Add a new Shape that can be animated.
+   * Add a new Shape that can be animated to the given layer.
    *
-   * @param name the shape's name
+   * @param shapeName the shape's name
+   * @param layer the layer number
    * @param type an enum describing the shape's shape (rectangle, ellipse)
    * @throws IllegalArgumentException if the shape name is not unique
    */
-  private void addShape(String name, ShapeType type) {
-    if (shapes.containsKey(name)) {
-      throw new IllegalArgumentException("Every shape must have a unique name. The shape " + name
-              + " already exists.");
+  private void addShape(int layer, String shapeName, ShapeType type) {
+    if (layer < 0 || layer >= layers.size()) {
+      throw new IllegalArgumentException("There is no layer at position " + layer);
     }
-    shapes.put(name, new Shape(name, type));
+    layers.get(layer).addShape(new Shape(shapeName, type));
   }
 
   @Override
-  public void deleteShape(String shapeName) {
-    checkShapeExists(shapeName);
-    shapes.remove(shapeName);
+  public void deleteShape(int layer, String shapeName) {
+    checkShapeExists(layer, shapeName);
+    layers.get(layer).remove(shapeName);
   }
 
   @Override
-  public void addMotion(String shapeName, int time, int x, int y, int width, int height,
+  public void addMotion(int layer, String shapeName, int time, int x, int y, int width, int height,
                         int red, int green, int blue) {
-    checkShapeExists(shapeName);
+    checkShapeExists(layer, shapeName);
     // may throw an IAE if the time is incorrect
     shapes.get(shapeName).addMotion(time, x, y, width, height, red, green, blue);
   }
 
   @Override
-  public void extend(String shapeName, int time) {
-    checkShapeExists(shapeName);
+  public void extend(int layer, String shapeName, int time) {
+    checkShapeExists(layer, shapeName);
     shapes.get(shapeName).extend(time);
   }
 
   @Override
-  public void editMotion(String shapeName, int time, int x, int y, int width, int height,
+  public void editMotion(int layer, String shapeName, int time, int x, int y, int width, int height,
                          int red, int green, int blue) {
-    checkShapeExists(shapeName);
+    checkShapeExists(layer, shapeName);
     // Motion constructor check for validity of inputs, throw IAE if invalid
     Motion m = new Motion(time, x, y, width, height, red, green, blue);
     Shape shape = shapes.get(shapeName);
@@ -104,20 +101,24 @@ public class AnimationModelImpl implements AnimationModel {
   }
 
   @Override
-  public void deleteMotion(String shapeName, int time) {
-    checkShapeExists(shapeName);
-    shapes.get(shapeName).deleteMotionAt(time); // throws IAE if there is not motion at that time
+  public void deleteMotion(int layer, String shapeName, int time) {
+    checkShapeExists(layer, shapeName);
+    shapes.get(shapeName).deleteMotionAt(time); // throws IAE if there is no motion at that time
   }
 
   @Override
-  public void deleteLastMotion(String shapeName) {
-    checkShapeExists(shapeName);
+  public void deleteLastMotion(int layer, String shapeName) {
+    checkShapeExists(layer, shapeName);
     shapes.get(shapeName).deleteLastMotion();
   }
 
   @Override
-  public List<String> getShapes() {
-    return new ArrayList<>(shapes.keySet());
+  public List<List<String>> getShapes() {
+    ArrayList<List<String>> shapeNames = new ArrayList<>(layers.size());
+    for (Layer l : layers) {
+      shapeNames.add(l.getShapes());
+    }
+    return shapeNames;
   }
 
   @Override
@@ -141,20 +142,20 @@ public class AnimationModelImpl implements AnimationModel {
   }
 
   @Override
-  public Transformation getTransformationAt(String shapeName, int tick) {
-    checkShapeExists(shapeName);
+  public Transformation getTransformationAt(int layer, String shapeName, int tick) {
+    checkShapeExists(layer, shapeName);
     return shapes.get(shapeName).getTransformationAt(tick);
   }
 
   @Override
-  public List<Motion> getMotions(String shapeName) {
-    checkShapeExists(shapeName);
+  public List<Motion> getMotions(int layer, String shapeName) {
+    checkShapeExists(layer, shapeName);
     return shapes.get(shapeName).getMotions();
   }
 
   @Override
-  public String getShapeType(String shapeName) {
-    checkShapeExists(shapeName);
+  public String getShapeType(int layer, String shapeName) {
+    checkShapeExists(layer, shapeName);
     return shapes.get(shapeName).getShapeType();
   }
 
@@ -168,13 +169,18 @@ public class AnimationModelImpl implements AnimationModel {
   }
 
   /**
-   * Check whether the shape with the given name exists. If not, throw an IAE.
+   * Check whether the shape with the given name exists in the given layer. If not, throw an IAE.
+   * @param layer the layer number
    * @param shapeName the shape whose existence is to be confirmed
    * @throws IllegalArgumentException if the shape does not exist
    */
-  private void checkShapeExists(String shapeName) {
-    if (! shapes.containsKey(shapeName)) {
-      throw new IllegalArgumentException("No shape with the name " + shapeName + " exists.");
+  private void checkShapeExists(int layer, String shapeName) {
+    if (layer < 0 || layer >= layers.size()) {
+      throw new IllegalArgumentException("There is no layer at position " + layer);
+    }
+    if (! layers.get(layer).hasShape(shapeName)) {
+      throw new IllegalArgumentException("No shape with the name " + shapeName +
+              " exists in the layer " + layer + ".");
     }
   }
 

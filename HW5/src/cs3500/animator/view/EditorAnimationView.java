@@ -25,6 +25,12 @@ public interface EditorAnimationView extends AnimationView {
   void pause();
 
   /**
+   * Set the current tick to the given tick.
+   * @param tick the new tick.
+   */
+  void setTick(int tick);
+
+  /**
    * Set the current time to the earliest possible time for a tick.
    */
   void rewind();

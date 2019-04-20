@@ -30,11 +30,20 @@ public interface Features {
   void stepBackwards();
 
   /**
+   * Display the given tick on the view.
+   * @param tick the tick to be displayed
+   */
+  void setTick(int tick);
+
+  /**
    * Set the animation's speed to the given speed.
    * @param input A String representing the desired speed.
    */
   void setSpeedToUserInput(String input);
 
+  /**
+   * Reset the text fields to their default values.
+   */
   void resetTextFields();
 
   /**

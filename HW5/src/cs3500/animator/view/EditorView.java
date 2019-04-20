@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
+import javax.swing.JSlider;
 
 import cs3500.animator.controller.Features;
 import cs3500.animator.model.Motion;
@@ -53,6 +54,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
   // INVARIANT: if toggled, looping = true. If not toggled, looping = false
   private final JButton forward;
   private final JButton back;
+  private final JSlider scrub;
   private final JList<String> shapes = new JList<>();
   private final JButton editShape;
   private final JButton addRectangle;
@@ -90,6 +92,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     loop = new JToggleButton("loop");
     forward = new JButton("->");
     back = new JButton("<-");
+    scrub = new JSlider();
     editShape = new JButton("edit");
     addRectangle = new JButton("new rect");
     addEllipse = new JButton("new ellipse");
@@ -125,6 +128,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     playbackControlPanel.add(fps);
 
     bottomScreen.add(playbackControlPanel);
+    bottomScreen.add(scrub);
     bottomScreen.add(errorDisplay);
 
     add(bottomScreen, BorderLayout.PAGE_END);
@@ -197,6 +201,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
   public void drawCurrentTick() {
     animationPanel.paintTick(tick);
     tickLabel.setText(Integer.toString(tick));
+    scrub.setValue(tick);
   }
 
   @Override
@@ -260,12 +265,13 @@ public class EditorView extends JFrame implements EditorAnimationView {
   }
 
   /**
-   * Set the current tick to the given tick. Call this method whenever changing the tick.
+   * Call this method whenever changing the tick.
    * This method enforces display invariants on the current tick:
    * it calls drawCurrentTick to update any relevant display components.
    * @param tick the new tick.
    */
-  private void setTick(int tick) {
+  @Override
+  public void setTick(int tick) {
     this.tick = tick;
     drawCurrentTick();
   }
@@ -292,6 +298,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
   @Override
   public void updateMaxTick() {
     maxTick = animationPanel.getMaxTick();
+    scrub.setMaximum(maxTick);
   }
 
   @Override
@@ -384,6 +391,11 @@ public class EditorView extends JFrame implements EditorAnimationView {
     begin.addActionListener(evt -> features.rewind());
     forward.addActionListener(evt -> features.stepForward());
     back.addActionListener(evt -> features.stepBackwards());
+    scrub.addChangeListener(evt -> {
+      if (scrub.getValueIsAdjusting()) { // if it changes by user drag vs. for other reasons
+        features.setTick(scrub.getValue());
+      }
+    });
 
     // shape editing controls
     addRectangle.addActionListener(evt -> features.addShape(addShapeName.getText(), "rectangle"));
@@ -416,3 +428,4 @@ public class EditorView extends JFrame implements EditorAnimationView {
     this.editFactory = new EditShapeDialogFactory(features);
   }
 }
+

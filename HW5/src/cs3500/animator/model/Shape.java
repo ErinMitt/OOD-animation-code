@@ -30,6 +30,14 @@ class Shape {
   }
 
   /**
+   * Get the shape name.
+   * @return the shape name
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
    * Add a new Motion with the given parameters to the end of the list.
    * The time must be after the time of the last existing motion already assigned to this shape.
    * RGB values must be between 0 and 255 and are corrected if they are outside those bounds.

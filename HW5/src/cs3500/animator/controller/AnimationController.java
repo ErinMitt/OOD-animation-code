@@ -77,6 +77,12 @@ public class AnimationController implements Features, Controller {
   }
 
   @Override
+  public void setTick(int tick) {
+    view.pause();
+    view.setTick(tick);
+  }
+
+  @Override
   public void setSpeedToUserInput(String input) {
     try {
       view.setSpeed(Double.parseDouble(input));

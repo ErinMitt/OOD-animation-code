@@ -48,6 +48,11 @@ public class EditorViewWrapper implements EditorAnimationView {
   }
 
   @Override
+  public void setTick(int tick) {
+    throw new UnsupportedOperationException(ERROR_MESSAGE);
+  }
+
+  @Override
   public void togglePlay() {
     throw new UnsupportedOperationException(ERROR_MESSAGE);
   }
