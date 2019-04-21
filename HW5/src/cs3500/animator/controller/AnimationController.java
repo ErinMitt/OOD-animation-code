@@ -101,9 +101,9 @@ public class AnimationController implements Features, Controller {
   }
 
   @Override
-  public void enterShapeEditor(String shape) {
+  public void enterShapeEditor(String layer, String shape) {
     try {
-      view.enterShapeEditor(shape);
+      view.enterShapeEditor(layer, shape);
       view.pause();
     } catch (IllegalArgumentException e) {
       view.displayErrorMessage("No shape selected");
@@ -126,14 +126,14 @@ public class AnimationController implements Features, Controller {
    * @throws IllegalArgumentException if any inputs are null
    */
   @Override
-  public void addKeyframe(String shape, String time, String x, String y,
+  public void addKeyframe(String layer, String shape, String time, String x, String y,
                           String width, String height, String red, String green, String blue) {
-    if (shape == null || time == null || x == null || y == null || width == null || height == null
-            || red == null || green == null || blue == null) {
+    if (layer == null || shape == null || time == null || x == null || y == null
+            || width == null || height == null || red == null || green == null || blue == null) {
       throw new IllegalArgumentException("Inputs must not be null");
     }
     try {
-      model.addMotion(shape, Integer.parseInt(time), Integer.parseInt(x), Integer.parseInt(y),
+      model.addMotion(layer, shape, Integer.parseInt(time), Integer.parseInt(x), Integer.parseInt(y),
               Integer.parseInt(width), Integer.parseInt(height),
               Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue));
       view.exitShapeEditor();
@@ -151,18 +151,19 @@ public class AnimationController implements Features, Controller {
    * @throws IllegalArgumentException if any of the inputs are null
    */
   @Override
-  public void editKeyframe(String shape, String time, String x, String y,
+  public void editKeyframe(String layer, String shape, String time, String x, String y,
                            String width, String height, String red, String green, String blue) {
     if (time == null) {
       view.displayErrorMessage("No keyframe selected");
       return;
     }
-    if (shape == null || x == null || y == null || width == null || height == null
+    if (layer == null || shape == null || x == null || y == null || width == null || height == null
             || red == null || green == null || blue == null) {
       throw new IllegalArgumentException("Inputs must not be null");
     }
     try {
-      model.editMotion(shape, Integer.parseInt(time), Integer.parseInt(x), Integer.parseInt(y),
+      model.editMotion(layer, shape, Integer.parseInt(time),
+              Integer.parseInt(x), Integer.parseInt(y),
               Integer.parseInt(width), Integer.parseInt(height),
               Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue));
       view.exitShapeEditor();
@@ -179,16 +180,16 @@ public class AnimationController implements Features, Controller {
    * @throws IllegalArgumentException if the shape is null
    */
   @Override
-  public void removeKeyframe(String shape, String time) {
+  public void removeKeyframe(String layer, String shape, String time) {
     if (time == null) {
       view.displayErrorMessage("No keyframe selected");
       return;
     }
-    if (shape == null) {
-      throw new IllegalArgumentException("Shape must not be null");
+    if (layer == null || shape == null) {
+      throw new IllegalArgumentException("Shape and layer must not be null");
     }
     try {
-      model.deleteMotion(shape, Integer.parseInt(time));
+      model.deleteMotion(layer, shape, Integer.parseInt(time));
       view.exitShapeEditor();
       view.updateMaxTick();
       view.drawCurrentTick();
@@ -200,9 +201,9 @@ public class AnimationController implements Features, Controller {
   }
 
   @Override
-  public void suggestNewKeyframe(String shape, String time) {
-    if (shape == null) {
-      throw new IllegalArgumentException("Shape must not be null");
+  public void suggestNewKeyframe(String layer, String shape, String time) {
+    if (layer == null || shape == null) {
+      throw new IllegalArgumentException("Shape and layer must not be null");
     }
     if (time == null) {
       throw new IllegalArgumentException("Time must not be null");
@@ -214,19 +215,19 @@ public class AnimationController implements Features, Controller {
       view.displayErrorMessage("Tick number must be an integer");
       return;
     }
-    if (! model.getShapes().contains(shape)) {
+    if (! model.getShapes(layer).contains(shape)) {
       throw new IllegalArgumentException("No such shape " + shape);
     }
     Motion m;
-    if (model.getMotions(shape).isEmpty()) {
+    if (model.getMotions(layer, shape).isEmpty()) {
       m = new Motion(Motion.START_TICK, 0, 0, 10, 10, 0, 0, 0);
     }
     else {
       try { // if the new keyframe happens during the existing animation
-        m = model.getTransformationAt(shape, t).getStateAt(t);
+        m = model.getTransformationAt(layer, shape, t).getStateAt(t);
       } catch (IllegalArgumentException e) {
         // if the new keyframe happens before or after the animation
-        List<Motion> motions = model.getMotions(shape);
+        List<Motion> motions = model.getMotions(layer, shape);
         if (t < motions.get(0).getTime()) {
           m = motions.get(0);
         } else {
@@ -246,9 +247,9 @@ public class AnimationController implements Features, Controller {
   }
 
   @Override
-  public void suggestEditKeyframe(String shape, String time) {
-    if (shape == null) {
-      throw new IllegalArgumentException("Shape must not be null");
+  public void suggestEditKeyframe(String layer, String shape, String time) {
+    if (layer == null || shape == null) {
+      throw new IllegalArgumentException("Shape and layer must not be null");
     }
     if (time == null) {
       view.displayErrorMessage("Must select a time to edit keyframes");
@@ -261,10 +262,10 @@ public class AnimationController implements Features, Controller {
       view.displayErrorMessage("Tick number must be an integer");
       return;
     }
-    if (! model.getShapes().contains(shape)) {
+    if (! model.getShapes(layer).contains(shape)) {
       throw new IllegalArgumentException("No such shape " + shape);
     }
-    for (Motion m : model.getMotions(shape)) {
+    for (Motion m : model.getMotions(layer, shape)) {
       if (m.getTime() == t) {
         try {
           view.setEditFrameText(m);
@@ -281,48 +282,52 @@ public class AnimationController implements Features, Controller {
   }
 
   @Override
-  public void addShape(String name, String type) {
-    if (name == null || type == null) {
-      throw new IllegalArgumentException("Shape name and type must not be null");
+  public void addShape(String layer, String shapeName, String type) {
+    if (layer == null || shapeName == null || type == null) {
+      throw new IllegalArgumentException("Shape name, layer name, and shape type must not be null");
     }
-    if (name.equals("")) {
+    if (shapeName.equals("")) {
       view.displayErrorMessage("Names must have at least one character");
       return;
     }
-    if (name.contains(" ")) {
+    if (shapeName.contains(" ")) {
       view.displayErrorMessage("Names cannot have spaces");
       return;
     }
-    if (model.getShapes().contains(name)) {
-      view.displayErrorMessage("There is already a shape by the name " + name);
+    if (model.getShapes(layer).contains(shapeName)) {
+      view.displayErrorMessage("There is already a shape by the name " + shapeName);
       return;
     }
     switch (type) {
       case "ellipse":
-        model.addEllipse(name);
+        model.addEllipse(layer, shapeName);
         break;
       case "rectangle":
-        model.addRectangle(name);
+        model.addRectangle(layer, shapeName);
         break;
       default:
         throw new IllegalArgumentException("There is no shape type " + type);
     }
-    view.setShapeList(model.getShapes());
+    view.setShapeList(model.getShapes(layer));
   }
 
   @Override
-  public void deleteShape(String name) {
+  public void deleteShape(String layer, String name) {
+    if (layer == null) {
+      view.displayErrorMessage("There is no layer selected");
+      return;
+    }
     if (name == null) {
       view.displayErrorMessage("There is no shape selected");
       return;
     }
 
-    if (!model.getShapes().contains(name)) {
+    if (!model.getShapes(layer).contains(name)) {
       view.displayErrorMessage("There is no shape by this name");
       return;
     }
-    model.deleteShape(name);
-    view.setShapeList(model.getShapes());
+    model.deleteShape(layer, name);
+    view.setShapeList(model.getShapes(layer));
     view.drawCurrentTick();
   }
 

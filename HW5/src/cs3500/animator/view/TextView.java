@@ -88,27 +88,32 @@ public class TextView implements AnimationView {
     if (model == null) {
       throw new IllegalStateException("Cannot animate a null model");
     }
-    List<String> shapesText = new ArrayList<>(model.getShapes().size() + 1);
-    shapesText.add(joinWithSpaces("canvas",
+    List<String> layersText = new ArrayList<>(model.getLayers().size() + 1);
+    layersText.add(joinWithSpaces("canvas",
             Integer.toString(model.getX()),
             Integer.toString(model.getY()),
             Integer.toString(model.getWidth()),
             Integer.toString(model.getHeight())));
-    for (String shape : model.getShapes()) {
-      List<Motion> motions = model.getMotions(shape);
-      List<String> motionLines = new ArrayList<>(motions.size());
-      motionLines.add(joinWithSpaces("shape", shape, model.getShapeType(shape)));
-      if (motions.size() >= 1) {
-        motionLines.add(joinWithSpaces("motion", shape,
-                motions.get(0).display(), motions.get(0).display()));
+    for (String layer : model.getLayers()) {
+      List<String> shapesText = new ArrayList<>(model.getShapes(layer).size() + 1);
+      shapesText.add("layer " + layer);
+      for (String shape : model.getShapes(layer)) {
+        List<Motion> motions = model.getMotions(layer, shape);
+        List<String> motionLines = new ArrayList<>(motions.size());
+        motionLines.add(joinWithSpaces("shape", shape, model.getShapeType(layer, shape)));
+        if (motions.size() >= 1) {
+          motionLines.add(joinWithSpaces("motion", shape,
+                  motions.get(0).display(), motions.get(0).display()));
+        }
+        for (int i = 0; i < motions.size() - 1; i++) {
+          motionLines.add(joinWithSpaces("motion", shape,
+                  motions.get(i).display(), motions.get(i + 1).display()));
+        }
+        shapesText.add(String.join("\n", motionLines));
       }
-      for (int i = 0; i < motions.size() - 1; i++) {
-        motionLines.add(joinWithSpaces("motion", shape,
-                motions.get(i).display(), motions.get(i + 1).display()));
-      }
-      shapesText.add(String.join("\n", motionLines));
+      layersText.add(String.join("\n", shapesText));
     }
-    return String.join("\n", shapesText);
+    return String.join("\n", layersText);
   }
 
   /**

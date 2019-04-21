@@ -23,6 +23,13 @@ public interface AnimationBuilder<Doc> {
   AnimationBuilder<Doc> setBounds(int x, int y, int width, int height);
 
   /**
+   * Specify the layer to which subsequent new shapes and motions will be added.
+   * @param layerName the layer's name.
+   * @return This {@link AnimationBuilder}
+   */
+  AnimationBuilder<Doc> declareLayer(String layerName);
+
+  /**
    * Adds a new shape to the growing document.
    *
    * @param name The unique name of the shape to be added.

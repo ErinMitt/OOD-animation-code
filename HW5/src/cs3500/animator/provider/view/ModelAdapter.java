@@ -33,8 +33,10 @@ public class ModelAdapter implements IModel {
   @Override
   public Map<String, Shape> getShapes() {
     Map<String, Shape> shapes = new TreeMap<>();
-    for (String shape : model.getShapes()) {
-      shapes.put(shape, new Shape(shape, model));
+    for (String layer : model.getLayers()) {
+      for (String shape : model.getShapes(layer)) {
+        shapes.put(shape, new Shape(layer, shape, model));
+      }
     }
     return shapes;
   }

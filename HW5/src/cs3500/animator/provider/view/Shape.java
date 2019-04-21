@@ -15,31 +15,35 @@ import cs3500.animator.model.Motion;
  * A class that mimics a "Shape" class in the provider code.
  */
 public class Shape {
+  private final String layer;
   private final String name;
   private final AnimationModel model;
 
   /**
    * Creates a "Shape" adapter.
+   * @param layer the layer name
    * @param name the shape's name
    * @param model the model to which the shape belongs
    */
-  public Shape(String name, AnimationModel model) {
+  public Shape(String layer, String name, AnimationModel model) {
+    this.layer = layer;
     this.name = name;
     this.model = model;
   }
 
   /**
    * Find which type of shape this shape is.
+   *
    * @return the ShapeType enum of this shape
    */
   public ShapeType getShapeType() {
-    switch (model.getShapeType(name)) {
+    switch (model.getShapeType(layer, name)) {
       case "ellipse":
         return ShapeType.ELLIPSE;
       case "rectangle":
         return ShapeType.RECTANGLE;
       default:
-        throw new IllegalArgumentException("Illegal shape type " + model.getShapeType(name));
+        throw new IllegalArgumentException("Illegal shape type " + model.getShapeType(layer, name));
     }
   }
 
@@ -79,7 +83,7 @@ public class Shape {
      */
     @Override
     public boolean containsKey(Object key) {
-      for (Motion m : model.getMotions(name)) {
+      for (Motion m : model.getMotions(layer, name)) {
         if (m.getTime() == (int) key) {
           return true;
         }
@@ -95,7 +99,7 @@ public class Shape {
      */
     @Override
     public int[] get(Object key) {
-      Motion m = model.getTransformationAt(name, (int) key).getStateAt((int) key);
+      Motion m = model.getTransformationAt(layer, name, (int) key).getStateAt((int) key);
       return new int[]{m.getX(), m.getY(), m.getWidth(), m.getHeight(),
               m.getRed(), m.getGreen(), m.getBlue()};
     }
@@ -110,10 +114,10 @@ public class Shape {
     @Override
     public int[] put(Integer key, int[] value) {
       try {
-        model.addMotion(name, key, value[0], value[1], value[2],
+        model.addMotion(layer, name, key, value[0], value[1], value[2],
                 value[3], value[4], value[5], value[6]);
       } catch (IllegalArgumentException e) {
-        model.editMotion(name, key, value[0], value[1], value[2],
+        model.editMotion(layer, name, key, value[0], value[1], value[2],
                 value[3], value[4], value[5], value[6]);
       }
       return null;
@@ -127,7 +131,7 @@ public class Shape {
     @Override
     public Set<Map.Entry<Integer, int[]>> entrySet() {
       TreeSet<Map.Entry<Integer, int[]>> map = new TreeSet<>();
-      for (Motion m : model.getMotions(name)) {
+      for (Motion m : model.getMotions(layer, name)) {
         map.add(new MoveListEntry(model, name, m.getTime()));
       }
       return map;
@@ -139,7 +143,7 @@ public class Shape {
      */
     @Override
     public boolean isEmpty() {
-      return model.getMotions(name).isEmpty();
+      return model.getMotions(layer, name).isEmpty();
     }
 
     /**
@@ -152,7 +156,7 @@ public class Shape {
       if (isEmpty()) {
         throw new NoSuchElementException("The shape " + name + " has no motions");
       }
-      return model.getMotions(name).get(0).getTime();
+      return model.getMotions(layer, name).get(0).getTime();
     }
 
     /**
@@ -165,7 +169,7 @@ public class Shape {
       if (isEmpty()) {
         throw new NoSuchElementException("The shape " + name + " has no motions");
       }
-      return model.getMotions(name).get(model.getMotions(name).size() - 1).getTime();
+      return model.getMotions(layer, name).get(model.getMotions(layer, name).size() - 1).getTime();
     }
 
     /**
@@ -180,7 +184,7 @@ public class Shape {
         return null;
       }
       int[] m = get(key);
-      model.deleteMotion(name, (int) key);
+      model.deleteMotion(layer, name, (int) key);
       return m;
     }
 
@@ -233,7 +237,7 @@ public class Shape {
 
     @Override
     public int size() {
-      return model.getMotions(name).size();
+      return model.getMotions(layer, name).size();
     }
   }
 
@@ -259,7 +263,7 @@ public class Shape {
       this.model = model;
       this.name = name;
       this.time = time;
-      motion = model.getTransformationAt(name, time).getStateAt(time);
+      motion = model.getTransformationAt(layer, name, time).getStateAt(time);
     }
 
     /**
@@ -288,11 +292,11 @@ public class Shape {
      */
     @Override
     public int[] setValue(int[] value) {
-      model.editMotion(name, time, value[0], value[1], value[2], value[3],
+      model.editMotion(layer, name, time, value[0], value[1], value[2], value[3],
               value[4], value[5], value[6]);
 
       Motion m = motion;
-      motion = model.getTransformationAt(name, time).getStateAt(time);
+      motion = model.getTransformationAt(layer, name, time).getStateAt(time);
       return new int[] {m.getX(), m.getY(), m.getWidth(), m.getHeight(),
               m.getRed(), m.getGreen(), m.getBlue()};
     }

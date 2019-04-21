@@ -98,10 +98,10 @@ class Shape {
    */
   void deleteMotionAt(int time) {
     if (time < Motion.START_TICK
-            || ! motionOverlaps(new Motion(time, 0, 0, 1, 1, 1, 1, 1))) {
+            || ! motionOverlaps(Motion.defaultMotion(time))) {
       throw new IllegalArgumentException("No motion at time " + time + " for the shape " + name);
     }
-    motions.remove(motions.ceiling(new Motion(time, 0, 0, 1, 1, 1, 1, 1)));
+    motions.remove(motions.ceiling(Motion.defaultMotion(time)));
   }
 
   /**
@@ -176,7 +176,7 @@ class Shape {
     if (motions.first().getTime() > tick || motions.last().getTime() < tick) {
       throw new IllegalArgumentException("The shape " + name + " has no motions at time " + tick);
     }
-    Motion tickMotion = new Motion(tick, 0, 0, 1, 1, 0, 0, 0);
+    Motion tickMotion = Motion.defaultMotion(tick);
     return new Transformation(motions.floor(tickMotion), motions.ceiling(tickMotion));
   }
 

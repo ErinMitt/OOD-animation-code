@@ -6,16 +6,26 @@ import java.util.List;
  * A class representing a Model with only getters that cannot be mutated.
  */
 public interface ReadOnlyModel {
+  /**
+   * Return a list of names of all layers in the order of their
+   *
+   * @return the list of layer names.
+   */
+  List<String> getLayers();
 
   /**
-   * Return a list of names of all shapes available in the animation.
+   * Return a list of names of all shapes in the given layer.
    *
-   * @return the list of shape names.
+   * @param layer the name of the layer
+   * @return the list of shape names
+   * @throws IllegalArgumentException if no such layer exists
    */
-  List<String> getShapes();
+  List<String> getShapes(String layer);
 
   /**
    * Describe the animation using a human-readable String. The String will follow this format:
+   * # declares a layer named layer1
+   * layer layer1
    * # declares a rectangle shape named R
    * shape R rectangle
    * # describes the motions of shape R, between two moments of animation:
@@ -70,26 +80,29 @@ public interface ReadOnlyModel {
 
   /**
    * Find the transformation of the shape in progress at the given tick.
+   * @param layer the layer on which the shape is found
    * @param shapeName the shape's name
    * @param tick the tick of the desired Transformation
    * @return the transformation
    * @throws IllegalArgumentException if there is no such shape name ir if the shape is not
    *     present on the screen during the given tick
    */
-  Transformation getTransformationAt(String shapeName, int tick);
+  Transformation getTransformationAt(String layer, String shapeName, int tick);
 
   /**
    * Return a list of all of the given shape's motions.
+   * @param layer the layer on which the shape is found
    * @param shapeName the shape's name
    * @return a list of all keyframes of the shape
    * @throws IllegalArgumentException if there is no such shape
    */
-  List<Motion> getMotions(String shapeName);
+  List<Motion> getMotions(String layer, String shapeName);
 
   /**
    * Return a string (either ellipse or rectangle) representing the shape type.
+   * @param layer the layer on which the shape is found
    * @param shapeName the name of the shape
    * @return the shape type
    */
-  String getShapeType(String shapeName);
+  String getShapeType(String layer, String shapeName);
 }

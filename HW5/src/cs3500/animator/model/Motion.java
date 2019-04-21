@@ -52,6 +52,16 @@ public class Motion {
   }
 
   /**
+   * Build a "default" motion at the given time - a valid Motion at the given time.
+   * @param time the time of the default motion
+   * @return the new default motion
+   * @throws IllegalArgumentException if the time is invalid
+   */
+  public static Motion defaultMotion(int time) {
+    return new Motion(time, 0, 0, 1, 1, 0, 0, 0);
+  }
+
+  /**
    * If a given integer is not usable as a color (greater than 255 or less than 0), then return the
    * closest possible int that is a legal color.
    *

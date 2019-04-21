@@ -93,8 +93,10 @@ public interface EditorAnimationView extends AnimationView {
 
   /**
    * Enter a screen from which a shape's Motions can be edited.
+   * @param layer the layer of the shape to be edited
+   * @param shape the shape to be edited
    */
-  void enterShapeEditor(String shape);
+  void enterShapeEditor(String layer, String shape);
 
   /**
    * Return to the default screen from the shape editor screen.

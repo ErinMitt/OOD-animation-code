@@ -26,20 +26,21 @@ class EditShapeDialogFactory {
 
   /**
    * Build a dialog box that allows editing of a shape's Motions.
+   * @param layer the layer of the shape to be edited
    * @param shape the shape to be edited
    * @return the dialog box
    */
-  public EditShapeDialog getDialog(String shape, JFrame owner) {
-    if (shape == null) {
-      throw new IllegalArgumentException("Shape must not be null");
+  public EditShapeDialog getDialog(String layer, String shape, JFrame owner) {
+    if (layer == null || shape == null) {
+      throw new IllegalArgumentException("Shape and layer must not be null");
     }
     List<Motion> motions;
     try {
-      motions = model.getMotions(shape);
+      motions = model.getMotions(layer, shape);
     } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException("No such shape " + shape);
+      throw new IllegalArgumentException("No such shape " + shape + " in the layer " + layer);
     }
-    EditShapeDialog dialog = new EditShapeDialog(owner, motions, shape, features);
+    EditShapeDialog dialog = new EditShapeDialog(owner, motions, layer, shape, features);
     dialog.addWindowListener(new WindowListener() {
       @Override
       public void windowOpened(WindowEvent e) {

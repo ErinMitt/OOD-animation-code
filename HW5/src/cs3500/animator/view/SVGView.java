@@ -67,34 +67,36 @@ public class SVGView implements AnimationView {
    * Creates an SVG-formatted text representing the animation described in the model.
    * @return the SVG text
    */
-  private String formatAnimation() {
+  private String formatAnimation() { //TODO: check that layers overlap properly
     LinkedList<String> svgLines = new LinkedList<>();
     svgLines.add("<svg width=\"" + (model.getWidth() + model.getX())
             + "\" height=\"" + (model.getHeight() + model.getY())
             + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">");
-    for (String shape : model.getShapes()) {
-      List<Motion> motions = model.getMotions(shape);
-      switch (model.getShapeType(shape)) {
-        case "ellipse":
-          if (!motions.isEmpty()) {
-            svgLines.add(initEllipse(motions.get(0), shape));
-            for (int i = 0; i < motions.size() - 1; i++) {
-              svgLines.addAll(moveEllipse(motions.get(i), motions.get(i + 1), shape));
+    for (String layer : model.getLayers()) {
+      for (String shape : model.getShapes(layer)) {
+        List<Motion> motions = model.getMotions(layer, shape);
+        switch (model.getShapeType(layer, shape)) {
+          case "ellipse":
+            if (!motions.isEmpty()) {
+              svgLines.add(initEllipse(motions.get(0), shape));
+              for (int i = 0; i < motions.size() - 1; i++) {
+                svgLines.addAll(moveEllipse(motions.get(i), motions.get(i + 1), shape));
+              }
+              svgLines.add("</ellipse>");
             }
-            svgLines.add("</ellipse>");
-          }
-          break;
-        case "rectangle":
-          if (!motions.isEmpty()) {
-            svgLines.add(initRect(motions.get(0), shape));
-            for (int i = 0; i < motions.size() - 1; i++) {
-              svgLines.addAll(moveRect(motions.get(i), motions.get(i + 1), shape));
+            break;
+          case "rectangle":
+            if (!motions.isEmpty()) {
+              svgLines.add(initRect(motions.get(0), shape));
+              for (int i = 0; i < motions.size() - 1; i++) {
+                svgLines.addAll(moveRect(motions.get(i), motions.get(i + 1), shape));
+              }
+              svgLines.add("</rect>");
             }
-            svgLines.add("</rect>");
-          }
-          break;
-        default:
-          throw new IllegalArgumentException("Invalid shape type " + model.getShapeType(shape));
+            break;
+          default:
+            throw new IllegalArgumentException("Invalid shape type " + model.getShapeType(layer, shape));
+        }
       }
     }
     svgLines.add("</svg>");

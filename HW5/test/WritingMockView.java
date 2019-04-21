@@ -101,7 +101,7 @@ public class WritingMockView implements EditorAnimationView {
   }
 
   @Override
-  public void enterShapeEditor(String shape) {
+  public void enterShapeEditor(String layer, String shape) {
     append("Entered shape editor: " + shape);
   }
 

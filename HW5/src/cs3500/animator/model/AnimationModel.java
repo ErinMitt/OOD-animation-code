@@ -17,30 +17,59 @@ public interface AnimationModel extends ReadOnlyModel {
   void setBounds(int x, int y, int width, int height);
 
   /**
+   * Add a layer by the given name.
+   * @param layerName the new layer's name.
+   * @throws IllegalArgumentException if there is already a layer by the given name.
+   */
+  void addLayer(String layerName);
+
+  /**
+   * Delete the layer of the given name.
+   *
+   * @param layerName the name of the layer to be deleted
+   * @throws IllegalArgumentException if there is no layer by the given name
+   */
+  void deleteLayer(String layerName);
+
+  /**
+   * Move the layer of the given name from its current location to a new position.
+   * @param layerName the layer to be moved
+   * @param position the new position
+   * @throws IllegalArgumentException if there is no layer from the given name
+   *     or if the new position is invalid
+   */
+  void moveLayer(String layerName, int position);
+
+  /**
    * Add a new ellipse that can be animated.
    *
+   * @param layer the layer on which the shape is found
    * @param name the shape's name
    * @throws IllegalArgumentException if the shape doesn't have a unique name
    */
-  void addEllipse(String name);
+  void addEllipse(String layer, String name);
 
   /**
    * Add a new rectangle that can be animated.
    *
+   * @param layer the layer on which the shape is found
    * @param name the shape's name
    * @throws IllegalArgumentException if the shape doesn't have a unique name
    */
-  void addRectangle(String name);
+  void addRectangle(String layer, String name);
 
   /**
    * Remove the shape with the given name from the animation, along with all of its motions.
+   * @param layer the layer on which the shape is found
+   * @param shapeName the shape's name
    * @throws IllegalArgumentException if there is no shape with the given name
    */
-  void deleteShape(String shapeName);
+  void deleteShape(String layer, String shapeName);
 
   /**
    * Add a new motion to the given shape.
    *
+   * @param layer the layer on which the shape is found
    * @param shapeName the name of the shape to which a new motion will be added
    * @param time the time of the new motion
    * @param x the new motion's x coordinate
@@ -54,22 +83,12 @@ public interface AnimationModel extends ReadOnlyModel {
    *                                  than 1, or if the time is before that shape's last movement
    *                                  ends.
    */
-  void addMotion(String shapeName, int time, int x, int y, int width,
+  void addMotion(String layer, String shapeName, int time, int x, int y, int width,
                  int height, int red, int green, int blue);
 
   /**
-   * Tell the given shape to remain motionless until the given time.
-   *
-   * @param shape the name of the shape to have its last movement extended
-   * @param time the time until when the shape should stay still
-   * @throws IllegalArgumentException if there is no such shape or if the time occurs before the
-   *                                  shape's last motion
-   * @throws IllegalStateException    if the given shape has no motions
-   */
-  void extend(String shape, int time);
-
-  /**
    * Replace the motion at the given time with a motion of the given parameters.
+   * @param layer the layer on which the shape is found
    * @param shape the shape name
    * @param time the time
    * @param x the x coordinate
@@ -82,24 +101,26 @@ public interface AnimationModel extends ReadOnlyModel {
    * @throws IllegalArgumentException if the shape does not exist, if there is no motion at the
    *     given time, or if the given motion parameters are invalid
    */
-  void editMotion(String shape, int time, int x, int y, int width, int height,
+  void editMotion(String layer, String shape, int time, int x, int y, int width, int height,
                   int red, int green, int blue);
 
   /**
    * Delete the motion of the given shape at the given time.
+   * @param layer the layer on which the shape is found
    * @param shape the shape name
    * @param time the time of the motion
    * @throws IllegalArgumentException if there is no shape by the given name or if there is no
    *     motion at the given time
    */
-  void deleteMotion(String shape, int time);
+  void deleteMotion(String layer, String shape, int time);
 
   /**
    * Remove the last motion of the given shape.
    *
+   * @param layer the layer on which the shape is found
    * @param shapeName the shape from which the last motion will be deleted
    * @throws IllegalArgumentException if the shape does not exist
    * @throws IllegalStateException    if the shape has no motions
    */
-  void deleteLastMotion(String shapeName);
+  void deleteLastMotion(String layer, String shapeName);
 }

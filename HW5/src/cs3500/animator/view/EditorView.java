@@ -176,7 +176,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     updateMaxTick();
     drawCurrentTick();
     editFactory.setModel(model);
-    setShapeList(model.getShapes());
+    // TODO: setShapeList(model.getShapes()); turn this to setLayerList
   }
 
   @Override
@@ -307,9 +307,9 @@ public class EditorView extends JFrame implements EditorAnimationView {
   }
 
   @Override
-  public void enterShapeEditor(String shape) {
-    if (shape == null) {
-      throw new IllegalArgumentException("Shape cannot be null");
+  public void enterShapeEditor(String layer, String shape) {
+    if (layer == null || shape == null) {
+      throw new IllegalArgumentException("Shape and layer cannot be null");
     }
     if (editDialog != null) {
       throw new IllegalStateException("The shape editor dialog is already open");
@@ -317,7 +317,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     if (editFactory == null) {
       throw new IllegalStateException("The editor factory has not been set");
     }
-    editDialog = editFactory.getDialog(shape, this);
+    editDialog = editFactory.getDialog(layer, shape, this);
     editDialog.makeVisible();
   }
 
@@ -398,9 +398,10 @@ public class EditorView extends JFrame implements EditorAnimationView {
     });
 
     // shape editing controls
-    addRectangle.addActionListener(evt -> features.addShape(addShapeName.getText(), "rectangle"));
-    addEllipse.addActionListener(evt -> features.addShape(addShapeName.getText(), "ellipse"));
-    deleteShape.addActionListener(evt -> features.deleteShape(shapes.getSelectedValue()));
+    // TODO: replace "1" with actual layer text
+    addRectangle.addActionListener(evt -> features.addShape("1", addShapeName.getText(), "rectangle"));
+    addEllipse.addActionListener(evt -> features.addShape("1", addShapeName.getText(), "ellipse"));
+    deleteShape.addActionListener(evt -> features.deleteShape("1", shapes.getSelectedValue()));
 
     // saving controls
     saveSVG.addActionListener(evt -> features.save("svg", saveFileName.getText()));
@@ -422,7 +423,8 @@ public class EditorView extends JFrame implements EditorAnimationView {
     });
 
     // shape editing buttons
-    editShape.addActionListener(evt -> features.enterShapeEditor(shapes.getSelectedValue()));
+    // TODO: replace "1"
+    editShape.addActionListener(evt -> features.enterShapeEditor("1", shapes.getSelectedValue()));
 
     // Creating the EditShapeDialogFactory
     this.editFactory = new EditShapeDialogFactory(features);

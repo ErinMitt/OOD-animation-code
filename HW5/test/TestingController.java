@@ -52,7 +52,7 @@ public class TestingController implements Features, Controller {
   }
 
   @Override
-  public void enterShapeEditor(String shape) {
+  public void enterShapeEditor(String layer, String shape) {
     //this controller exists for testing only and doesn't do anything
   }
 
@@ -62,39 +62,39 @@ public class TestingController implements Features, Controller {
   }
 
   @Override
-  public void addKeyframe(String shape, String time, String x, String y,
+  public void addKeyframe(String layer, String shape, String time, String x, String y,
                           String width, String height, String red, String green, String blue) {
     //this controller exists for testing only and doesn't do anything
   }
 
   @Override
-  public void editKeyframe(String shape, String time, String x, String y,
+  public void editKeyframe(String layer, String shape, String time, String x, String y,
                            String width, String height, String red, String green, String blue) {
     //this controller exists for testing only and doesn't do anything
   }
 
   @Override
-  public void removeKeyframe(String shape, String time) {
+  public void removeKeyframe(String layer, String shape, String time) {
     //this controller exists for testing only and doesn't do anything
   }
 
   @Override
-  public void suggestNewKeyframe(String shape, String time) {
+  public void suggestNewKeyframe(String layer, String shape, String time) {
     //this controller exists for testing only and doesn't do anything
   }
 
   @Override
-  public void suggestEditKeyframe(String shape, String time) {
+  public void suggestEditKeyframe(String layer, String shape, String time) {
     //this controller exists for testing only and doesn't do anything
   }
 
   @Override
-  public void addShape(String name, String type) {
+  public void addShape(String layer, String name, String type) {
     //this controller exists for testing only and doesn't do anything
   }
 
   @Override
-  public void deleteShape(String name) {
+  public void deleteShape(String layer, String name) {
     //this controller exists for testing only and doesn't do anything
   }
 

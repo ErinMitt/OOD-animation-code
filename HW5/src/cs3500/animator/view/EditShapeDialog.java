@@ -53,7 +53,7 @@ class EditShapeDialog {
   // keyframe timeline
   private final JList<String> keyframes;
 
-  public EditShapeDialog(JFrame owner, List<Motion> frames, String shape,
+  public EditShapeDialog(JFrame owner, List<Motion> frames, String layer, String shape,
                          Features features) {
     dialog = new JDialog(owner, "Edit " + shape);
 
@@ -76,10 +76,10 @@ class EditShapeDialog {
     addRed = new JTextField();
     addGreen = new JTextField();
     addBlue = new JTextField();
-    addButton.addActionListener(evt -> features.addKeyframe(shape, addTime.getText(),
+    addButton.addActionListener(evt -> features.addKeyframe(layer, shape, addTime.getText(),
             addX.getText(), addY.getText(), addWidth.getText(), addHeight.getText(),
             addRed.getText(), addGreen.getText(), addBlue.getText()));
-    addTime.addActionListener(evt -> features.suggestNewKeyframe(shape, addTime.getText()));
+    addTime.addActionListener(evt -> features.suggestNewKeyframe(layer, shape, addTime.getText()));
 
     addTime.setColumns(TEXT_FIELD_WIDTH);
     addX.setColumns(TEXT_FIELD_WIDTH);
@@ -99,11 +99,11 @@ class EditShapeDialog {
     editRed = new JTextField();
     editGreen = new JTextField();
     editBlue = new JTextField();
-    editButton.addActionListener(evt -> features.editKeyframe(shape, keyframes.getSelectedValue(),
+    editButton.addActionListener(evt -> features.editKeyframe(layer, shape, keyframes.getSelectedValue(),
         editX.getText(), editY.getText(), editWidth.getText(), editHeight.getText(),
         editRed.getText(), editGreen.getText(), editBlue.getText()));
     keyframes.addListSelectionListener(
-        evt -> features.suggestEditKeyframe(shape, keyframes.getSelectedValue()));
+        evt -> features.suggestEditKeyframe(layer, shape, keyframes.getSelectedValue()));
 
     editX.setColumns(TEXT_FIELD_WIDTH);
     editY.setColumns(TEXT_FIELD_WIDTH);
@@ -116,7 +116,7 @@ class EditShapeDialog {
     // create the button for deleting a keyframe
     JButton deleteButton = new JButton("delete");
     deleteButton.addActionListener(
-        evt -> features.removeKeyframe(shape, keyframes.getSelectedValue()));
+        evt -> features.removeKeyframe(layer, shape, keyframes.getSelectedValue()));
 
 
 

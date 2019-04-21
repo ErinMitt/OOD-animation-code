@@ -31,6 +31,7 @@ public class SVGViewTests {
   @Before
   public void init() {
     model = new AnimationModelImpl();
+    model.addLayer("1");
     view = new SVGView();
     output = new StringBuilder();
 
@@ -41,9 +42,9 @@ public class SVGViewTests {
   @Test
   public void testSetSpeed() {
     // test that a tick lasts 1000ms
-    model.addRectangle("R");
-    model.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
-    model.addMotion("R", 2, 1, 1, 2, 2, 1, 1, 1);
+    model.addRectangle("1", "R");
+    model.addMotion("1", "R", 1, 1, 1, 1, 1, 1, 1, 1);
+    model.addMotion("1", "R", 2, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
     assertNotEquals(-1, output.toString().indexOf("dur=\"1000ms\""));
 
@@ -95,9 +96,9 @@ public class SVGViewTests {
   public void testSetModel() {
     // test that the correct model is set
     AnimationModel model2 = new AnimationModelImpl();
-    model2.addRectangle("R");
-    model2.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
-    model2.addMotion("R", 2, 1, 1, 2, 2, 1, 1, 1);
+    model2.addRectangle("1", "R");
+    model2.addMotion("1", "R", 1, 1, 1, 1, 1, 1, 1, 1);
+    model2.addMotion("1", "R", 2, 1, 1, 2, 2, 1, 1, 1);
 
     AnimationView view2 = new SVGView();
     StringBuilder output2 = new StringBuilder();
@@ -138,7 +139,7 @@ public class SVGViewTests {
 
     // a single rectangle with no movements
     init();
-    model.addRectangle("R");
+    model.addRectangle("1", "R");
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n</svg>",
@@ -146,8 +147,8 @@ public class SVGViewTests {
 
     // one keyframe for a rectangle
     init();
-    model.addRectangle("R");
-    model.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
+    model.addRectangle("1", "R");
+    model.addMotion("1", "R", 1, 1, 1, 1, 1, 1, 1, 1);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
@@ -158,18 +159,18 @@ public class SVGViewTests {
 
     // a single movement for a rectangle
     init();
-    model.addRectangle("R");
-    model.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
-    model.addMotion("R", 2, 1, 1, 2, 2, 1, 1, 1);
+    model.addRectangle("1", "R");
+    model.addMotion("1", "R", 1, 1, 1, 1, 1, 1, 1, 1);
+    model.addMotion("1", "R", 2, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
     assertEquals(easyOutput, output.toString());
 
     init();
     // two movements for a rectangle (all parameters change in motion 1)
-    model.addRectangle("R");
-    model.addMotion("R", 1, 1, 1, 1, 1, 1, 2, 3);
-    model.addMotion("R", 3, 2, 2, 2, 2, 5, 5, 5);
-    model.addMotion("R", 6, 1, 1, 2, 2, 1, 1, 1);
+    model.addRectangle("1", "R");
+    model.addMotion("1", "R", 1, 1, 1, 1, 1, 1, 2, 3);
+    model.addMotion("1", "R", 3, 2, 2, 2, 2, 5, 5, 5);
+    model.addMotion("1", "R", 6, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
@@ -199,7 +200,7 @@ public class SVGViewTests {
 
     // a single ellipse with no movements
     init();
-    model.addEllipse("E");
+    model.addEllipse("1", "E");
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n</svg>",
@@ -207,8 +208,8 @@ public class SVGViewTests {
 
     // one keyframe for a ellipse
     init();
-    model.addEllipse("E");
-    model.addMotion("E", 1, 1, 1, 2, 2, 1, 1, 1);
+    model.addEllipse("1", "E");
+    model.addMotion("1", "E", 1, 1, 1, 2, 2, 1, 1, 1);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
@@ -220,9 +221,9 @@ public class SVGViewTests {
 
     // a single movement for a ellipse
     init();
-    model.addEllipse("E");
-    model.addMotion("E", 1, 1, 1, 2, 2, 1, 1, 1);
-    model.addMotion("E", 2, 1, 1, 4, 4, 1, 1, 1);
+    model.addEllipse("1", "E");
+    model.addMotion("1", "E", 1, 1, 1, 2, 2, 1, 1, 1);
+    model.addMotion("1", "E", 2, 1, 1, 4, 4, 1, 1, 1);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +
@@ -238,10 +239,10 @@ public class SVGViewTests {
 
     // two movements for a ellipse (all parameters change in motion 1)
     init();
-    model.addEllipse("E");
-    model.addMotion("E", 1, 1, 1, 2, 2, 1, 1, 1);
-    model.addMotion("E", 3, 2, 2, 4, 4, 5, 5, 5);
-    model.addMotion("E", 6, 1, 1, 4, 4, 1, 1, 1);
+    model.addEllipse("1", "E");
+    model.addMotion("1", "E", 1, 1, 1, 2, 2, 1, 1, 1);
+    model.addMotion("1", "E", 3, 2, 2, 4, 4, 5, 5, 5);
+    model.addMotion("1", "E", 6, 1, 1, 4, 4, 1, 1, 1);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
             "xmlns=\"http://www.w3.org/2000/svg\">\n" +
@@ -269,12 +270,12 @@ public class SVGViewTests {
 
     // a rectangle and an ellipse
     init();
-    model.addRectangle("R");
-    model.addEllipse("E");
-    model.addMotion("R", 1, 1, 1, 1, 1, 1, 1, 1);
-    model.addMotion("R", 2, 2, 2, 2, 2, 2, 2, 2);
-    model.addMotion("E", 1, 3, 3, 6, 6, 3, 3, 3);
-    model.addMotion("E", 4, 4, 4, 8, 8, 4, 4, 4);
+    model.addRectangle("1", "R");
+    model.addEllipse("1", "E");
+    model.addMotion("1", "R", 1, 1, 1, 1, 1, 1, 1, 1);
+    model.addMotion("1", "R", 2, 2, 2, 2, 2, 2, 2, 2);
+    model.addMotion("1", "E", 1, 3, 3, 6, 6, 3, 3, 3);
+    model.addMotion("1", "E", 4, 4, 4, 8, 8, 4, 4, 4);
     view.animate();
     assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
                     "xmlns=\"http://www.w3.org/2000/svg\">\n" +

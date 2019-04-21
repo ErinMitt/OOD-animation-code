@@ -31,22 +31,38 @@ public class WritingMockModel implements AnimationModel {
   }
 
   @Override
-  public void addEllipse(String name) {
+  public void addLayer(String layerName) {
+    append("addLayer called with " + layerName);
+  }
+
+  @Override
+  public void deleteLayer(String layerName) {
+    append("deleteLayer called with " + layerName);
+  }
+
+  @Override
+  public void moveLayer(String layerName, int position) {
+    append("modeLayer called with " + layerName + ", " + position);
+  }
+
+  @Override
+  public void addEllipse(String layer, String name) {
     append("addEllipse called with " + name);
   }
 
   @Override
-  public void addRectangle(String name) {
+  public void addRectangle(String layer, String name) {
     append("addRectangle called with " + name);
   }
 
   @Override
-  public void deleteShape(String shapeName) {
+  public void deleteShape(String layer, String shapeName) {
     append("deleteShape called with " + shapeName);
   }
 
   @Override
-  public void addMotion(String shapeName, int time, int x, int y, int width, int height,
+  public void addMotion(String layer, String shapeName,
+                        int time, int x, int y, int width, int height,
                         int red, int green, int blue) {
     append(String.join(" ", "addMotion called with", shapeName,
             Integer.toString(time), Integer.toString(x), Integer.toString(y),
@@ -55,12 +71,7 @@ public class WritingMockModel implements AnimationModel {
   }
 
   @Override
-  public void extend(String shape, int time) {
-    append("extend called with " + shape + " " + time);
-  }
-
-  @Override
-  public void editMotion(String shape, int time, int x, int y, int width, int height,
+  public void editMotion(String layer, String shape, int time, int x, int y, int width, int height,
                          int red, int green, int blue) {
     append(String.join(" ", "editMotion called with", shape,
             Integer.toString(time), Integer.toString(x), Integer.toString(y),
@@ -69,17 +80,23 @@ public class WritingMockModel implements AnimationModel {
   }
 
   @Override
-  public void deleteMotion(String shape, int time) {
+  public void deleteMotion(String layer, String shape, int time) {
     append("deleteMotion called with " + shape + " " + time);
   }
 
   @Override
-  public void deleteLastMotion(String shapeName) {
+  public void deleteLastMotion(String layer, String shapeName) {
     append("deleteLastMotion called with " + shapeName);
   }
 
   @Override
-  public List<String> getShapes() {
+  public List<String> getLayers() {
+    append("addLayer called");
+    return new ArrayList<>(Arrays.asList("1"));
+  }
+
+  @Override
+  public List<String> getShapes(String layer) {
     append("getShapes called");
     return new ArrayList<>(Arrays.asList("shape"));
   }
@@ -115,20 +132,20 @@ public class WritingMockModel implements AnimationModel {
   }
 
   @Override
-  public Transformation getTransformationAt(String shapeName, int tick) {
+  public Transformation getTransformationAt(String layer, String shapeName, int tick) {
     append("getTransformationAt called with " + shapeName + " " + tick);
     return new Transformation(new Motion(1, 1, 1, 1, 1, 1, 1, 1),
             new Motion(3, 3, 3, 3, 3, 3, 3, 3));
   }
 
   @Override
-  public List<Motion> getMotions(String shapeName) {
+  public List<Motion> getMotions(String layer, String shapeName) {
     append("getMotions called with " + shapeName);
     return new ArrayList<>();
   }
 
   @Override
-  public String getShapeType(String shapeName) {
+  public String getShapeType(String layer, String shapeName) {
     append("getShapeType called with " + shapeName);
     return "ellipse";
   }

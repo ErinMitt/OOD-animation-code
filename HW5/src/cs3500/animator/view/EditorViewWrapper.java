@@ -118,7 +118,7 @@ public class EditorViewWrapper implements EditorAnimationView {
   }
 
   @Override
-  public void enterShapeEditor(String shape) {
+  public void enterShapeEditor(String layer, String shape) {
     throw new UnsupportedOperationException(ERROR_MESSAGE);
   }
 

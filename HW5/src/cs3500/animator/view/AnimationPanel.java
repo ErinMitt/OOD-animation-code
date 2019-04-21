@@ -42,23 +42,25 @@ class AnimationPanel extends JPanel {
     //g2.translate(model.getX(), model.getY());
 
     // draw all the shapes
-    for (String shape : model.getShapes()) {
-      if (! model.getMotions(shape).isEmpty()) { // if the shape has no motions, don't draw it
-        try {
-          Motion state = model.getTransformationAt(shape, tick).getStateAt(tick);
-          g2.setColor(new Color(state.getRed(), state.getGreen(), state.getBlue()));
-          switch (model.getShapeType(shape)) {
-            case "ellipse":
-              g2.fillOval(state.getX(), state.getY(), state.getWidth(), state.getHeight());
-              break;
-            case "rectangle":
-              g2.fillRect(state.getX(), state.getY(), state.getWidth(), state.getHeight());
-              break;
-            default:
-              throw new IllegalStateException("Invalid shape type");
+    for (String layer : model.getLayers()) {
+      for (String shape : model.getShapes(layer)) {
+        if (!model.getMotions(layer, shape).isEmpty()) { // if the shape has no motions, don't draw it
+          try {
+            Motion state = model.getTransformationAt(layer, shape, tick).getStateAt(tick);
+            g2.setColor(new Color(state.getRed(), state.getGreen(), state.getBlue()));
+            switch (model.getShapeType(layer, shape)) {
+              case "ellipse":
+                g2.fillOval(state.getX(), state.getY(), state.getWidth(), state.getHeight());
+                break;
+              case "rectangle":
+                g2.fillRect(state.getX(), state.getY(), state.getWidth(), state.getHeight());
+                break;
+              default:
+                throw new IllegalStateException("Invalid shape type");
+            }
+          } catch (IllegalArgumentException e) {
+            // if the shape has no motion at the current tick, do not draw it.
           }
-        } catch (IllegalArgumentException e) {
-          // if the shape has no motion at the current tick, do not draw it.
         }
       }
     }
@@ -81,10 +83,12 @@ class AnimationPanel extends JPanel {
    */
   public int getMaxTick() {
     int maxTick = Motion.START_TICK;
-    for (String shape : model.getShapes()) {
-      List<Motion> motions = model.getMotions(shape);
-      if (! motions.isEmpty()) {
-        maxTick = Math.max(maxTick, motions.get(motions.size() - 1).getTime());
+    for (String layer : model.getLayers()) {
+      for (String shape : model.getShapes(layer)) {
+        List<Motion> motions = model.getMotions(layer, shape);
+        if (!motions.isEmpty()) {
+          maxTick = Math.max(maxTick, motions.get(motions.size() - 1).getTime());
+        }
       }
     }
     return maxTick;
