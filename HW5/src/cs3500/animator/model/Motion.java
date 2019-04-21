@@ -20,6 +20,23 @@ public class Motion {
   private final int red;
   private final int green;
   private final int blue;
+  private final int rotation;
+
+  /**
+   * Build a moment. Rotation defaults to 0.
+   *
+   * @param time the moment's time
+   * @param x the moment's x coordinate
+   * @param y the moment's y coordinate
+   * @param width the moment's width
+   * @param height the moment's height
+   * @param red the R component of the moment's color
+   * @param green the G component of the moment's color
+   * @param blue the B component of the moment's color
+   */
+  public Motion(int time, int x, int y, int width, int height, int red, int green, int blue) {
+    this(time, x, y, width, height, red, green, blue, 0);
+  }
 
   /**
    * Build a moment.
@@ -32,8 +49,10 @@ public class Motion {
    * @param red the R component of the moment's color
    * @param green the G component of the moment's color
    * @param blue the B component of the moment's color
+   * @param rotation the angle of rotation
    */
-  public Motion(int time, int x, int y, int width, int height, int red, int green, int blue) {
+  public Motion(int time, int x, int y, int width, int height,
+                int red, int green, int blue, int rotation) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Width and height must be positive nonzero integers, "
               + "given " + width + " & " + height);
@@ -49,6 +68,7 @@ public class Motion {
     this.red = regularizeColor(red);
     this.green = regularizeColor(green);
     this.blue = regularizeColor(blue);
+    this.rotation = rotation;
   }
 
   /**
@@ -58,7 +78,7 @@ public class Motion {
    * @throws IllegalArgumentException if the time is invalid
    */
   public static Motion defaultMotion(int time) {
-    return new Motion(time, 0, 0, 1, 1, 0, 0, 0);
+    return new Motion(time, 0, 0, 1, 1, 0, 0, 0, 0);
   }
 
   /**
@@ -80,8 +100,8 @@ public class Motion {
    * @return the display string
    */
   public String display() {
-    ArrayList<Integer> values
-            = new ArrayList<>(Arrays.asList(time, x, y, width, height, red, green, blue));
+    ArrayList<Integer> values = new ArrayList<>(
+            Arrays.asList(time, x, y, width, height, red, green, blue, rotation));
     return values.stream().map(i -> Integer.toString(i)).collect(Collectors.joining(" "));
   }
 
@@ -94,7 +114,7 @@ public class Motion {
    * @return the new Motion created
    */
   public Motion extend(int time) {
-    return new Motion(time, x, y, width, height, red, green, blue);
+    return new Motion(time, x, y, width, height, red, green, blue, rotation);
   }
 
   /**
@@ -160,5 +180,13 @@ public class Motion {
    */
   public int getBlue() {
     return blue;
+  }
+
+  /**
+   * Getter for rotation.
+   * @return rotation
+   */
+  public int getRotation() {
+    return rotation;
   }
 }

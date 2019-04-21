@@ -36,7 +36,8 @@ public class Transformation {
             stateAtTime(tick, start.getHeight(), end.getHeight()),
             stateAtTime(tick, start.getRed(), end.getRed()),
             stateAtTime(tick, start.getGreen(), end.getGreen()),
-            stateAtTime(tick, start.getBlue(), end.getBlue()));
+            stateAtTime(tick, start.getBlue(), end.getBlue()),
+            stateAtTime(tick, start.getRotation(), end.getRotation()));
   }
 
   /**

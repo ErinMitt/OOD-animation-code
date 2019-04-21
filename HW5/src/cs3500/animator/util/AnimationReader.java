@@ -49,6 +49,8 @@ public class AnimationReader {
         case "motion":
           readMotion(s, builder);
           break;
+        case "layer":
+          readLayer(s, builder);
         default:
           throw new IllegalStateException("Unexpected keyword: " + word + s.nextLine());
       }
@@ -63,6 +65,16 @@ public class AnimationReader {
       vals[i] = getInt(s, "Canvas", fieldNames[i]);
     }
     builder.setBounds(vals[0], vals[1], vals[2], vals[3]);
+  }
+
+  private static <Doc> void readLayer(Scanner s, AnimationBuilder<Doc> builder) {
+    String name;
+    if (s.hasNext()) {
+      name = s.next();
+    } else {
+      throw new IllegalStateException("Layer: Expected a name, but no more input available");
+    }
+    builder.declareLayer(name);
   }
 
   private static <Doc> void readShape(Scanner s, AnimationBuilder<Doc> builder) {
@@ -81,6 +93,13 @@ public class AnimationReader {
     builder.declareShape(name, type);
   }
 
+  // TODO: make this work with rotation information too! Use scanner.useDelimiter?
+  //  Or maybe change the rotation after-the-fact?
+  //  Have a "rotation" line and use editKeyframe instead of addKeyframe?
+  //  That means storing the layer, shape, and time of the last keyframe.
+  //  It's also kinda annoying to have an inconsistent state,
+  //  but that might be the price of backwards compatibility haha.
+  //  If I do this, make sure to change the TextView to save in a compatible format.
   private static <Doc> void readMotion(Scanner s, AnimationBuilder<Doc> builder) {
     String[] fieldNames = new String[]{
         "initial time",
