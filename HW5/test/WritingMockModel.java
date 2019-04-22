@@ -71,12 +71,33 @@ public class WritingMockModel implements AnimationModel {
   }
 
   @Override
+  public void addMotion(String layer, String shapeName,
+                        int time, int x, int y, int width, int height,
+                        int red, int green, int blue, int position) {
+    append(String.join(" ", "addMotion called with", shapeName,
+            Integer.toString(time), Integer.toString(x), Integer.toString(y),
+            Integer.toString(width), Integer.toString(height),
+            Integer.toString(red), Integer.toString(green), Integer.toString(blue),
+            Integer.toString(position)));
+  }
+
+  @Override
   public void editMotion(String layer, String shape, int time, int x, int y, int width, int height,
                          int red, int green, int blue) {
     append(String.join(" ", "editMotion called with", shape,
             Integer.toString(time), Integer.toString(x), Integer.toString(y),
             Integer.toString(width), Integer.toString(height),
             Integer.toString(red), Integer.toString(green), Integer.toString(blue)));
+  }
+
+  @Override
+  public void editMotion(String layer, String shape, int time, int x, int y, int width, int height,
+                         int red, int green, int blue, int position) {
+    append(String.join(" ", "editMotion called with", shape,
+            Integer.toString(time), Integer.toString(x), Integer.toString(y),
+            Integer.toString(width), Integer.toString(height),
+            Integer.toString(red), Integer.toString(green), Integer.toString(blue),
+            Integer.toString(position)));
   }
 
   @Override
