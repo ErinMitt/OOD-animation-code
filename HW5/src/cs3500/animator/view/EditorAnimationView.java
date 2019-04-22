@@ -56,9 +56,17 @@ public interface EditorAnimationView extends AnimationView {
   void updateMaxTick();
 
   /**
-   * Displays an interactive list of shapes in the order that they are stored in the model.
+   * Displays an interactive list of shapes in the order that they are
+   * stored in the currently selected layer.
+   * @param shapes the list of shape names to display.
    */
   void setShapeList(List<String> shapes);
+
+  /**
+   * Displays an interactive list of layers, with the background layer first and the top layer last.
+   * @param shapes the list of layer names to display.
+   */
+  void setLayerList(List<String> shapes);
 
   /**
    * Write the representation of the given model's animation to this view's output in the format

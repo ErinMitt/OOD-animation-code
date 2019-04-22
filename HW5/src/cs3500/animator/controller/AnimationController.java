@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 import cs3500.animator.ViewFactory;
 import cs3500.animator.model.AnimationModel;
@@ -98,6 +99,19 @@ public class AnimationController implements Features, Controller {
   @Override
   public void resetTextFields() {
     view.resetTextFields();
+  }
+
+  @Override
+  public void showShapeList(String layer) {
+    if (layer == null) {
+      view.displayErrorMessage("No shape selected");
+      return;
+    }
+    try {
+      view.setShapeList(model.getShapes(layer));
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("There is no layer by the name " + layer);
+    }
   }
 
   @Override
@@ -282,9 +296,49 @@ public class AnimationController implements Features, Controller {
   }
 
   @Override
+  public void addLayer(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Layer name must not be null");
+    }
+    if (name.equals("")) {
+      view.displayErrorMessage("Names must have at least one character");
+      return;
+    }
+    if (name.contains(" ")) {
+      view.displayErrorMessage("Names cannot have spaces");
+      return;
+    }
+    if (model.getLayers().contains(name)) {
+      view.displayErrorMessage("There is already a layer by the name " + name);
+      return;
+    }
+    model.addLayer(name);
+    view.setLayerList(model.getLayers());
+  }
+
+  @Override
+  public void moveLayer(String layer, int position) {
+    if (layer == null) {
+      view.displayErrorMessage("No layer selected");
+      return;
+    }
+    if (position < 0 || position >= model.getLayers().size()) {
+      view.displayErrorMessage("Cannot move layer to position " + (position + 1));
+      return;
+    }
+    model.moveLayer(layer, position);
+    view.setLayerList(model.getLayers());
+    view.drawCurrentTick();
+  }
+
+  @Override
   public void addShape(String layer, String shapeName, String type) {
-    if (layer == null || shapeName == null || type == null) {
-      throw new IllegalArgumentException("Shape name, layer name, and shape type must not be null");
+    if (shapeName == null || type == null) {
+      throw new IllegalArgumentException("Shape name and type must not be null");
+    }
+    if (layer == null) {
+      view.displayErrorMessage("No layer selected");
+      return;
     }
     if (shapeName.equals("")) {
       view.displayErrorMessage("Names must have at least one character");
@@ -295,7 +349,8 @@ public class AnimationController implements Features, Controller {
       return;
     }
     if (model.getShapes(layer).contains(shapeName)) {
-      view.displayErrorMessage("There is already a shape by the name " + shapeName);
+      view.displayErrorMessage("There is already a shape by the name " + shapeName
+              + " in the layer " + layer);
       return;
     }
     switch (type) {
@@ -328,6 +383,20 @@ public class AnimationController implements Features, Controller {
     }
     model.deleteShape(layer, name);
     view.setShapeList(model.getShapes(layer));
+    view.drawCurrentTick();
+  }
+
+  @Override
+  public void deleteLayer(String name) {
+    if (name == null) {
+      view.displayErrorMessage("No layer selected");
+    }
+    if (! model.getLayers().contains(name)) {
+      view.displayErrorMessage("There is no layer by the name " + name);
+      return;
+    }
+    model.deleteLayer(name);
+    view.setLayerList(model.getLayers());
     view.drawCurrentTick();
   }
 

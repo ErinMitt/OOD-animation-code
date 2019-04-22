@@ -47,6 +47,12 @@ public interface Features {
   void resetTextFields();
 
   /**
+   * Display the name of every shape in this layer in the list of shapes.
+   * @param layer the selected layer
+   */
+  void showShapeList(String layer);
+
+  /**
    * Enter a screen from which a shape's Motions can be edited.
    * @param layer the layer of the shape to be edited
    * @param shape the shape to be edited
@@ -118,6 +124,19 @@ public interface Features {
   void suggestEditKeyframe(String layer, String shape, String time);
 
   /**
+   * Add a layer of the given name superficially to every other layer.
+   * @param name the new layer's name
+   */
+  void addLayer(String name);
+
+  /**
+   * Move the layer of the given name to the given position.
+   * @param layer the name of the layer to be moved
+   * @param position the layer's new position
+   */
+  void moveLayer(String layer, int position);
+
+  /**
    * Add a shape by the given name of the given type to the model's list of shapes.
    * @param layer the layer of the shape to be edited
    * @param name the shape's name
@@ -131,6 +150,12 @@ public interface Features {
    * @param name the shape's name
    */
   void deleteShape(String layer, String name);
+
+  /**
+   * Delete the selected layer from the list.
+   * @param name the layer name
+   */
+  void deleteLayer(String name);
 
   /**
    * Save the model's output in the given file type in a file by the given name.

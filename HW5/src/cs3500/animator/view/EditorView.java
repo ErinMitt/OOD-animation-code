@@ -7,19 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.Timer;
-import javax.swing.JToggleButton;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JList;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
-import javax.swing.JSlider;
+import javax.swing.*;
 
 import cs3500.animator.controller.Features;
 import cs3500.animator.model.Motion;
@@ -56,10 +47,15 @@ public class EditorView extends JFrame implements EditorAnimationView {
   private final JButton back;
   private final JSlider scrub;
   private final JList<String> shapes = new JList<>();
+  private final JList<String> layers = new JList<>();
+  private final JButton moveLayerBack;
+  private final JButton moveLayerForwards;
   private final JButton editShape;
+  private final JButton addLayer;
   private final JButton addRectangle;
   private final JButton addEllipse;
-  private final JTextField addShapeName;
+  private final JTextField addNewComponent;
+  private final JButton deleteLayer;
   private final JButton deleteShape;
   private final JLabel tickLabel;
   // INVARIANT: text is equal to the current tick
@@ -93,10 +89,14 @@ public class EditorView extends JFrame implements EditorAnimationView {
     forward = new JButton("->");
     back = new JButton("<-");
     scrub = new JSlider();
+    moveLayerBack = new JButton("move back");
+    moveLayerForwards = new JButton("move forward");
     editShape = new JButton("edit");
+    addLayer = new JButton("new layer");
     addRectangle = new JButton("new rect");
     addEllipse = new JButton("new ellipse");
-    addShapeName = new JTextField();
+    addNewComponent = new JTextField();
+    deleteLayer = new JButton("delete layer");
     deleteShape = new JButton("delete shape");
     tickLabel = new JLabel(Integer.toString(tick));
     saveFileName = new JTextField(10);
@@ -135,12 +135,23 @@ public class EditorView extends JFrame implements EditorAnimationView {
 
     JPanel shapeEditor = new JPanel();
     shapeEditor.setLayout(new BoxLayout(shapeEditor, BoxLayout.Y_AXIS));
+    shapeEditor.add(new JLabel("layers:"));
+    shapeEditor.add(new JScrollPane(layers));
+    JPanel layerPosition = new JPanel();
+    layerPosition.setLayout(new FlowLayout());
+    layerPosition.add(moveLayerBack);
+    layerPosition.add(moveLayerForwards);
+    shapeEditor.add(layerPosition);
+    shapeEditor.add(new JLabel("shapes:"));
     shapeEditor.add(new JScrollPane(shapes));
     shapeEditor.add(editShape);
-    shapeEditor.add(addShapeName);
+    shapeEditor.add(addNewComponent);
+    shapeEditor.add(addLayer);
     shapeEditor.add(addEllipse);
     shapeEditor.add(addRectangle);
+    shapeEditor.add(deleteLayer);
     shapeEditor.add(deleteShape);
+    layers.setLayoutOrientation(JList.VERTICAL);
     shapes.setLayoutOrientation(JList.VERTICAL);
 
     add(shapeEditor, BorderLayout.EAST);
@@ -176,7 +187,7 @@ public class EditorView extends JFrame implements EditorAnimationView {
     updateMaxTick();
     drawCurrentTick();
     editFactory.setModel(model);
-    // TODO: setShapeList(model.getShapes()); turn this to setLayerList
+    setLayerList(model.getLayers());
   }
 
   @Override
@@ -307,6 +318,12 @@ public class EditorView extends JFrame implements EditorAnimationView {
   }
 
   @Override
+  public void setLayerList(List<String> layers) {
+    this.layers.setListData(layers.toArray(new String[0]));
+    setShapeList(new ArrayList<>());
+  }
+
+  @Override
   public void enterShapeEditor(String layer, String shape) {
     if (layer == null || shape == null) {
       throw new IllegalArgumentException("Shape and layer cannot be null");
@@ -397,11 +414,22 @@ public class EditorView extends JFrame implements EditorAnimationView {
       }
     });
 
+    // layer editing controls
+    layers.addListSelectionListener(evt -> features.showShapeList(layers.getSelectedValue()));
+    moveLayerBack.addActionListener(evt ->
+            features.moveLayer(layers.getSelectedValue(), layers.getSelectedIndex() - 1));
+    moveLayerForwards.addActionListener(evt ->
+            features.moveLayer(layers.getSelectedValue(), layers.getSelectedIndex() + 1));
+    deleteLayer.addActionListener(evt -> features.deleteLayer(layers.getSelectedValue()));
+
     // shape editing controls
-    // TODO: replace "1" with actual layer text
-    addRectangle.addActionListener(evt -> features.addShape("1", addShapeName.getText(), "rectangle"));
-    addEllipse.addActionListener(evt -> features.addShape("1", addShapeName.getText(), "ellipse"));
-    deleteShape.addActionListener(evt -> features.deleteShape("1", shapes.getSelectedValue()));
+    addLayer.addActionListener(evt -> features.addLayer(addNewComponent.getText()));
+    addRectangle.addActionListener(evt ->
+            features.addShape(layers.getSelectedValue(), addNewComponent.getText(), "rectangle"));
+    addEllipse.addActionListener(evt ->
+            features.addShape(layers.getSelectedValue(), addNewComponent.getText(), "ellipse"));
+    deleteShape.addActionListener(evt ->
+            features.deleteShape(layers.getSelectedValue(), shapes.getSelectedValue()));
 
     // saving controls
     saveSVG.addActionListener(evt -> features.save("svg", saveFileName.getText()));
@@ -423,8 +451,8 @@ public class EditorView extends JFrame implements EditorAnimationView {
     });
 
     // shape editing buttons
-    // TODO: replace "1"
-    editShape.addActionListener(evt -> features.enterShapeEditor("1", shapes.getSelectedValue()));
+    editShape.addActionListener(evt ->
+            features.enterShapeEditor(layers.getSelectedValue(), shapes.getSelectedValue()));
 
     // Creating the EditShapeDialogFactory
     this.editFactory = new EditShapeDialogFactory(features);

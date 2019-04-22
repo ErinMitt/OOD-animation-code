@@ -76,6 +76,11 @@ public class WritingMockView implements EditorAnimationView {
   }
 
   @Override
+  public void setLayerList(List<String> layers) {
+    append("setLayerList called with " + layers);
+  }
+
+  @Override
   public void save(String text) {
     append("save called");
   }

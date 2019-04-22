@@ -52,6 +52,11 @@ public class TestingController implements Features, Controller {
   }
 
   @Override
+  public void showShapeList(String layer) {
+    //this controller exists for testing only and doesn't do anything
+  }
+
+  @Override
   public void enterShapeEditor(String layer, String shape) {
     //this controller exists for testing only and doesn't do anything
   }
@@ -89,12 +94,27 @@ public class TestingController implements Features, Controller {
   }
 
   @Override
+  public void addLayer(String name) {
+    //this controller exists for testing only and doesn't do anything
+  }
+
+  @Override
+  public void moveLayer(String layer, int position) {
+    //this controller exists for testing only and doesn't do anything
+  }
+
+  @Override
   public void addShape(String layer, String name, String type) {
     //this controller exists for testing only and doesn't do anything
   }
 
   @Override
   public void deleteShape(String layer, String name) {
+    //this controller exists for testing only and doesn't do anything
+  }
+
+  @Override
+  public void deleteLayer(String name) {
     //this controller exists for testing only and doesn't do anything
   }
 
