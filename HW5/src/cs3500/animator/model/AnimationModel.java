@@ -67,7 +67,7 @@ public interface AnimationModel extends ReadOnlyModel {
   void deleteShape(String layer, String shapeName);
 
   /**
-   * Add a new motion to the given shape.
+   * Add a new motion to the given shape. Rotation defaults to 0.
    *
    * @param layer the layer on which the shape is found
    * @param shapeName the name of the shape to which a new motion will be added
@@ -87,7 +87,29 @@ public interface AnimationModel extends ReadOnlyModel {
                  int height, int red, int green, int blue);
 
   /**
+   * Add a new motion to the given shape.
+   *
+   * @param layer the layer on which the shape is found
+   * @param shapeName the name of the shape to which a new motion will be added
+   * @param time the time of the new motion
+   * @param x the new motion's x coordinate
+   * @param y the new motion's y coordinate
+   * @param width the new motion's width
+   * @param height the new motion's height
+   * @param red the new motion's color's R component
+   * @param green the new motion's color's B component
+   * @param blue the new motion's color's G component
+   * @param rotation the new motion's rotation
+   * @throws IllegalArgumentException if there is no shape with the given name, if the time is less
+   *                                  than 1, or if the time is before that shape's last movement
+   *                                  ends.
+   */
+  void addMotion(String layer, String shapeName, int time, int x, int y, int width,
+                 int height, int red, int green, int blue, int rotation);
+
+  /**
    * Replace the motion at the given time with a motion of the given parameters.
+   * Rotation defaults to 0.
    * @param layer the layer on which the shape is found
    * @param shape the shape name
    * @param time the time
@@ -103,6 +125,25 @@ public interface AnimationModel extends ReadOnlyModel {
    */
   void editMotion(String layer, String shape, int time, int x, int y, int width, int height,
                   int red, int green, int blue);
+
+  /**
+   * Replace the motion at the given time with a motion of the given parameters.
+   * @param layer the layer on which the shape is found
+   * @param shape the shape name
+   * @param time the time
+   * @param x the x coordinate
+   * @param y the y coordinate
+   * @param width the width
+   * @param height the height
+   * @param red the r component of the color
+   * @param green the g component of the color
+   * @param blue the b component of the color
+   * @param rotation the rotation
+   * @throws IllegalArgumentException if the shape does not exist, if there is no motion at the
+   *     given time, or if the given motion parameters are invalid
+   */
+  void editMotion(String layer, String shape, int time, int x, int y, int width, int height,
+                  int red, int green, int blue, int rotation);
 
   /**
    * Delete the motion of the given shape at the given time.

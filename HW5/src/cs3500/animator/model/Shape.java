@@ -133,18 +133,18 @@ class Shape {
    * @return the display string
    */
   String display() {
-    List<String> lines = new ArrayList<>(motions.size());
+    List<String> lines = new ArrayList<>(2 * (motions.size() + 1) + 1);
     List<Motion> allMotions = new ArrayList<>(motions);
     lines.add("shape " + name + " " + type.getType());
-    if (motions.size() == 1) {
+    if (motions.size() >= 1) {
+      lines.add("rotation " + allMotions.get(0).getRotation());
       lines.add("motion " + name + " " + allMotions.get(0).display()
               + "    " + allMotions.get(0).display());
     }
-    else {
-      for (int i = 0; i < allMotions.size() - 1; i++) {
-        lines.add("motion " + name + " " + allMotions.get(i).display()
-                + "    " + allMotions.get(i + 1).display());
-      }
+    for (int i = 0; i < allMotions.size() - 1; i++) {
+      lines.add("rotation " + allMotions.get(i + 1).getRotation());
+      lines.add("motion " + name + " " + allMotions.get(i).display()
+              + "    " + allMotions.get(i + 1).display());
     }
     return String.join("\n", lines);
   }

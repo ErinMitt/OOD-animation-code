@@ -103,15 +103,29 @@ public class AnimationModelImpl implements AnimationModel {
   }
 
   @Override
-  public void addMotion(String layer, String shapeName, int time, int x, int y, int width, int height,
-                        int red, int green, int blue) {
+  public void addMotion(String layer, String shapeName, int time, int x, int y,
+                        int width, int height, int red, int green, int blue) {
+    addMotion(layer, shapeName, time, x, y, width, height, red, green, blue, 0);
+  }
+
+  @Override
+  public void addMotion(String layer, String shapeName, int time, int x, int y,
+                        int width, int height,
+                        int red, int green, int blue, int rotation) {
     checkLayerExists(layer);
     layerMap.get(layer).addMotion(shapeName, time, x, y, width, height, red, green, blue);
   }
 
   @Override
-  public void editMotion(String layer, String shapeName, int time, int x, int y, int width, int height,
-                         int red, int green, int blue) {
+  public void editMotion(String layer, String shapeName, int time, int x, int y,
+                        int width, int height, int red, int green, int blue) {
+    editMotion(layer, shapeName, time, x, y, width, height, red, green, blue, 0);
+  }
+
+  @Override
+  public void editMotion(String layer, String shapeName, int time, int x, int y,
+                         int width, int height,
+                         int red, int green, int blue, int rotation) {
     checkLayerExists(layer);
     layerMap.get(layer).editMotion(shapeName, time, x, y, width, height, red, green, blue);
   }
@@ -209,7 +223,8 @@ public class AnimationModelImpl implements AnimationModel {
    */
   public static final class Builder implements AnimationBuilder<AnimationModel> {
     private final AnimationModel model;
-    private String currentLayer; //TODO: use this!
+    private String currentLayer;
+    private int nextRotation = 0;
 
     public Builder() {
       this.model = new AnimationModelImpl();
@@ -228,10 +243,19 @@ public class AnimationModelImpl implements AnimationModel {
 
     @Override
     public AnimationBuilder<AnimationModel> declareLayer(String layerName) {
+      if (layerName == null) {
+        throw new IllegalArgumentException("Layer name must not be null");
+      }
       if (! model.getLayers().contains(layerName)) {
         model.addLayer(layerName);
       }
       currentLayer = layerName;
+      return this;
+    }
+
+    @Override
+    public AnimationBuilder<AnimationModel> declareRotation(int rotation) {
+      this.nextRotation = rotation;
       return this;
     }
 
@@ -271,7 +295,7 @@ public class AnimationModelImpl implements AnimationModel {
     @Override
     public AnimationBuilder<AnimationModel> addKeyframe(
             String name, int t, int x, int y, int w, int h, int r, int g, int b) {
-      model.addMotion(currentLayer, name, t, x, y, w, h, r, g, b);
+      model.addMotion(currentLayer, name, t, x, y, w, h, r, g, b, nextRotation);
       return this;
     }
   }

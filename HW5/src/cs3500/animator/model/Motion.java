@@ -101,7 +101,7 @@ public class Motion {
    */
   public String display() {
     ArrayList<Integer> values = new ArrayList<>(
-            Arrays.asList(time, x, y, width, height, red, green, blue, rotation));
+            Arrays.asList(time, x, y, width, height, red, green, blue));
     return values.stream().map(i -> Integer.toString(i)).collect(Collectors.joining(" "));
   }
 

@@ -99,13 +99,15 @@ public class TextView implements AnimationView {
       shapesText.add("layer " + layer);
       for (String shape : model.getShapes(layer)) {
         List<Motion> motions = model.getMotions(layer, shape);
-        List<String> motionLines = new ArrayList<>(motions.size());
+        List<String> motionLines = new ArrayList<>(2 * (motions.size() + 1));
         motionLines.add(joinWithSpaces("shape", shape, model.getShapeType(layer, shape)));
         if (motions.size() >= 1) {
+          motionLines.add("rotation " + motions.get(0).getRotation());
           motionLines.add(joinWithSpaces("motion", shape,
                   motions.get(0).display(), motions.get(0).display()));
         }
         for (int i = 0; i < motions.size() - 1; i++) {
+          motionLines.add("rotation " + motions.get(i + 1).getRotation());
           motionLines.add(joinWithSpaces("motion", shape,
                   motions.get(i).display(), motions.get(i + 1).display()));
         }

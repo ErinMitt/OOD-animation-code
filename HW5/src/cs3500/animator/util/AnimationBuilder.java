@@ -30,6 +30,13 @@ public interface AnimationBuilder<Doc> {
   AnimationBuilder<Doc> declareLayer(String layerName);
 
   /**
+   * Specify the rotation angle of the next motion to be added to any shape.
+   * @param rotation the rotation
+   * @return This {@link AnimationBuilder}
+   */
+  AnimationBuilder<Doc> declareRotation(int rotation);
+
+  /**
    * Adds a new shape to the growing document.
    *
    * @param name The unique name of the shape to be added.

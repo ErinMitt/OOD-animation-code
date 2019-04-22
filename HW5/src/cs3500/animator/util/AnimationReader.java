@@ -51,6 +51,8 @@ public class AnimationReader {
           break;
         case "layer":
           readLayer(s, builder);
+        case "rotation":
+          readRotation(s, builder);
         default:
           throw new IllegalStateException("Unexpected keyword: " + word + s.nextLine());
       }
@@ -77,6 +79,11 @@ public class AnimationReader {
     builder.declareLayer(name);
   }
 
+  private static <Doc> void readRotation(Scanner s, AnimationBuilder<Doc> builder) {
+    int rotation = getInt(s, "Rotation", "rotation");
+    builder.declareRotation(rotation);
+  }
+
   private static <Doc> void readShape(Scanner s, AnimationBuilder<Doc> builder) {
     String name;
     String type;
@@ -100,6 +107,7 @@ public class AnimationReader {
   //  It's also kinda annoying to have an inconsistent state,
   //  but that might be the price of backwards compatibility haha.
   //  If I do this, make sure to change the TextView to save in a compatible format.
+  //  (Maybe queue up rotation information? Put it before the (new Motion information?)
   private static <Doc> void readMotion(Scanner s, AnimationBuilder<Doc> builder) {
     String[] fieldNames = new String[]{
         "initial time",
