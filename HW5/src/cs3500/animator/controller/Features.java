@@ -76,9 +76,11 @@ public interface Features {
    * @param red the r component of the color
    * @param green the g component of the color
    * @param blue the b component of the color
+   * @param rotation the rotation of the shape
    */
   void addKeyframe(String layer, String shape, String time, String x, String y,
-                   String width, String height, String red, String green, String blue);
+                   String width, String height,
+                   String red, String green, String blue, String rotation);
 
   /**
    * Edit an existing keyframe according to the given parameters.
@@ -92,9 +94,11 @@ public interface Features {
    * @param red the r component of the color
    * @param green the g component of the color
    * @param blue the b component of the color
+   * @param rotation the rotation of the shape
    */
   void editKeyframe(String layer, String shape, String time, String x, String y,
-                    String width, String height, String red, String green, String blue);
+                    String width, String height,
+                    String red, String green, String blue, String rotation);
 
   /**
    * Delete the keyframe of the specified shape at the given time.
@@ -159,11 +163,13 @@ public interface Features {
 
   /**
    * Save the model's output in the given file type in a file by the given name.
+   * @param speed the speed of the animation
    * @param type format to save in:
    *             "text" will produce a text description of the animation in a .txt file,
    *             while "svg" will produce an svg animation in a .svg file
+   * @param fileName the name of the new file
    */
-  void save(String type, String fileName);
+  void save(double speed, String type, String fileName);
 
   /**
    * Load a file from the source folder by file name.

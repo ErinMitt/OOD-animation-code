@@ -36,6 +36,7 @@ class EditShapeDialog {
   private final JTextField addRed;
   private final JTextField addGreen;
   private final JTextField addBlue;
+  private final JTextField addRotation;
 
   // edit keyframe controls
   //private final JButton editButton;
@@ -46,6 +47,7 @@ class EditShapeDialog {
   private final JTextField editRed;
   private final JTextField editGreen;
   private final JTextField editBlue;
+  private final JTextField editRotation;
 
   // delete keyframe controls
   //private final JButton deleteButton;
@@ -76,9 +78,10 @@ class EditShapeDialog {
     addRed = new JTextField();
     addGreen = new JTextField();
     addBlue = new JTextField();
+    addRotation = new JTextField();
     addButton.addActionListener(evt -> features.addKeyframe(layer, shape, addTime.getText(),
             addX.getText(), addY.getText(), addWidth.getText(), addHeight.getText(),
-            addRed.getText(), addGreen.getText(), addBlue.getText()));
+            addRed.getText(), addGreen.getText(), addBlue.getText(), addRotation.getText()));
     addTime.addActionListener(evt -> features.suggestNewKeyframe(layer, shape, addTime.getText()));
 
     addTime.setColumns(TEXT_FIELD_WIDTH);
@@ -89,6 +92,7 @@ class EditShapeDialog {
     addRed.setColumns(TEXT_FIELD_WIDTH);
     addGreen.setColumns(TEXT_FIELD_WIDTH);
     addBlue.setColumns(TEXT_FIELD_WIDTH);
+    addRotation.setColumns(TEXT_FIELD_WIDTH);
 
     // create all buttons and text fields for editing frames
     JButton editButton = new JButton("edit");
@@ -99,9 +103,10 @@ class EditShapeDialog {
     editRed = new JTextField();
     editGreen = new JTextField();
     editBlue = new JTextField();
+    editRotation = new JTextField();
     editButton.addActionListener(evt -> features.editKeyframe(layer, shape, keyframes.getSelectedValue(),
         editX.getText(), editY.getText(), editWidth.getText(), editHeight.getText(),
-        editRed.getText(), editGreen.getText(), editBlue.getText()));
+        editRed.getText(), editGreen.getText(), editBlue.getText(), editRotation.getText()));
     keyframes.addListSelectionListener(
         evt -> features.suggestEditKeyframe(layer, shape, keyframes.getSelectedValue()));
 
@@ -112,6 +117,7 @@ class EditShapeDialog {
     editRed.setColumns(TEXT_FIELD_WIDTH);
     editGreen.setColumns(TEXT_FIELD_WIDTH);
     editBlue.setColumns(TEXT_FIELD_WIDTH);
+    editRotation.setColumns(TEXT_FIELD_WIDTH);
 
     // create the button for deleting a keyframe
     JButton deleteButton = new JButton("delete");
@@ -148,6 +154,8 @@ class EditShapeDialog {
     addPanel.add(addGreen);
     addPanel.add(new JLabel("blue"));
     addPanel.add(addBlue);
+    addPanel.add(new JLabel("rotation"));
+    addPanel.add(addRotation);
 
     // add stuff to "edit keyframe" panel
     JPanel editPanel = new JPanel();
@@ -170,6 +178,8 @@ class EditShapeDialog {
     editPanel.add(editGreen);
     editPanel.add(new JLabel("blue"));
     editPanel.add(editBlue);
+    editPanel.add(new JLabel("rotation"));
+    editPanel.add(editRotation);
 
     // add the keyframe timeline
     JScrollPane scroll = new JScrollPane(keyframes);
@@ -194,6 +204,7 @@ class EditShapeDialog {
     addRed.setText(Integer.toString(m.getRed()));
     addGreen.setText(Integer.toString(m.getGreen()));
     addBlue.setText(Integer.toString(m.getBlue()));
+    addRotation.setText(Integer.toString(m.getRotation()));
   }
 
   /**
@@ -208,6 +219,7 @@ class EditShapeDialog {
     editRed.setText(Integer.toString(m.getRed()));
     editGreen.setText(Integer.toString(m.getGreen()));
     editBlue.setText(Integer.toString(m.getBlue()));
+    editRotation.setText(Integer.toString(m.getRotation()));
   }
 
   /**

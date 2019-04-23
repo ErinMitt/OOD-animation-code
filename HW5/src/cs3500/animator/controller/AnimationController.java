@@ -141,15 +141,18 @@ public class AnimationController implements Features, Controller {
    */
   @Override
   public void addKeyframe(String layer, String shape, String time, String x, String y,
-                          String width, String height, String red, String green, String blue) {
+                          String width, String height,
+                          String red, String green, String blue, String rotation) {
     if (layer == null || shape == null || time == null || x == null || y == null
-            || width == null || height == null || red == null || green == null || blue == null) {
+            || width == null || height == null
+            || red == null || green == null || blue == null || rotation == null) {
       throw new IllegalArgumentException("Inputs must not be null");
     }
     try {
       model.addMotion(layer, shape, Integer.parseInt(time), Integer.parseInt(x), Integer.parseInt(y),
               Integer.parseInt(width), Integer.parseInt(height),
-              Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue));
+              Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue),
+              Integer.parseInt(rotation));
       view.exitShapeEditor();
       view.updateMaxTick();
       view.drawCurrentTick();
@@ -166,20 +169,23 @@ public class AnimationController implements Features, Controller {
    */
   @Override
   public void editKeyframe(String layer, String shape, String time, String x, String y,
-                           String width, String height, String red, String green, String blue) {
+                           String width, String height,
+                           String red, String green, String blue, String rotation) {
     if (time == null) {
       view.displayErrorMessage("No keyframe selected");
       return;
     }
-    if (layer == null || shape == null || x == null || y == null || width == null || height == null
-            || red == null || green == null || blue == null) {
+    if (layer == null || shape == null || x == null || y == null
+            || width == null || height == null
+            || red == null || green == null || blue == null || rotation == null) {
       throw new IllegalArgumentException("Inputs must not be null");
     }
     try {
       model.editMotion(layer, shape, Integer.parseInt(time),
               Integer.parseInt(x), Integer.parseInt(y),
               Integer.parseInt(width), Integer.parseInt(height),
-              Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue));
+              Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue),
+              Integer.parseInt(rotation));
       view.exitShapeEditor();
       view.drawCurrentTick();
     } catch (NumberFormatException e) {
@@ -401,7 +407,7 @@ public class AnimationController implements Features, Controller {
   }
 
   @Override
-  public void save(String type, String fileName) {
+  public void save(double speed, String type, String fileName) {
     // check inputs for validity
     if (type == null || fileName == null) {
       throw new IllegalArgumentException("Arguments must not be null");
@@ -439,6 +445,11 @@ public class AnimationController implements Features, Controller {
     try {
       StringBuilder builder = new StringBuilder();
       saveView.setOutput(builder);
+      try {
+        saveView.setSpeed(speed);
+      } catch (UnsupportedOperationException e) {
+        // It's expected for some view types not to support speed. Fail quietly.
+      }
       new AnimationController(model, saveView).gogo();
       text = builder.toString();
     } catch (UnsupportedOperationException e) {

@@ -432,8 +432,8 @@ public class EditorView extends JFrame implements EditorAnimationView {
             features.deleteShape(layers.getSelectedValue(), shapes.getSelectedValue()));
 
     // saving controls
-    saveSVG.addActionListener(evt -> features.save("svg", saveFileName.getText()));
-    saveText.addActionListener(evt -> features.save("text", saveFileName.getText()));
+    saveSVG.addActionListener(evt -> features.save(speed, "svg", saveFileName.getText()));
+    saveText.addActionListener(evt -> features.save(speed, "text", saveFileName.getText()));
     load.addActionListener(evt -> features.load(loadInfo.getText()));
 
     // text fields

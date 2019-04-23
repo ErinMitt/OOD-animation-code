@@ -48,6 +48,9 @@ class AnimationPanel extends JPanel {
           try {
             Motion state = model.getTransformationAt(layer, shape, tick).getStateAt(tick);
             g2.setColor(new Color(state.getRed(), state.getGreen(), state.getBlue()));
+            g2.rotate(Math.PI * state.getRotation() / 180,
+                    state.getX() + (state.getWidth() / 2),
+                    state.getY() + state.getHeight() / 2); // TODO: test this!
             switch (model.getShapeType(layer, shape)) {
               case "ellipse":
                 g2.fillOval(state.getX(), state.getY(), state.getWidth(), state.getHeight());
@@ -58,6 +61,7 @@ class AnimationPanel extends JPanel {
               default:
                 throw new IllegalStateException("Invalid shape type");
             }
+            g2.setTransform(originalTransform);
           } catch (IllegalArgumentException e) {
             // if the shape has no motion at the current tick, do not draw it.
           }

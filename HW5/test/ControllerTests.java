@@ -110,19 +110,19 @@ public class ControllerTests {
   public void testAddKeyframe() {
     clear();
     try {
-      controller.addKeyframe("layer", "shape", "10", null, "", "", "", "", "", "");
+      controller.addKeyframe("layer", "shape", "10", null, "", "", "", "", "", "", "");
       fail("A null input didn't trigger an IAE");
     } catch (IllegalArgumentException e) {
       assertEquals("Inputs must not be null", e.getMessage());
     }
 
     clear();
-    controller.addKeyframe("layer", "shape", "hi", "", "", "", "", "", "", "");
+    controller.addKeyframe("layer", "shape", "hi", "", "", "", "", "", "", "", "");
     assertEquals("Error: Keyframe parameters must be numbers\n", viewOutput.toString());
     assertEquals("", modelOutput.toString());
 
     clear();
-    controller.addKeyframe("layer", "shape", "4", "1", "1", "1", "1", "1", "1", "1");
+    controller.addKeyframe("layer", "shape", "4", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Exited shape editor\n" +
             "updateMaxTick called\n" +
             "drawCurrentTick called\n", viewOutput.toString());
@@ -131,25 +131,25 @@ public class ControllerTests {
     AnimationModelImpl m = new AnimationModelImpl();
     AnimationController c = new AnimationController(m, mockView);
     clear();
-    c.addKeyframe("layer", "shape", "3", "1", "1", "1", "1", "1", "1", "1");
+    c.addKeyframe("layer", "shape", "3", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Error: Couldn't add keyframe: No shape with the name shape exists.\n",
             viewOutput.toString());
 
     clear();
     m.addEllipse("layer", "E");
-    c.addKeyframe("layer", "E", "-3", "1", "1", "1", "1", "1", "1", "1");
+    c.addKeyframe("layer", "E", "-3", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Error: Couldn't add keyframe: Time must be a positive integer, given -3\n",
             viewOutput.toString());
 
     clear();
-    c.addKeyframe("layer", "E", "3", "1", "1", "1", "1", "1", "1", "1");
+    c.addKeyframe("layer", "E", "3", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Exited shape editor\n" +
             "updateMaxTick called\n" +
             "drawCurrentTick called\n", viewOutput.toString());
     assertEquals(1, m.getMotions("layer", "E").size());
 
     clear();
-    c.addKeyframe("layer", "E", "3", "1", "1", "1", "1", "1", "1", "1");
+    c.addKeyframe("layer", "E", "3", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Error: Couldn't add keyframe: This shape already has a motion at time 3\n",
             viewOutput.toString());
 
@@ -159,19 +159,19 @@ public class ControllerTests {
   public void testEditKeyframe() {
     clear();
     try {
-      controller.editKeyframe("layer", "shape", "10", "", null, "", "", "", "", "");
+      controller.editKeyframe("layer", "shape", "10", "", null, "", "", "", "", "", "");
       fail("A null input didn't trigger an IAE");
     } catch (IllegalArgumentException e) {
       assertEquals("Inputs must not be null", e.getMessage());
     }
 
     clear();
-    controller.editKeyframe("layer", "shape", "hi", "", "", "", "", "", "", "");
+    controller.editKeyframe("layer", "shape", "hi", "", "", "", "", "", "", "", "");
     assertEquals("Error: Keyframe parameters must be numbers\n", viewOutput.toString());
     assertEquals("", modelOutput.toString());
 
     clear();
-    controller.editKeyframe("layer", "shape", "4", "1", "1", "1", "1", "1", "1", "1");
+    controller.editKeyframe("layer", "shape", "4", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Exited shape editor\n" +
             "drawCurrentTick called\n",
             viewOutput.toString());
@@ -180,24 +180,24 @@ public class ControllerTests {
     AnimationModelImpl m = new AnimationModelImpl();
     AnimationController c = new AnimationController(m, mockView);
     clear();
-    c.editKeyframe("layer", "shape", "3", "1", "1", "1", "1", "1", "1", "1");
+    c.editKeyframe("layer", "shape", "3", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Error: Couldn't edit keyframe: No shape with the name shape exists.\n",
             viewOutput.toString());
 
     clear();
     m.addEllipse("layer", "E");
-    c.editKeyframe("layer", "E", "-3", "1", "1", "1", "1", "1", "1", "1");
+    c.editKeyframe("layer", "E", "-3", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Error: Couldn't edit keyframe: Time must be a positive integer, given -3\n",
             viewOutput.toString());
 
     clear();
-    c.editKeyframe("layer", "E", "3", "1", "1", "1", "1", "1", "1", "1");
+    c.editKeyframe("layer", "E", "3", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Error: Couldn't edit keyframe: No motion at time 3 for the shape E\n",
             viewOutput.toString());
 
     m.addMotion("layer", "E", 3, 1, 1, 1, 1, 1, 1, 1);
     clear();
-    c.editKeyframe("layer", "E", "3", "1", "1", "1", "1", "1", "1", "1");
+    c.editKeyframe("layer", "E", "3", "1", "1", "1", "1", "1", "1", "1", "0");
     assertEquals("Exited shape editor\n" +
                     "drawCurrentTick called\n",
             viewOutput.toString());
@@ -424,35 +424,35 @@ public class ControllerTests {
   @Test
   public void testSave() {
     try {
-      controller.save(null, "file");
+      controller.save(1, null, "file");
       fail("Allowed null inputs");
     } catch (IllegalArgumentException e) {
       assertEquals("Arguments must not be null", e.getMessage());
     }
 
     try {
-      controller.save("svg", null);
+      controller.save(1, "svg", null);
       fail("Allowed null inputs");
     } catch (IllegalArgumentException e) {
       assertEquals("Arguments must not be null", e.getMessage());
     }
 
     clear();
-    controller.save("svg", "");
+    controller.save(1, "svg", "");
     assertEquals("Error: Output location must be set\n", viewOutput.toString());
 
     clear();
-    controller.save("svg", "file");
+    controller.save(1, "svg", "file");
     assertEquals("setOutput called\n" +
             "save called\n", viewOutput.toString());
 
     clear();
-    controller.save("text", "file");
+    controller.save(1, "text", "file");
     assertEquals("setOutput called\n" +
             "save called\n", viewOutput.toString());
 
     try {
-      controller.save("none", "file");
+      controller.save(1, "none", "file");
       fail("saved with illegal file type");
     } catch (IllegalArgumentException e) {
       assertEquals("Unsupported file type none", e.getMessage());

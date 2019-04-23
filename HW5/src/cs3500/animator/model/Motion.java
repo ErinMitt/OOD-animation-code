@@ -20,7 +20,7 @@ public class Motion {
   private final int red;
   private final int green;
   private final int blue;
-  private final int rotation;
+  private final int rotation; // positive number = clockwise rotation
 
   /**
    * Build a moment. Rotation defaults to 0.

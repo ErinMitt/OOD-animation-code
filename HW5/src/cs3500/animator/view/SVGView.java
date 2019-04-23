@@ -109,7 +109,7 @@ public class SVGView implements AnimationView {
    * @param shape the shape name
    * @return the starting text for a rectangle
    */
-  private String initRect(Motion m, String shape) {
+  private String initRect(Motion m, String shape) { // TODO: rotation
     return "<rect id=\"" + shape
             + "\" x=\"" + (m.getX())
             + "\" y=\"" + (m.getY())
@@ -127,7 +127,7 @@ public class SVGView implements AnimationView {
    * @param shape the ellipse's name
    * @return the starting text for an ellipse
    */
-  private String initEllipse(Motion m, String shape) {
+  private String initEllipse(Motion m, String shape) { // TODO: rotation
     return "<ellipse id=\"" + shape
             + "\" cx=\"" + (m.getX())
             + "\" cy=\"" + (m.getY())
@@ -177,7 +177,7 @@ public class SVGView implements AnimationView {
   private List<String> moveShape(Motion start, Motion end, String shape,
                                  String x, String y, String width, String height,
                                  int widthModifier) {
-    ArrayList<String> motions = new ArrayList<>(5);
+    ArrayList<String> motions = new ArrayList<>(6);
     // order of inputs: start (ms), duration (ms), attribute type, from, to
     String template = "<animate attributeType=\"xml\" begin=\"%sms\" dur=\"%sms\" "
             + "attributeName=\"%s\" from=\"%s\" to=\"%s\" fill=\"freeze\" />";
@@ -206,6 +206,19 @@ public class SVGView implements AnimationView {
       motions.add(String.format(template, startTime, duration, "fill",
               String.format("rgb(%s,%s,%s)", start.getRed(), start.getGreen(), start.getBlue()),
               String.format("rgb(%s,%s,%s)", end.getRed(), end.getGreen(), end.getBlue())));
+    }
+    if (start.getRotation() - end.getRotation() != 0) {
+      motions.add(String.format("<animateTransform attributeType=\"xml\" "
+                      + "attributeName=\"transform\" begin=\"%sms\" "
+                      + "type=\"rotate\" from=\"%s %s %s\" to=\"%s %s %s\" dur=\"%sms\" />",
+              startTime,
+              start.getRotation(),
+              start.getX() + start.getWidth() - (widthModifier * start.getWidth() / 2),
+              start.getY() + start.getHeight() - (widthModifier * start.getHeight() / 2),
+              end.getRotation(),
+              end.getX() + end.getWidth() - (widthModifier * end.getWidth() / 2),
+              end.getY() + end.getHeight() - (widthModifier * end.getHeight() / 2),
+              duration));
     }
     return motions;
   }

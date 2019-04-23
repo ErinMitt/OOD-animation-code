@@ -113,7 +113,7 @@ public class AnimationModelImpl implements AnimationModel {
                         int width, int height,
                         int red, int green, int blue, int rotation) {
     checkLayerExists(layer);
-    layerMap.get(layer).addMotion(shapeName, time, x, y, width, height, red, green, blue);
+    layerMap.get(layer).addMotion(shapeName, time, x, y, width, height, red, green, blue, rotation);
   }
 
   @Override
@@ -127,7 +127,7 @@ public class AnimationModelImpl implements AnimationModel {
                          int width, int height,
                          int red, int green, int blue, int rotation) {
     checkLayerExists(layer);
-    layerMap.get(layer).editMotion(shapeName, time, x, y, width, height, red, green, blue);
+    layerMap.get(layer).editMotion(shapeName, time, x, y, width, height, red, green, blue, rotation);
   }
 
   @Override

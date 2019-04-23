@@ -68,13 +68,15 @@ public class TestingController implements Features, Controller {
 
   @Override
   public void addKeyframe(String layer, String shape, String time, String x, String y,
-                          String width, String height, String red, String green, String blue) {
+                          String width, String height,
+                          String red, String green, String blue, String rotation) {
     //this controller exists for testing only and doesn't do anything
   }
 
   @Override
   public void editKeyframe(String layer, String shape, String time, String x, String y,
-                           String width, String height, String red, String green, String blue) {
+                           String width, String height,
+                           String red, String green, String blue, String rotation) {
     //this controller exists for testing only and doesn't do anything
   }
 
@@ -119,7 +121,7 @@ public class TestingController implements Features, Controller {
   }
 
   @Override
-  public void save(String type, String fileName) {
+  public void save(double speed, String type, String fileName) {
     //this controller exists for testing only and doesn't do anything
   }
 

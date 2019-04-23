@@ -51,12 +51,13 @@ class Shape {
    * @param red the R component of the shape's color
    * @param green the G component of the shape's color
    * @param blue the B component of the shape's color
+   * @param rotation the shape's rotation
    * @throws IllegalArgumentException if the given time is less than or equal to the time of the
    *     last existing motion, or if the width/height are less than or equal to 0
    */
   void addMotion(int time, int x, int y, int width, int height,
-                 int red, int green, int blue) {
-    addMotion(new Motion(time, x, y, width, height, red, green, blue));
+                 int red, int green, int blue, int rotation) {
+    addMotion(new Motion(time, x, y, width, height, red, green, blue, rotation));
   }
 
   /**

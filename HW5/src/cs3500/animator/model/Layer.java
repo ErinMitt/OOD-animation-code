@@ -77,12 +77,13 @@ class Layer {
    * @param red the new motion's r component of rgb
    * @param green the new motion's g component of rgb
    * @param blue the new motion's b component of rgb
+   * @param rotation the shape's rotation
    */
   public void addMotion(String shapeName, int time, int x, int y, int width, int height,
-                        int red, int green, int blue) {
+                        int red, int green, int blue, int rotation) {
     checkShapeExists(shapeName);
     // may throw an IAE if the time is incorrect
-    shapes.get(shapeName).addMotion(time, x, y, width, height, red, green, blue);
+    shapes.get(shapeName).addMotion(time, x, y, width, height, red, green, blue, rotation);
   }
 
   /**
@@ -96,12 +97,13 @@ class Layer {
    * @param red the new motion's r component of rgb
    * @param green the new motion's g component of rgb
    * @param blue the new motion's b component of rgb
+   * @param rotation the shape's rotation
    */
   public void editMotion(String shapeName, int time, int x, int y, int width, int height,
-                         int red, int green, int blue) {
+                         int red, int green, int blue, int rotation) {
     checkShapeExists(shapeName);
     // Motion constructor check for validity of inputs, throw IAE if invalid
-    Motion m = new Motion(time, x, y, width, height, red, green, blue);
+    Motion m = new Motion(time, x, y, width, height, red, green, blue, rotation);
     Shape shape = shapes.get(shapeName);
     shape.deleteMotionAt(time); // throws IAE if there is no motion at the given time
     shape.addMotion(m);
