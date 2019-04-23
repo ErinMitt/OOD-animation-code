@@ -50,7 +50,7 @@ class AnimationPanel extends JPanel {
             g2.setColor(new Color(state.getRed(), state.getGreen(), state.getBlue()));
             g2.rotate(Math.PI * state.getRotation() / 180,
                     state.getX() + (state.getWidth() / 2),
-                    state.getY() + state.getHeight() / 2); // TODO: test this!
+                    state.getY() + (state.getHeight() / 2));
             switch (model.getShapeType(layer, shape)) {
               case "ellipse":
                 g2.fillOval(state.getX(), state.getY(), state.getWidth(), state.getHeight());

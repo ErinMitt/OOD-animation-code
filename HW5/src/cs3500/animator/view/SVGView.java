@@ -67,7 +67,7 @@ public class SVGView implements AnimationView {
    * Creates an SVG-formatted text representing the animation described in the model.
    * @return the SVG text
    */
-  private String formatAnimation() { //TODO: check that layers overlap properly
+  private String formatAnimation() {
     LinkedList<String> svgLines = new LinkedList<>();
     svgLines.add("<svg width=\"" + (model.getWidth() + model.getX())
             + "\" height=\"" + (model.getHeight() + model.getY())
@@ -109,7 +109,7 @@ public class SVGView implements AnimationView {
    * @param shape the shape name
    * @return the starting text for a rectangle
    */
-  private String initRect(Motion m, String shape) { // TODO: rotation
+  private String initRect(Motion m, String shape) {
     return "<rect id=\"" + shape
             + "\" x=\"" + (m.getX())
             + "\" y=\"" + (m.getY())
@@ -127,7 +127,7 @@ public class SVGView implements AnimationView {
    * @param shape the ellipse's name
    * @return the starting text for an ellipse
    */
-  private String initEllipse(Motion m, String shape) { // TODO: rotation
+  private String initEllipse(Motion m, String shape) {
     return "<ellipse id=\"" + shape
             + "\" cx=\"" + (m.getX())
             + "\" cy=\"" + (m.getY())
