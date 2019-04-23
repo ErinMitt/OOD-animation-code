@@ -126,14 +126,14 @@ public class ControllerTests {
     assertEquals("Exited shape editor\n" +
             "updateMaxTick called\n" +
             "drawCurrentTick called\n", viewOutput.toString());
-    assertEquals("addMotion called with shape 4 1 1 1 1 1 1 1\n", modelOutput.toString());
+    assertEquals("addMotion called with shape 4 1 1 1 1 1 1 1 0\n", modelOutput.toString());
 
     AnimationModelImpl m = new AnimationModelImpl();
     AnimationController c = new AnimationController(m, mockView);
     clear();
     c.addKeyframe("layer", "shape", "3", "1", "1", "1", "1", "1", "1", "1", "0");
-    assertEquals("Error: Couldn't add keyframe: No shape with the name shape exists.\n",
-            viewOutput.toString());
+      assertEquals("Error: Couldn't add keyframe: There is no layer named layer\n",
+              viewOutput.toString());
 
     clear();
     m.addEllipse("layer", "E");
@@ -175,7 +175,7 @@ public class ControllerTests {
     assertEquals("Exited shape editor\n" +
             "drawCurrentTick called\n",
             viewOutput.toString());
-    assertEquals("editMotion called with shape 4 1 1 1 1 1 1 1\n", modelOutput.toString());
+    assertEquals("editMotion called with shape 4 1 1 1 1 1 1 1 0\n", modelOutput.toString());
 
     AnimationModelImpl m = new AnimationModelImpl();
     AnimationController c = new AnimationController(m, mockView);

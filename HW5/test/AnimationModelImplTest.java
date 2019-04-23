@@ -105,12 +105,16 @@ public class AnimationModelImplTest {
             50,0,0,255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255",
             original.displayAnimation());
     original.addMotion("1", "R", 7,100,100,40,
             50,0,255,0);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                   "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    7 100 100 40 50 0 255 0",
             original.displayAnimation());
   }
@@ -126,12 +130,16 @@ public class AnimationModelImplTest {
             50,0,0,255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255",
             original.displayAnimation());
     original.addMotion("1", "R", 7,100,200,40,
             50,0,0,255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255",
             original.displayAnimation());
   }
@@ -147,12 +155,16 @@ public class AnimationModelImplTest {
             50,0,0,255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                     "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255",
             original.displayAnimation());
     original.addMotion("1", "R", 7,100,200,40,
             50,0,255,0);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
+                    "rotation 0\n" +
             "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 255 0",
             original.displayAnimation());
   }
@@ -168,12 +180,16 @@ public class AnimationModelImplTest {
             50,0,0,255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255",
             original.displayAnimation());
     original.addMotion("1", "R", 7,100,200,40,
             100,0,255,0);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 100 0 255 0",
             original.displayAnimation());
   }
@@ -184,6 +200,7 @@ public class AnimationModelImplTest {
     original.addMotion("1", "3", 1, 2, 3, 4, 5, 280, 300, 270);
     assertEquals("layer 1\n" +
                     "shape 3 ellipse\n" +
+                    "rotation 0\n" +
                     "motion 3 1 2 3 4 5 255 255 255    1 2 3 4 5 255 255 255",
             original.displayAnimation());
     original.deleteLastMotion("1", "3");
@@ -191,12 +208,14 @@ public class AnimationModelImplTest {
     original.addMotion("1", "3", 1, 2, 3, 4, 5, -10, -20, -30);
     assertEquals("layer 1\n" +
                     "shape 3 ellipse\n" +
+                    "rotation 0\n" +
                     "motion 3 1 2 3 4 5 0 0 0    1 2 3 4 5 0 0 0",
             original.displayAnimation());
     original.deleteLastMotion("1", "3");
     original.addMotion("1", "3", 1, 2, 3, 4, 5, -5, 3, 270);
     assertEquals("layer 1\n" +
                     "shape 3 ellipse\n" +
+                    "rotation 0\n" +
                     "motion 3 1 2 3 4 5 0 3 255    1 2 3 4 5 0 3 255",
             original.displayAnimation());
   }
@@ -273,6 +292,9 @@ public class AnimationModelImplTest {
     original.addMotion("1", "R", 7, 100, 100, 40, 50, 0, 0, 255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
+                    "rotation 0\n" +
             "motion R 4 100 100 40 50 0 0 255    7 100 100 40 50 0 0 255",
             original.displayAnimation());
   }
@@ -304,17 +326,25 @@ public class AnimationModelImplTest {
             50,0,0,255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n"+
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n"+
+                    "rotation 0\n"+
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255\n" +
+                    "rotation 0\n"+
                     "motion R 7 100 200 40 50 0 0 255    10 100 200 40 50 0 0 255",
             original.displayAnimation());
     original.deleteLastMotion("1", "R");
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n"+
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
+                    "rotation 0\n"+
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255",
             original.displayAnimation());
     original.deleteLastMotion("1", "R");
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n"+
                     "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255",
             original.displayAnimation());
 
@@ -332,12 +362,19 @@ public class AnimationModelImplTest {
             50,0,0,255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n"+
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255\n" +
+                    "rotation 0\n" +
                     "motion R 7 100 200 40 50 0 0 255    10 100 200 40 50 0 0 255",
             original.displayAnimation());
     original.deleteLastMotion("1", "R");
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n"+
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255",
             original.displayAnimation());
 
@@ -349,6 +386,7 @@ public class AnimationModelImplTest {
     original.addMotion("1", "E", 5, 2, 3, 4, 5, 6, 7, 8);
     assertEquals("layer 1\n" +
                     "shape E ellipse\n" +
+                    "rotation 0\n" +
                     "motion E 5 2 3 4 5 6 7 8    5 2 3 4 5 6 7 8",
             original.displayAnimation());
     original.deleteLastMotion("1", "E");
@@ -424,40 +462,64 @@ public class AnimationModelImplTest {
     original.addMotion("1", "R", 1, 100, 100, 40, 50, 0, 0, 0);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
                     "motion R 1 100 100 40 50 0 0 0    1 100 100 40 50 0 0 0",
             original.displayAnimation());
     original.addMotion("1", "R", 5, 100, 100, 40, 50, 0, 0, 0);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                    "motion R 1 100 100 40 50 0 0 0    1 100 100 40 50 0 0 0\n"+
+                    "rotation 0\n" +
                     "motion R 1 100 100 40 50 0 0 0    5 100 100 40 50 0 0 0",
             original.displayAnimation());
 
     original.addEllipse("1", "E");
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                    "motion R 1 100 100 40 50 0 0 0    1 100 100 40 50 0 0 0\n" +
+                    "rotation 0\n" +
                     "motion R 1 100 100 40 50 0 0 0    5 100 100 40 50 0 0 0\n" +
                     "shape E ellipse",
             original.displayAnimation());
     original.addMotion("1", "E", 2, 20, 10, 30, 40, 255, 34, 19);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                    "motion R 1 100 100 40 50 0 0 0    1 100 100 40 50 0 0 0\n" +
+                     "rotation 0\n" +
                     "motion R 1 100 100 40 50 0 0 0    5 100 100 40 50 0 0 0\n" +
                     "shape E ellipse\n" +
+                    "rotation 0\n" +
                     "motion E 2 20 10 30 40 255 34 19    2 20 10 30 40 255 34 19",
             original.displayAnimation());
     original.addMotion("1", "E", 4, 30, 20, 20, 30, 255, 34, 19);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                    "motion R 1 100 100 40 50 0 0 0    1 100 100 40 50 0 0 0\n" +
+            "rotation 0\n" +
                     "motion R 1 100 100 40 50 0 0 0    5 100 100 40 50 0 0 0\n" +
                     "shape E ellipse\n" +
+                    "rotation 0\n" +
+            "motion E 2 20 10 30 40 255 34 19    2 20 10 30 40 255 34 19\n" +
+                    "rotation 0\n" +
                     "motion E 2 20 10 30 40 255 34 19    4 30 20 20 30 255 34 19",
             original.displayAnimation());
     original.addMotion("1", "E", 10, 30, 20, 20, 30, 255, 34, 19);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
+                    "rotation 0\n" +
+                    "motion R 1 100 100 40 50 0 0 0    1 100 100 40 50 0 0 0\n" +
+                    "rotation 0\n" +
                     "motion R 1 100 100 40 50 0 0 0    5 100 100 40 50 0 0 0\n" +
                     "shape E ellipse\n" +
+                    "rotation 0\n" +
+                    "motion E 2 20 10 30 40 255 34 19    2 20 10 30 40 255 34 19\n" +
+                    "rotation 0\n" +
                     "motion E 2 20 10 30 40 255 34 19    4 30 20 20 30 255 34 19\n" +
+                    "rotation 0\n" +
                     "motion E 4 30 20 20 30 255 34 19    10 30 20 20 30 255 34 19",
             original.displayAnimation());
   }
@@ -597,6 +659,7 @@ public class AnimationModelImplTest {
             2, 3, 4, 5, 6, 7, 8, 9);
     assertEquals("layer layer1\n" +
                     "shape A ellipse\n" +
+                    "rotation 0\n" +
                     "motion A 2 3 4 5 6 7 8 9    2 3 4 5 6 7 8 9\n" +
                     "shape B rectangle",
             testModel.displayAnimation());
@@ -605,6 +668,9 @@ public class AnimationModelImplTest {
             4, 4, 4, 4, 4, 4, 4, 4);
     assertEquals("layer layer1\n" +
                     "shape A ellipse\n" +
+                    "rotation 0\n" +
+                    "motion A 2 3 4 5 6 7 8 9    2 3 4 5 6 7 8 9\n" +
+                    "rotation 0\n" +
                     "motion A 2 3 4 5 6 7 8 9    4 4 4 4 4 4 4 4\n" +
                     "shape B rectangle",
             testModel.displayAnimation());
@@ -612,16 +678,26 @@ public class AnimationModelImplTest {
     builder.addKeyframe("B", 2, 2, 2, 2, 2, 2, 2, 2);
     assertEquals("layer layer1\n" +
                     "shape A ellipse\n" +
+                    "rotation 0\n" +
+                    "motion A 2 3 4 5 6 7 8 9    2 3 4 5 6 7 8 9\n" +
+                    "rotation 0\n" +
                     "motion A 2 3 4 5 6 7 8 9    4 4 4 4 4 4 4 4\n" +
                     "shape B rectangle\n" +
+                    "rotation 0\n" +
                     "motion B 2 2 2 2 2 2 2 2    2 2 2 2 2 2 2 2",
             testModel.displayAnimation());
 
     builder.addKeyframe("B", 3, 4, 5, 6, 6, 5, 4, 3);
     assertEquals("layer layer1\n" +
                     "shape A ellipse\n" +
+                    "rotation 0\n" +
+                    "motion A 2 3 4 5 6 7 8 9    2 3 4 5 6 7 8 9\n" +
+                    "rotation 0\n" +
                     "motion A 2 3 4 5 6 7 8 9    4 4 4 4 4 4 4 4\n" +
                     "shape B rectangle\n" +
+                    "rotation 0\n" +
+                    "motion B 2 2 2 2 2 2 2 2    2 2 2 2 2 2 2 2\n" +
+                    "rotation 0\n" +
                     "motion B 2 2 2 2 2 2 2 2    3 4 5 6 6 5 4 3",
             testModel.displayAnimation());
   }
