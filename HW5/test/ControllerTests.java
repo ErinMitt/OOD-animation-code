@@ -61,6 +61,39 @@ public class ControllerTests {
   }
 
   @Test
+  public void testDeleteLayer() {
+    clear();
+    controller.deleteLayer("1");
+    assertEquals("addLayer called\n" +
+            "deleteLayer called with 1\n" +
+            "addLayer called\n", modelOutput.toString());
+    assertEquals("setLayerList called with [1]\n" +
+            "drawCurrentTick called\n", viewOutput.toString());
+  }
+
+  @Test
+  public void testAddLayer() {
+    clear();
+    controller.addLayer("2");
+    assertEquals("getLayers called\n" +
+            "addLayer called with 2\n" +
+            "getLayers called\n", modelOutput.toString());
+    assertEquals("setLayerList called with [1]\n", viewOutput.toString());
+  }
+
+  @Test
+  public void testMoveLayer() {
+    clear();
+    controller.moveLayer("1", 0);
+    assertEquals("getLayers called\n" +
+            "moveLayer called with 1, 0\n" +
+            "getLayers called\n",
+            modelOutput.toString());
+    assertEquals("setLayerList called with [1]\n" +
+            "drawCurrentTick called\n", viewOutput.toString());
+  }
+
+  @Test
   public void testGo() {
     clear();
     controller.gogo();
@@ -129,10 +162,11 @@ public class ControllerTests {
     assertEquals("addMotion called with shape 4 1 1 1 1 1 1 1 0\n", modelOutput.toString());
 
     AnimationModelImpl m = new AnimationModelImpl();
+    m.addLayer("layer");
     AnimationController c = new AnimationController(m, mockView);
     clear();
     c.addKeyframe("layer", "shape", "3", "1", "1", "1", "1", "1", "1", "1", "0");
-      assertEquals("Error: Couldn't add keyframe: There is no layer named layer\n",
+      assertEquals("Error: Couldn't add keyframe: No shape with the name shape exists in the layer layer.\n",
               viewOutput.toString());
 
     clear();
@@ -178,10 +212,11 @@ public class ControllerTests {
     assertEquals("editMotion called with shape 4 1 1 1 1 1 1 1 0\n", modelOutput.toString());
 
     AnimationModelImpl m = new AnimationModelImpl();
+    m.addLayer("layer");
     AnimationController c = new AnimationController(m, mockView);
     clear();
     c.editKeyframe("layer", "shape", "3", "1", "1", "1", "1", "1", "1", "1", "0");
-    assertEquals("Error: Couldn't edit keyframe: No shape with the name shape exists.\n",
+    assertEquals("Error: Couldn't edit keyframe: No shape with the name shape exists in the layer layer.\n",
             viewOutput.toString());
 
     clear();
@@ -210,7 +245,7 @@ public class ControllerTests {
       controller.removeKeyframe("layer", null, "10");
       fail("A null input didn't trigger an IAE");
     } catch (IllegalArgumentException e) {
-      assertEquals("Shape must not be null", e.getMessage());
+      assertEquals("Shape and layer must not be null", e.getMessage());
     }
 
     clear();
@@ -232,10 +267,11 @@ public class ControllerTests {
     assertEquals("deleteMotion called with shape 10\n", modelOutput.toString());
 
     AnimationModelImpl m = new AnimationModelImpl();
+    m.addLayer("layer");
     AnimationController c = new AnimationController(m, mockView);
     clear();
     c.removeKeyframe("layer", "shape", "10");
-    assertEquals("Error: Couldn't delete keyframe: No shape with the name shape exists.\n",
+    assertEquals("Error: Couldn't delete keyframe: No shape with the name shape exists in the layer layer.\n",
             viewOutput.toString());
 
     clear();
@@ -266,7 +302,7 @@ public class ControllerTests {
       controller.suggestNewKeyframe("layer", null, "time");
       fail("Allowed null inputs");
     } catch (IllegalArgumentException e) {
-      assertEquals("Shape must not be null", e.getMessage());
+      assertEquals("Shape and layer must not be null", e.getMessage());
     }
 
     clear();
@@ -294,6 +330,7 @@ public class ControllerTests {
             modelOutput.toString());
 
     AnimationModelImpl m = new AnimationModelImpl();
+    m.addLayer("layer");
     AnimationController c = new AnimationController(m, mockView);
     m.addRectangle("layer", "R");
     m.addMotion("layer", "R", 10, 10, 10, 10, 10, 10, 10, 10);
@@ -313,7 +350,7 @@ public class ControllerTests {
       controller.suggestEditKeyframe("layer", null, "time");
       fail("Allowed null inputs");
     } catch (IllegalArgumentException e) {
-      assertEquals("Shape must not be null", e.getMessage());
+      assertEquals("Shape and layer must not be null", e.getMessage());
     }
 
     clear();
@@ -341,6 +378,7 @@ public class ControllerTests {
             modelOutput.toString());
 
     AnimationModelImpl m = new AnimationModelImpl();
+    m.addLayer("layer");
     AnimationController c = new AnimationController(m, mockView);
     m.addRectangle("layer", "R");
     m.addMotion("layer", "R", 10, 10, 10, 10, 10, 10, 10, 10);
@@ -376,7 +414,7 @@ public class ControllerTests {
 
     clear();
     controller.addShape("layer", "shape", "ellipse");
-    assertEquals("Error: There is already a shape by the name shape\n", viewOutput.toString());
+    assertEquals("Error: There is already a shape by the name shape in the layer layer\n", viewOutput.toString());
 
     try {
       controller.addShape("layer", "shp", "thing");

@@ -43,7 +43,7 @@ class WritingMockModel implements AnimationModel {
 
   @Override
   public void moveLayer(String layerName, int position) {
-    append("modeLayer called with " + layerName + ", " + position);
+    append("moveLayer called with " + layerName + ", " + position);
   }
 
   @Override
@@ -113,7 +113,7 @@ class WritingMockModel implements AnimationModel {
 
   @Override
   public List<String> getLayers() {
-    append("addLayer called");
+    append("getLayers called");
     return new ArrayList<>(Arrays.asList("1"));
   }
 

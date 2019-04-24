@@ -9,11 +9,11 @@ import static org.junit.Assert.fail;
  * Tests for the class Motion.
  */
 public class MotionTests {
-  private Motion m = new Motion(1, 2, 3, 4, 5, 6, 7, 8);
+  private Motion m = new Motion(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
   @Test
   public void testConstructor() {
-    // all valid
+    // all valid, rotation defaults to 0
     Motion m1 = new Motion(1, 1, 1, 1, 1, 1, 1, 1);
     assertEquals(1, m1.getTime());
     assertEquals(1, m1.getX());
@@ -23,6 +23,10 @@ public class MotionTests {
     assertEquals(1, m1.getRed());
     assertEquals(1, m1.getGreen());
     assertEquals(1, m1.getBlue());
+    assertEquals(0, m1.getRotation());
+
+    // rotation isn't zero when it's set
+    assertEquals(9, m.getRotation());
 
     // width and height <= 0
     try {

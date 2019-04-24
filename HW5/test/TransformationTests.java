@@ -10,10 +10,10 @@ import static org.junit.Assert.fail;
  * Tests for the class Transformation.
  */
 public class TransformationTests {
-  private Motion m1 = new Motion(1, 1, 1, 1, 1, 1, 1, 1);
-  private Motion m2 = new Motion(5, 5, 5, 5, 5, 5, 5, 5);
-  private Motion m3 = new Motion(1, 4, 4, 4, 4, 4, 4, 4);
-  private Motion m4 = new Motion(8, 4, 4, 4, 4, 4, 4, 4);
+  private Motion m1 = new Motion(1, 1, 1, 1, 1, 1, 1, 1, 1);
+  private Motion m2 = new Motion(5, 5, 5, 5, 5, 5, 5, 5, 5);
+  private Motion m3 = new Motion(1, 4, 4, 4, 4, 4, 4, 4, 4);
+  private Motion m4 = new Motion(8, 4, 4, 4, 4, 4, 4, 4, 4);
 
   @Test
   public void testConstructor() {
@@ -50,6 +50,8 @@ public class TransformationTests {
             s2.getGreen());
     assertEquals(2,
             s2.getBlue());
+    assertEquals(2,
+            s2.getRotation());
 
     // test that getStateAt works at the start and end of a transformation
     assertEquals(5, t1.getStateAt(5).getHeight());
@@ -74,6 +76,8 @@ public class TransformationTests {
             s3.getGreen());
     assertEquals(1,
             s3.getBlue());
+    assertEquals(1,
+            s3.getRotation());
 
     // test that asking for times outside the boundaries throws an exception
     Transformation t3 = new Transformation(m2, m4);

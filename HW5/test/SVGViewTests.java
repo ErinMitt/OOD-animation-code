@@ -96,6 +96,7 @@ public class SVGViewTests {
   public void testSetModel() {
     // test that the correct model is set
     AnimationModel model2 = new AnimationModelImpl();
+    model2.addLayer("1");
     model2.addRectangle("1", "R");
     model2.addMotion("1", "R", 1, 1, 1, 1, 1, 1, 1, 1);
     model2.addMotion("1", "R", 2, 1, 1, 2, 2, 1, 1, 1);
@@ -126,6 +127,36 @@ public class SVGViewTests {
       assertEquals("Model must not be null",
               e.getMessage());
     }
+  }
+
+  @Test
+  public void testRotation() {
+    model.addRectangle("1", "R");
+    model.addMotion("1", "R", 1, 1, 1, 20, 10, 1, 1, 1, 0);
+    model.addMotion("1", "R", 10, 1, 1, 20, 10, 1, 1, 1, 180);
+    view.animate();
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
+            "xmlns=\"http://www.w3.org/2000/svg\">\n" +
+            "<rect id=\"R\" x=\"1\" y=\"1\" width=\"20\" height=\"10\" fill=\"rgb(1,1,1)\" " +
+            "visibility=\"visible\" >\n" +
+            "<animateTransform attributeType=\"xml\" attributeName=\"transform\" " +
+            "begin=\"0ms\" type=\"rotate\" from=\"0 11 6\" to=\"180 11 6\" dur=\"9000ms\" />\n" +
+            "</rect>\n" +
+            "</svg>", output.toString());
+
+    init();
+    model.addEllipse("1", "E");
+    model.addMotion("1", "E", 1, 1, 1, 20, 10, 1, 1, 1, 0);
+    model.addMotion("1", "E", 10, 1, 1, 20, 10, 1, 1, 1, 180);
+    view.animate();
+    assertEquals("<svg width=\"1\" height=\"1\" version=\"1.1\" " +
+            "xmlns=\"http://www.w3.org/2000/svg\">\n" +
+            "<ellipse id=\"E\" cx=\"1\" cy=\"1\" rx=\"10\" ry=\"5\" fill=\"rgb(1,1,1)\" " +
+            "visibility=\"visible\" >\n" +
+            "<animateTransform attributeType=\"xml\" attributeName=\"transform\" " +
+            "begin=\"0ms\" type=\"rotate\" from=\"0 1 1\" to=\"180 1 1\" dur=\"9000ms\" />\n" +
+            "</ellipse>\n" +
+            "</svg>", output.toString());
   }
 
   @Test

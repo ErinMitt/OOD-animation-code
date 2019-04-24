@@ -29,6 +29,85 @@ public class AnimationModelImplTest {
   }
 
   @Test
+  public void testAddLayer() {
+    assertEquals("layer 1",
+            original.displayAnimation());
+    original.addLayer("2");
+    assertEquals("layer 1\n" +
+            "\n" +
+            "layer 2", original.displayAnimation());
+    try {
+      original.addLayer("2");
+      fail("Added two layers with the same name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("There is already a layer by the name 2",
+              e.getMessage());
+    }
+  }
+
+  @Test
+  public void testDeleteLayer() {
+    assertEquals("layer 1",
+            original.displayAnimation());
+    try {
+      original.deleteLayer("3");
+      fail("removed a layer that doesn't exist");
+    } catch (IllegalArgumentException e) {
+      assertEquals("There is no layer named 3", e.getMessage());
+    }
+    original.deleteLayer("1");
+    assertEquals("", original.displayAnimation());
+  }
+
+  @Test
+  public void testMoveLayer() {
+    try {
+      original.moveLayer("3", 0);
+      fail("moved a layer that doesn't exist");
+    } catch (IllegalArgumentException e) {
+      assertEquals("There is no layer named 3", e.getMessage());
+    }
+
+    try {
+      original.moveLayer("1", -3);
+      fail("moved a layer to a position that doesn't exist");
+    } catch (IllegalArgumentException e) {
+      assertEquals("A layer's new position must fall within the existing list size",
+              e.getMessage());
+    }
+
+    try {
+      original.moveLayer("1", 3);
+      fail("moved a layer to a position that doesn't exist");
+    } catch (IllegalArgumentException e) {
+      assertEquals("A layer's new position must fall within the existing list size",
+              e.getMessage());
+    }
+
+    original.addLayer("3");
+    assertEquals("layer 1\n" +
+            "\n" +
+            "layer 3", original.displayAnimation());
+    original.moveLayer("3", 0);
+    assertEquals("layer 3\n" +
+            "\n" +
+            "layer 1", original.displayAnimation());
+    original.moveLayer("3", 1);
+    assertEquals("layer 1\n" +
+            "\n" +
+            "layer 3", original.displayAnimation());
+  }
+
+  @Test
+  public void testGetLayers() {
+    assertEquals(new ArrayList<>(Arrays.asList("1")), original.getLayers());
+    original.addLayer("2");
+    assertEquals(new ArrayList<>(Arrays.asList("1", "2")), original.getLayers());
+    original.deleteLayer("1");
+    assertEquals(new ArrayList<>(Arrays.asList("2")), original.getLayers());
+  }
+
+  @Test
   public void addEllipse() {
     assertEquals(new ArrayList<>(), original.getShapes("1"));
     original.addEllipse("1", "E");

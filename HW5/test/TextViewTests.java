@@ -106,7 +106,22 @@ public class TextViewTests {
 
   @Test
   public void testAnimate() {
+    // testing rotation
+    model.addRectangle("1", "R");
+    model.addMotion("1", "R", 0, 1, 1, 1, 1, 1, 1, 1, 2);
+    model.addMotion("1", "R", 5, 1, 1, 1, 1, 1, 1, 1, 7);
+    view.animate();
+    assertEquals("canvas 0 0 1 1\n" +
+                    "layer 1\n" +
+                    "shape R rectangle\n" +
+                    "rotation 2\n" +
+                    "motion R 0 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1\n" +
+                    "rotation 7\n" +
+                    "motion R 0 1 1 1 1 1 1 1 5 1 1 1 1 1 1 1",
+            output.toString());
+
     // no shapes
+    init();
     view.animate();
     assertEquals("canvas 0 0 1 1\n" +
             "layer 1",
