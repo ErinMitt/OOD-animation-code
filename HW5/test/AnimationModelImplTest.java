@@ -18,7 +18,6 @@ import static org.junit.Assert.fail;
 /**
  * Tests for the class AnimationModelImpl.
  */
-// TODO: TEST LAYERS!
 public class AnimationModelImplTest {
   AnimationModelImpl original;
 
