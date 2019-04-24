@@ -10,7 +10,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+import javax.swing.JToggleButton;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JSlider;
+import javax.swing.JList;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
 
 import cs3500.animator.controller.Features;
 import cs3500.animator.model.Motion;

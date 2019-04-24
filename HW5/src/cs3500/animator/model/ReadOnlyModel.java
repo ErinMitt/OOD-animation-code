@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface ReadOnlyModel {
   /**
-   * Return a list of names of all layers in the order of their
+   * Return a list of names of all layers ordered from lowest to highest.
    *
    * @return the list of layer names.
    */

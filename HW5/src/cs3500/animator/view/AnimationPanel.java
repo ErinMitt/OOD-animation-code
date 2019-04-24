@@ -44,7 +44,7 @@ class AnimationPanel extends JPanel {
     // draw all the shapes
     for (String layer : model.getLayers()) {
       for (String shape : model.getShapes(layer)) {
-        if (!model.getMotions(layer, shape).isEmpty()) { // if the shape has no motions, don't draw it
+        if (!model.getMotions(layer, shape).isEmpty()) { // if shape has no motions, don't draw it
           try {
             Motion state = model.getTransformationAt(layer, shape, tick).getStateAt(tick);
             g2.setColor(new Color(state.getRed(), state.getGreen(), state.getBlue()));

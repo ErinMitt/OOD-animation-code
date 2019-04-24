@@ -166,8 +166,9 @@ public class ControllerTests {
     AnimationController c = new AnimationController(m, mockView);
     clear();
     c.addKeyframe("layer", "shape", "3", "1", "1", "1", "1", "1", "1", "1", "0");
-      assertEquals("Error: Couldn't add keyframe: No shape with the name shape exists in the layer layer.\n",
-              viewOutput.toString());
+    assertEquals("Error: Couldn't add keyframe: No shape with the " +
+                    "name shape exists in the layer layer.\n",
+            viewOutput.toString());
 
     clear();
     m.addEllipse("layer", "E");
@@ -216,7 +217,8 @@ public class ControllerTests {
     AnimationController c = new AnimationController(m, mockView);
     clear();
     c.editKeyframe("layer", "shape", "3", "1", "1", "1", "1", "1", "1", "1", "0");
-    assertEquals("Error: Couldn't edit keyframe: No shape with the name shape exists in the layer layer.\n",
+    assertEquals("Error: Couldn't edit keyframe: No shape with the name " +
+                    "shape exists in the layer layer.\n",
             viewOutput.toString());
 
     clear();
@@ -271,7 +273,8 @@ public class ControllerTests {
     AnimationController c = new AnimationController(m, mockView);
     clear();
     c.removeKeyframe("layer", "shape", "10");
-    assertEquals("Error: Couldn't delete keyframe: No shape with the name shape exists in the layer layer.\n",
+    assertEquals("Error: Couldn't delete keyframe: No shape with the name " +
+                    "shape exists in the layer layer.\n",
             viewOutput.toString());
 
     clear();
@@ -414,7 +417,8 @@ public class ControllerTests {
 
     clear();
     controller.addShape("layer", "shape", "ellipse");
-    assertEquals("Error: There is already a shape by the name shape in the layer layer\n", viewOutput.toString());
+    assertEquals("Error: There is already a shape by the name shape in the layer layer\n",
+            viewOutput.toString());
 
     try {
       controller.addShape("layer", "shp", "thing");

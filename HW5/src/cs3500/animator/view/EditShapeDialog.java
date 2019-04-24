@@ -104,7 +104,8 @@ class EditShapeDialog {
     editGreen = new JTextField();
     editBlue = new JTextField();
     editRotation = new JTextField();
-    editButton.addActionListener(evt -> features.editKeyframe(layer, shape, keyframes.getSelectedValue(),
+    editButton.addActionListener(
+        evt -> features.editKeyframe(layer, shape, keyframes.getSelectedValue(),
         editX.getText(), editY.getText(), editWidth.getText(), editHeight.getText(),
         editRed.getText(), editGreen.getText(), editBlue.getText(), editRotation.getText()));
     keyframes.addListSelectionListener(

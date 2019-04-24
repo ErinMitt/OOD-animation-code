@@ -10,8 +10,7 @@ import cs3500.animator.model.Transformation;
 /**
  * A class for testing whether methods were called to an AnimationModel and recording their inputs.
  */
-public
-class WritingMockModel implements AnimationModel {
+public class WritingMockModel implements AnimationModel {
   private Appendable output;
 
   public WritingMockModel(Appendable output) {

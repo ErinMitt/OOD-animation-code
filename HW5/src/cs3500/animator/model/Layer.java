@@ -189,8 +189,8 @@ class Layer {
    */
   private void checkShapeExists(String shapeName) {
     if (! hasShape(shapeName)) {
-      throw new IllegalArgumentException("No shape with the name " + shapeName +
-              " exists in the layer " + name + ".");
+      throw new IllegalArgumentException("No shape with the name " + shapeName
+              + " exists in the layer " + name + ".");
     }
   }
 }

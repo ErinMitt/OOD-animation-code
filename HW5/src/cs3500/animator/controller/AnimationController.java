@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
 
 import cs3500.animator.ViewFactory;
 import cs3500.animator.model.AnimationModel;
@@ -149,7 +148,8 @@ public class AnimationController implements Features, Controller {
       throw new IllegalArgumentException("Inputs must not be null");
     }
     try {
-      model.addMotion(layer, shape, Integer.parseInt(time), Integer.parseInt(x), Integer.parseInt(y),
+      model.addMotion(layer, shape, Integer.parseInt(time),
+              Integer.parseInt(x), Integer.parseInt(y),
               Integer.parseInt(width), Integer.parseInt(height),
               Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue),
               Integer.parseInt(rotation));

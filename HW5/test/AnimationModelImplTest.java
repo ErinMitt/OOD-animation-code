@@ -404,25 +404,25 @@ public class AnimationModelImplTest {
             50,0,0,255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
-                    "rotation 0\n"+
-                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n"+
-                    "rotation 0\n"+
+                    "rotation 0\n" +
+                    "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255\n" +
-                    "rotation 0\n"+
+                    "rotation 0\n" +
                     "motion R 7 100 200 40 50 0 0 255    10 100 200 40 50 0 0 255",
             original.displayAnimation());
     original.deleteLastMotion("1", "R");
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
-                    "rotation 0\n"+
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
-                    "rotation 0\n"+
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255",
             original.displayAnimation());
     original.deleteLastMotion("1", "R");
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
-                    "rotation 0\n"+
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255",
             original.displayAnimation());
 
@@ -440,7 +440,7 @@ public class AnimationModelImplTest {
             50,0,0,255);
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
-                    "rotation 0\n"+
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
                     "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255\n" +
@@ -450,7 +450,7 @@ public class AnimationModelImplTest {
     original.deleteLastMotion("1", "R");
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
-                    "rotation 0\n"+
+                    "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    4 100 100 40 50 0 0 255\n" +
                     "rotation 0\n" +
                     "motion R 4 100 100 40 50 0 0 255    7 100 200 40 50 0 0 255",
@@ -547,7 +547,7 @@ public class AnimationModelImplTest {
     assertEquals("layer 1\n" +
                     "shape R rectangle\n" +
                     "rotation 0\n" +
-                    "motion R 1 100 100 40 50 0 0 0    1 100 100 40 50 0 0 0\n"+
+                    "motion R 1 100 100 40 50 0 0 0    1 100 100 40 50 0 0 0\n" +
                     "rotation 0\n" +
                     "motion R 1 100 100 40 50 0 0 0    5 100 100 40 50 0 0 0",
             original.displayAnimation());

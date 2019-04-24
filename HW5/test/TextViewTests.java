@@ -39,7 +39,7 @@ public class TextViewTests {
     }
     view.animate();
     assertEquals("canvas 0 0 1 1\n"
-            +"layer 1", output.toString());
+            + "layer 1", output.toString());
   }
 
   @Test
